@@ -385,3 +385,10 @@ footer p { margin: 6px 0 0; }
 }
 
 .files.perf td:last-child { text-align: left; }
+
+/* Screenshot banners: lighter overlay so the scene glows through, crop kept on the sun */
+.hero.photo::before {
+	background:
+		linear-gradient(90deg, rgba(10, 10, 14, 0.72) 0%, rgba(10, 10, 14, 0.38) 38%, rgba(10, 10, 14, 0.0) 68%),
+		linear-gradient(0deg, rgba(10, 10, 14, 0.6) 0%, rgba(10, 10, 14, 0) 35%);
+}

@@ -114,9 +114,33 @@ public class BlockshineClientTest implements FabricClientGameTest {
 				shot(ctx, server, "time set 6000", 0.0F, 50.0F, "15_medium_water_down");
 				server.runCommand("tp @a 0 -60 0 0 0");
 
-				// ---- Light shafts on HIGH, looking toward the sun ----
+				// ---- Atmosphere through the day (MEDIUM) ----
+				shot(ctx, server, "time set 23300", -90.0F, 0.0F, "16_medium_sunrise_mist_east");
+				shot(ctx, server, "time set 9500", 90.0F, -25.0F, "17_medium_lens_flare");
+				shot(ctx, server, "time set 13600", -90.0F, -12.0F, "18_medium_moonrise_east");
+				shot(ctx, server, "time set 18000", 0.0F, -35.0F, "19_medium_night_sky");
+
+				// ---- God rays on HIGH: through the big oak toward the setting sun ----
 				setShaders(ctx, true, gameDir, profiles.get("HIGH"));
 				shot(ctx, server, "time set 11800", 90.0F, -4.0F, "20_high_shafts_through_trees");
+				server.runCommand("tp @a 9 -60 8 90 0");
+				shot(ctx, server, "time set 11900", 95.0F, -6.0F, "21_high_godrays_canopy");
+				shot(ctx, server, "time set 11900", 60.0F, -4.0F, "22_high_godrays_side");
+				shot(ctx, server, "time set 23400", -90.0F, -2.0F, "23_high_sunrise_rays");
+
+				// ---- Website hero shots at full HD ----
+				input.resizeWindow(1920, 1080);
+				ctx.waitTicks(40);
+				server.runCommand("tp @a 2 -60 -2 0 0");
+				shot(ctx, server, "time set 12100", 20.0F, 4.0F, "90_hero_sunset_scene");
+				server.runCommand("tp @a 9 -60 8 90 0");
+				shot(ctx, server, "time set 11900", 95.0F, -6.0F, "91_hero_godrays");
+				shot(ctx, server, "time set 12150", 95.0F, -3.0F, "93_hero_sunset_west");
+				server.runCommand("tp @a 2 -60 -2 0 0");
+				shot(ctx, server, "time set 15500", 0.0F, -6.0F, "92_hero_night");
+				input.resizeWindow(854, 480);
+				ctx.waitTicks(20);
+				server.runCommand("tp @a 0 -60 0 0 0");
 
 				// ---- Nether ----
 				setShaders(ctx, true, gameDir, profiles.get("MEDIUM"));

@@ -85,7 +85,7 @@ void main() {
 #endif
 
 	vec3 dirW = normalize(playerPos);
-	fogF = fogAmount(length(viewPos.xyz));
+	fogF = fogAmount(length(viewPos.xyz), sunDir);
 	fogCol = fogColorFor(dirW, sunDir);
 
 #ifdef WATER_PASS

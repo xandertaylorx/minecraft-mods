@@ -12,6 +12,13 @@ uniform sampler2DShadow shadowtex0;
 // Cheap per-pixel noise to hide filter patterns
 float ign(vec2 p) { return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
 
+// One hardware-filtered lookup, used by volumetric light.
+float shadowTap(vec3 shadowClip) {
+	vec3 p = distortShadow(shadowClip) * 0.5 + 0.5;
+	if (p.x <= 0.0 || p.x >= 1.0 || p.y <= 0.0 || p.y >= 1.0 || p.z >= 1.0) return 1.0;
+	return texture(shadowtex0, p);
+}
+
 // shadowClip: undistorted shadow clip-space position (interpolated per vertex).
 float getShadow(vec3 shadowClip) {
 	vec3 p = distortShadow(shadowClip) * 0.5 + 0.5;

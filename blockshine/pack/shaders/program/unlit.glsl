@@ -27,7 +27,7 @@ void main() {
 #elif defined SKYTEXTURED
 	fogF = 0.0;
 #else
-	fogF = fogAmount(dist);
+	fogF = fogAmount(dist, sunDir);
 #endif
 	fogCol = fogColorFor(normalize(playerPos), sunDir);
 }
@@ -59,7 +59,9 @@ void main() {
 #if defined CLOUDS
 	col *= ambCol * 1.4 + sunCol * 0.55;
 #elif defined SKYTEXTURED
-	col *= 3.0 * (1.0 - rainStrength);          // bright sun/moon so bloom picks them up
+	// Bright sun/moon so bloom picks them up; the moon gets a cool silver tint
+	float isMoon = step(sunCol.r, sunCol.b);   // moonlight is bluer than sunlight
+	col *= mix(vec3(3.0), vec3(2.2, 2.5, 3.2), isMoon) * (1.0 - rainStrength);
 #elif defined LIGHTNING
 	col *= 6.0;
 #elif defined WEATHER

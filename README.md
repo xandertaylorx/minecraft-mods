@@ -5,7 +5,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 | Mod | What it adds | Loader | Minecraft |
 | --- | --- | --- | --- |
 | [**Hero Arsenal**](hero-arsenal/) | Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters | Fabric | 26.3 |
-| [**Blockshine Shaders**](blockshine/) | Fast shader pack: soft shadows, warm sunsets, waving plants, shiny water. About 2× the FPS of BSL in our test | Iris | 26.3 |
+| [**Blockshine Shaders**](blockshine/) | Fast shader pack: soft shadows, warm sunsets, waving plants, shiny water. Faster than BSL in our test (about 1.5× on Medium) | Iris | 26.3 |
 | [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
 
 ---

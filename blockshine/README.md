@@ -1,6 +1,6 @@
 # Blockshine Shaders
 
-An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (soft shadows, golden sunsets, swaying plants, shiny water, bloom), built for speed so it runs well on low-end PCs and Macs.
+An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (soft shadows, volumetric god rays, lens flare, time-of-day atmosphere, starry nights, swaying plants, shiny water, bloom), built for speed so it runs well on low-end PCs and Macs.
 
 **Download:** https://xandertaylorx.github.io/minecraft-mods/mods/blockshine/
 
@@ -9,6 +9,7 @@ An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (
 - **Per-vertex work.** Sun, sky, ambient and fog colors are computed per vertex and interpolated.
 - **32-bit HDR buffer** (`R11F_G11F_B10F`) instead of 64-bit.
 - **Hardware-filtered shadows** with a distorted shadow map. Mobs and chests don't cast shadows (your player does), and the shadow pass only covers the shadow distance.
+- **God rays step through the shadow map along a precomputed path**, with 8 samples, and only on High. Lens-flare visibility is 5 cached depth reads.
 - **Bloom from GPU mipmaps.** It reads 5 blurred mip levels, with no blur passes.
 - **Passes switch off completely** when their effect is off (`program.*.enabled`), not just skipped with an `if` inside the shader.
 - **Mac-friendly.** OpenGL 4.1-compatible only: no compute shaders, no image storage.
