@@ -1,10 +1,12 @@
 # Minecraft Mods
 
-A collection of Minecraft mods. Each top-level folder is a separate mod with its own Gradle build, so you can build or change one without touching the others.
+A collection of Minecraft mods and shader packs. Each top-level folder is a separate project with its own Gradle build, so you can build or change one without touching the others.
 
 | Mod | What it adds | Loader | Minecraft |
 | --- | --- | --- | --- |
 | [**Hero Arsenal**](hero-arsenal/) | Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters | Fabric | 26.3 |
+| [**Blockshine Shaders**](blockshine/) | Fast shader pack: soft shadows, warm sunsets, waving plants, shiny water. About 2× the FPS of BSL in our test | Iris | 26.3 |
+| [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
 
 ---
 

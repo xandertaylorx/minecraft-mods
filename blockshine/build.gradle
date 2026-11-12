@@ -1,0 +1,54 @@
+// Blockshine is a shader pack, not a mod. This Gradle project only exists to:
+//   ./gradlew packZip            -> build/blockshine-<version>.zip (the file people download)
+//   ./gradlew runClientGameTest  -> launches Minecraft + Iris + Sodium with the pack,
+//                                   takes screenshots and measures FPS per quality profile.
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.pack_version
+
+repositories {
+	maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' }
+}
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "blockshine_test"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	gametestImplementation "maven.modrinth:iris:${project.iris_version}"
+	gametestImplementation "maven.modrinth:sodium:${project.sodium_version}"
+}
+
+tasks.withType(JavaCompile).configureEach { it.options.release = 25 }
+java {
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.register('packZip', Zip) {
+	group = 'blockshine'
+	description = 'Builds the shader pack zip'
+	from('pack')
+	archiveFileName = "blockshine-${project.pack_version}.zip"
+	destinationDirectory = layout.buildDirectory
+}
+
+// The test copies the pack straight from pack/ so edits are picked up without zipping.
+afterEvaluate {
+	tasks.matching { it.name == 'runClientGameTest' }.configureEach {
+		jvmArgs "-Dblockshine.packDir=${file('pack').absolutePath}"
+		// Optional benchmark against another pack you already have: ./gradlew runClientGameTest -PcompareWith=/path/to/Pack.zip
+		if (project.hasProperty("compareWith")) jvmArgs "-Dblockshine.compareWith=${project.property('compareWith')}"
+	}
+}

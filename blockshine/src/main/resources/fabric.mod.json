@@ -1,0 +1,9 @@
+{
+	"schemaVersion": 1,
+	"id": "blockshine_dev",
+	"version": "1.0.0",
+	"name": "Blockshine dev harness",
+	"description": "Not shipped. Exists so the shader pack can be tested in a real client.",
+	"environment": "client",
+	"depends": { "fabricloader": ">=0.19.5" }
+}

@@ -1,0 +1,17 @@
+{
+	"schemaVersion": 1,
+	"id": "mac_fps_boost",
+	"version": "${version}",
+	"name": "Mac FPS Boost",
+	"description": "Stops macOS from rendering Minecraft at full Retina resolution, so the game draws about 4x fewer pixels. Does nothing on Windows or Linux.",
+	"authors": ["XanderCraft"],
+	"license": "MIT",
+	"icon": "assets/mac_fps_boost/icon.png",
+	"environment": "client",
+	"mixins": ["mac_fps_boost.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25"
+	}
+}

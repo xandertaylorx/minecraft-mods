@@ -1,0 +1,43 @@
+profile.POTATO=Potato
+profile.LOW=Low
+profile.MEDIUM=Medium
+profile.HIGH=High
+profile.comment=Potato: no shadows, runs on anything. Low/Medium/High add shadows and effects.
+
+screen.SHADOW_SCREEN=Shadows
+screen.LIGHT_SCREEN=Lighting
+screen.WORLD_SCREEN=World
+screen.POST_SCREEN=Camera & Effects
+
+option.SHADOWS=Shadows
+option.SHADOWS.comment=The biggest performance cost. Turn off for the most FPS.
+option.SHADOW_FILTER=Shadow Softness
+value.SHADOW_FILTER.0=Sharp (fastest)
+value.SHADOW_FILTER.1=Soft
+value.SHADOW_FILTER.2=Extra soft
+option.shadowMapResolution=Shadow Resolution
+option.shadowDistance=Shadow Distance
+option.SHADOW_STRENGTH=Shadow Darkness
+option.sunPathRotation=Sun Angle
+
+option.SUN_BRIGHTNESS=Sunlight
+option.AMBIENT_BRIGHTNESS=Sky Light
+option.TORCH_BRIGHTNESS=Torch Light
+option.MIN_LIGHT=Cave Brightness
+option.EMISSIVE_BLOCKS=Glowing Light Blocks
+
+option.WAVING_PLANTS=Waving Plants
+option.WAVING_LEAVES=Waving Leaves
+option.WAVE_SPEED=Wind Speed
+option.WATER_WAVES=Water Waves
+option.WATER_REFLECTIONS=Sky Reflections on Water
+option.FOG_DENSITY=Fog
+
+option.BLOOM=Bloom
+option.BLOOM_STRENGTH=Bloom Strength
+option.LIGHT_SHAFTS=Light Shafts
+option.LIGHT_SHAFT_SAMPLES=Light Shaft Quality
+option.LIGHT_SHAFT_STRENGTH=Light Shaft Strength
+option.EXPOSURE=Brightness
+option.SATURATION=Color Saturation
+option.VIGNETTE=Vignette

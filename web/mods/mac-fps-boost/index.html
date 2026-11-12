@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mac FPS Boost · XanderCraft</title>
+<meta name="description" content="Mac FPS Boost: a tiny Fabric mod that stops macOS from rendering Minecraft at full Retina resolution, so the game draws 4x fewer pixels.">
+<link rel="icon" href="../../img/grass_side.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#how">How it works</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero terrain" style="background-image: url('../../img/hero-terrain.png')">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">macOS</span>
+		</div>
+		<h1>Mac FPS <b>Boost</b></h1>
+		<p class="tagline">One tiny mod, one job: stop your Mac from drawing Minecraft at 4× the pixels it needs.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/mac-fps-boost-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#how">How it works</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="how">
+		<div class="section-head">
+			<h2>How it works</h2>
+		</div>
+		<div class="steps">
+			<div class="step panel">
+				<h3>The problem</h3>
+				<p>On a Retina or 4K screen, macOS makes Minecraft render at the screen's full pixel count. A window that looks like 1920×1080 is really drawing 3840×2160: four times the work, especially with shaders.</p>
+			</div>
+			<div class="step panel">
+				<h3>The fix</h3>
+				<p>Mac FPS Boost removes the one "high pixel density" setting when the game window is created, so Minecraft draws at normal size and macOS scales it up.</p>
+			</div>
+			<div class="step panel">
+				<h3>Tested</h3>
+				<p>On an M1 Pro with a 4K screen, pixel density went from <b>2.0</b> without the mod to <b>1.0</b> with it, which means a quarter of the pixels to draw.</p>
+			</div>
+			<div class="step panel">
+				<h3>Safe everywhere</h3>
+				<p>On Windows and Linux it does nothing at all, so it's fine to keep in a shared modpack.</p>
+			</div>
+		</div>
+		<p class="hash" style="margin-top:14px">The picture is slightly softer than full Retina, the same trade-off as lowering resolution in any game. To switch it off without removing the mod, add <code>-Dmacfpsboost.disable=true</code> to your launcher's Java arguments.</p>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>Mac FPS Boost v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. No other mods needed. Pairs great with <a href="../blockshine/">Blockshine</a>. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/mac-fps-boost-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/mac-fps-boost">Source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+</body>
+</html>

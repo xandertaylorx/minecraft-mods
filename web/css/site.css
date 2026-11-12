@@ -383,3 +383,5 @@ footer p { margin: 6px 0 0; }
 	.files tr { padding: 10px 0; }
 	.files td[data-label]::before { content: attr(data-label) ": "; color: var(--muted); font-weight: 700; }
 }
+
+.files.perf td:last-child { text-align: left; }

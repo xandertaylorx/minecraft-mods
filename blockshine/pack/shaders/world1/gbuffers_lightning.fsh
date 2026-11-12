@@ -1,0 +1,6 @@
+#version 330 compatibility
+#define FRAGMENT
+#define END
+#define NO_TEXTURE
+#define LIGHTNING
+#include "/program/unlit.glsl"

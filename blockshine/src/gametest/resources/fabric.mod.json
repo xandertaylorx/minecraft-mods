@@ -1,0 +1,9 @@
+{
+	"schemaVersion": 1,
+	"id": "blockshine_test",
+	"version": "1.0.0",
+	"name": "Blockshine tests",
+	"environment": "client",
+	"entrypoints": { "fabric-client-gametest": ["com.blockshine.test.BlockshineClientTest"] },
+	"depends": { "iris": "*", "sodium": "*" }
+}
