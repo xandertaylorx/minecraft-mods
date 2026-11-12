@@ -59,7 +59,7 @@ While it's in your hand, you take no fall damage.
 1. Use a **Fabric** instance for Minecraft **26.3** (in Prism Launcher, for example) with **Fabric API** installed.
 2. Download [`hero-arsenal-1.0.0.jar`](https://github.com/xandertaylorx/minecraft-mods/releases/latest) and put it in the instance's `mods` folder.
 
-Website: **https://xandertaylorx.github.io/minecraft-mods/**
+Mod page: **https://xandertaylorx.github.io/minecraft-mods/mods/hero-arsenal/**
 
 ---
 
@@ -85,9 +85,24 @@ cd hero-arsenal
 
 Results are printed as `HA-TEST PASS/FAIL` lines, and screenshots go to `build/run/clientGameTest/screenshots/`. The screenshots in this README come from that test.
 
-## Website
+## Website: XanderCraft
 
-[`web/`](web/) holds the mods' advertising site, a hand-coded throwback to a 2009 fan site (dirt background, beveled boxes, marquee, blinking NEW! tags). It's plain HTML and CSS with no build step, and it deploys automatically to [GitHub Pages](https://xandertaylorx.github.io/minecraft-mods/) whenever `web/` changes on `main`. To preview it locally:
+**Live at https://xandertaylorx.github.io/minecraft-mods/**
+
+[`web/`](web/) is the XanderCraft site: a hub that lists every mod and pack, with its own page for each mod. It's plain HTML and CSS with no build step, and it deploys to GitHub Pages automatically whenever `web/` changes on `main`.
+
+```
+web/
+├── index.html              # hub: hero banner, a card for each mod/pack, install steps
+├── css/site.css            # shared styles for every page
+├── img/                    # site textures (deepslate, grass, dirt)
+└── mods/
+    └── hero-arsenal/       # one folder per mod: index.html + img/
+```
+
+**Adding a mod to the site:** copy `web/mods/hero-arsenal/` to a new folder and edit it, then copy one of the cards in `web/index.html`. The shader pack already has a "Coming soon" card waiting.
+
+To preview locally:
 
 ```bash
 python3 -m http.server 8099 --directory web
