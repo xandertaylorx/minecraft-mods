@@ -83,6 +83,16 @@ cd hero-arsenal
 
 Results are printed as `HA-TEST PASS/FAIL` lines, and screenshots go to `build/run/clientGameTest/screenshots/`. The screenshots in this README come from that test.
 
+## Website
+
+[`web/`](web/) holds the mods' advertising site, a hand-coded throwback to a 2009 fan site (dirt background, beveled boxes, marquee, blinking NEW! tags). It's plain HTML and CSS with no build step, so you can host the folder anywhere (GitHub Pages, Netlify, etc.). To preview it locally:
+
+```bash
+python3 -m http.server 8099 --directory web
+```
+
+Then open http://localhost:8099.
+
 ## Adding a new mod
 
 Create a new top-level folder with its own Fabric project. Copying `hero-arsenal/` and renaming the mod ID, package and assets is the quickest start. Then add a row to the table at the top.

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero Arsenal - Superhero Mod for Minecraft</title>
+<meta name="description" content="Hero Arsenal: a Fabric mod with a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters.">
+<link rel="icon" href="img/icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="wrap">
+
+	<div id="header">
+		<h1 id="logo"><img class="px" src="img/icon.png" alt="">Hero Arsenal</h1>
+		<div id="splash">Now with 100% more lightning!</div>
+	</div>
+
+	<div id="nav">
+		<a href="#home">Home</a>
+		<a href="#items">Items</a>
+		<a href="#screenshots">Screenshots</a>
+		<a href="#download">Download</a>
+		<a href="#faq">FAQ</a>
+		<a href="#guestbook">Guestbook</a>
+	</div>
+
+	<div id="ticker">
+		<marquee scrollamount="4">+++ Hero Arsenal v1.0.0 is out!! +++ 4 new items: Mjolnir, Star Shield, Pulse Gauntlet &amp; Web Shooter +++ Works with Fabric for Minecraft 26.3 +++ Tell your friends!! +++ Sign the guestbook!! +++</marquee>
+	</div>
+
+	<div id="cols">
+
+		<!-- ================= SIDEBAR ================= -->
+		<div id="side">
+
+			<div class="box">
+				<h3>Latest News</h3>
+				<div class="in">
+					<p><span class="news-date">Nov 12, 2026</span>
+					<b>v1.0.0 released!</b> <span class="new">NEW!</span><br>
+					Added the Star Shield, Pulse Gauntlet and Web Shooter. Mjolnir got a new 3D model.</p>
+					<p><span class="news-date">Nov 12, 2026</span>
+					Website is up!! Bookmark us (Ctrl+D) :)</p>
+				</div>
+			</div>
+
+			<div class="box poll">
+				<h3>Poll</h3>
+				<div class="in">
+					<p><b>What item should we add next?</b></p>
+					<form id="poll">
+						<label><input type="radio" name="v" value="armor"> Flying armor suit</label>
+						<label><input type="radio" name="v" value="claws"> Metal claws</label>
+						<label><input type="radio" name="v" value="bow"> Trick arrow bow</label>
+						<label><input type="radio" name="v" value="ring"> Glowing power ring</label>
+						<button type="submit">Vote!</button>
+						<div class="result">Thanks for voting!!</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="box counter">
+				<h3>Visitors</h3>
+				<div class="in">
+					<div class="digits" id="counter"><span>0</span><span>0</span><span>0</span><span>0</span><span>1</span></div>
+					<small>your visits to this page</small>
+				</div>
+			</div>
+
+			<div class="box">
+				<h3>Links</h3>
+				<div class="in">
+					<ul>
+						<li><a href="https://fabricmc.net/" target="_blank" rel="noopener">Fabric Loader</a></li>
+						<li><a href="https://modrinth.com/mod/fabric-api" target="_blank" rel="noopener">Fabric API</a></li>
+						<li><a href="https://prismlauncher.org/" target="_blank" rel="noopener">Prism Launcher</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="box">
+				<h3>Buttons</h3>
+				<div class="in buttons">
+					<span class="b88 a">BEST VIEWED<br>1024x768</span>
+					<span class="b88 b">&gt; MADE WITH<br>NOTEPAD_</span>
+					<span class="b88 c">100% NO<br>FRAMES!</span>
+					<span class="b88 d">FABRIC<br>POWERED</span>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- ================= MAIN ================= -->
+		<div id="main">
+
+			<div class="box" id="home">
+				<h2>Welcome!!</h2>
+				<div class="in">
+					<p><b>Hero Arsenal</b> is a mod that gives you <b>superhero gear</b> in Minecraft! Throw a hammer that calls down <b>lightning</b>, ricochet a shield off a whole crowd of zombies, blast mobs with a <b>pulse gauntlet</b> and swing around your base with <b>web shooters</b>.</p>
+					<p>Every item has <b>two powers</b>: one on <span class="ctrl">Right-Click</span> and one on <span class="ctrl">Sneak</span> + <span class="ctrl">Right-Click</span>. Find them all in the <b>Combat</b> tab in Creative mode.</p>
+					<a href="img/mjolnir-lightning.png"><img src="img/mjolnir-lightning.png" alt="Mjolnir calling lightning down on mobs" style="width:100%;border:2px solid #000;display:block"></a>
+				</div>
+			</div>
+
+			<div class="box" id="items">
+				<h2>The Items</h2>
+				<div class="in">
+					<table class="items">
+						<tr>
+							<td class="icon"><img src="img/mjolnir.png" alt="Mjolnir"></td>
+							<td>
+								<span class="item-name">Mjolnir</span> <span class="rarity">EPIC</span><br>
+								<span class="ctrl">Hold Right-Click</span> to wind up, then let go to <b>throw</b>. It tumbles through the air, calls <b>lightning</b> on whatever it hits, then flies back into your hand!<br>
+								<span class="ctrl">Sneak + Right-Click</span> calls lightning wherever you look (up to 64 blocks).<br>
+								Critical hits always call lightning. Don't worry, it never zaps <i>you</i>.
+							</td>
+						</tr>
+						<tr>
+							<td class="icon"><img src="img/star_shield.png" alt="Star Shield"></td>
+							<td>
+								<span class="item-name">Star Shield</span> <span class="rarity">EPIC</span><br>
+								<span class="ctrl">Hold Right-Click</span> to <b>block</b> like a normal shield, but it never breaks.<br>
+								<span class="ctrl">Sneak + Right-Click</span> to <b>throw</b> it. It bounces from mob to mob and off walls (4 bounces!), then comes right back.
+							</td>
+						</tr>
+						<tr>
+							<td class="icon"><img src="img/pulse_gauntlet.png" alt="Pulse Gauntlet"></td>
+							<td>
+								<span class="item-name">Pulse Gauntlet</span> <span class="rarity">EPIC</span> <span class="new">NEW!</span><br>
+								<span class="ctrl">Right-Click</span> fires a 40-block <b>energy beam</b> that knocks mobs back and sets them on fire.<br>
+								<span class="ctrl">Sneak + Right-Click</span> fires your <b>thrusters</b> to launch you where you look. Chain them to fly!<br>
+								No fall damage while you hold it.
+							</td>
+						</tr>
+						<tr>
+							<td class="icon"><img src="img/web_shooter.png" alt="Web Shooter"></td>
+							<td>
+								<span class="item-name">Web Shooter</span> <span class="rarity rare">RARE</span> <span class="new">NEW!</span><br>
+								<span class="ctrl">Right-Click</span> a mob to <b>stick it in place</b> with webs.<br>
+								<span class="ctrl">Right-Click</span> a block to <b>swing</b> toward it.<br>
+								No fall damage while you hold it.
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="box" id="screenshots">
+				<h2>Screenshots</h2>
+				<div class="in">
+					<p>Click a picture to see it full size!</p>
+					<div class="gallery">
+						<a href="img/mjolnir-lightning.png"><img src="img/mjolnir-lightning.png" alt="">Mjolnir lightning strike</a>
+						<a href="img/mjolnir-held.png"><img src="img/mjolnir-held.png" alt="">Holding Mjolnir</a>
+						<a href="img/shield-held.png"><img src="img/shield-held.png" alt="">The Star Shield</a>
+						<a href="img/shield-blocking.png"><img src="img/shield-blocking.png" alt="">Blocking!</a>
+						<a href="img/gauntlet-blast.png"><img src="img/gauntlet-blast.png" alt="">Pulse Gauntlet blast</a>
+						<a href="img/web-hit.png"><img src="img/web-hit.png" alt="">Webbed up a husk</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="box" id="download">
+				<h2>Download</h2>
+				<div class="in">
+					<div class="construction"><span>DOWNLOAD PAGE UNDER CONSTRUCTION</span></div>
+					<p style="margin-top:10px">A ready-made download is coming soon! For now you can build it from the source code:</p>
+					<a class="dl-btn" href="https://github.com/xandertaylorx/minecraft-mods">GET THE SOURCE &raquo;</a>
+					<p><b>How to install:</b></p>
+					<ol class="steps">
+						<li>Make a <b>Fabric</b> instance for Minecraft <b>26.3</b> (we use <a href="https://prismlauncher.org/" target="_blank" rel="noopener">Prism Launcher</a>).</li>
+						<li>Put <b>Fabric API</b> in your <code>mods</code> folder.</li>
+						<li>Build the mod: <code>cd hero-arsenal</code> then <code>./gradlew build</code> (needs Java 25).</li>
+						<li>Copy <code>hero-arsenal-1.0.0.jar</code> from <code>build/libs</code> into your <code>mods</code> folder.</li>
+						<li>Start the game and go be a hero!!</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="box" id="faq">
+				<h2>F.A.Q.</h2>
+				<div class="in">
+					<p><b>Q: Does it work with Forge?</b><br>A: Nope, Fabric only for now.</p>
+					<p><b>Q: Does it work in multiplayer?</b><br>A: Yes! Put it on the server <i>and</i> on everyone's game.</p>
+					<p><b>Q: Will the lightning burn down my house?</b><br>A: No! Hero Arsenal lightning never sets blocks on fire. Mobs are another story...</p>
+					<p><b>Q: I threw Mjolnir and my inventory was full, where did it go?</b><br>A: It drops on the ground next to you. Make some room next time!</p>
+				</div>
+			</div>
+
+			<div class="box guestbook" id="guestbook">
+				<h2>Guestbook</h2>
+				<div class="in">
+					<p>Leave a message!! (The guestbook is still being built, so messages only show up on your computer for now.)</p>
+					<form id="gb">
+						<input type="text" id="gb-name" placeholder="Your name" maxlength="30" style="width:50%;font-size:11px"><br>
+						<textarea id="gb-msg" rows="3" placeholder="Your message" maxlength="300"></textarea><br>
+						<button type="submit">Sign Guestbook</button>
+					</form>
+					<div id="gb-list" style="margin-top:8px"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="footer">
+		&copy; 2026 Hero Arsenal devs &middot; <a href="#home">Back to top</a><br>
+		Hero Arsenal is a fan-made mod. Not affiliated with Mojang or Microsoft.
+	</div>
+
+</div>
+
+<script>
+// Hit counter (counts your own visits, in your browser)
+(function () {
+	var n = 1;
+	try {
+		n = (parseInt(localStorage.getItem("ha-visits"), 10) || 0) + 1;
+		localStorage.setItem("ha-visits", n);
+	} catch (e) {}
+	var s = String(n).padStart(5, "0");
+	document.getElementById("counter").innerHTML = s.split("").map(function (d) { return "<span>" + d + "</span>"; }).join("");
+})();
+
+// Poll
+document.getElementById("poll").addEventListener("submit", function (e) {
+	e.preventDefault();
+	if (!this.querySelector("input:checked")) { alert("Pick something first!"); return; }
+	this.querySelector("button").style.display = "none";
+	this.querySelector(".result").style.display = "block";
+});
+
+// Guestbook (saved in your browser only)
+(function () {
+	var list = document.getElementById("gb-list");
+	function load() { try { return JSON.parse(localStorage.getItem("ha-guestbook")) || []; } catch (e) { return []; } }
+	function render() {
+		list.innerHTML = "";
+		load().forEach(function (entry) {
+			var p = document.createElement("p");
+			var b = document.createElement("b");
+			b.textContent = entry.name + " wrote:";
+			p.appendChild(b);
+			p.appendChild(document.createElement("br"));
+			p.appendChild(document.createTextNode(entry.msg));
+			list.appendChild(p);
+		});
+	}
+	document.getElementById("gb").addEventListener("submit", function (e) {
+		e.preventDefault();
+		var name = document.getElementById("gb-name").value.trim() || "Anonymous";
+		var msg = document.getElementById("gb-msg").value.trim();
+		if (!msg) { alert("Write a message first!"); return; }
+		var entries = load();
+		entries.unshift({ name: name, msg: msg });
+		try { localStorage.setItem("ha-guestbook", JSON.stringify(entries.slice(0, 20))); } catch (e2) {}
+		document.getElementById("gb-msg").value = "";
+		render();
+	});
+	render();
+})();
+</script>
+</body>
+</html>
