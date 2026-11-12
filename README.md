@@ -57,7 +57,7 @@ While it's in your hand, you take no fall damage.
 
 ### Install
 1. Use a **Fabric** instance for Minecraft **26.3** (in Prism Launcher, for example) with **Fabric API** installed.
-2. Download [`hero-arsenal-1.0.0.jar`](https://github.com/xandertaylorx/minecraft-mods/releases/latest) and put it in the instance's `mods` folder.
+2. Download [`hero-arsenal-1.0.0.jar`](https://xandertaylorx.github.io/minecraft-mods/downloads/) from the site and put it in the instance's `mods` folder.
 
 Mod page: **https://xandertaylorx.github.io/minecraft-mods/mods/hero-arsenal/**
 
@@ -95,10 +95,13 @@ Results are printed as `HA-TEST PASS/FAIL` lines, and screenshots go to `build/r
 web/
 ├── index.html              # hub: hero banner, a card for each mod/pack, install steps
 ├── css/site.css            # shared styles for every page
-├── img/                    # site textures (deepslate, grass, dirt)
+├── img/                    # site textures (deepslate, grass, dirt, terrain banner)
+├── downloads/              # the actual .jar/.zip files + the Downloads page
 └── mods/
     └── hero-arsenal/       # one folder per mod: index.html + img/
 ```
+
+**Publishing a new version:** build it, copy the jar from `<mod>/build/libs/` into `web/downloads/`, add a row to `web/downloads/index.html`, and update the download links on the mod's page and home page card. Downloads come straight from the site, not from GitHub.
 
 **Adding a mod to the site:** copy `web/mods/hero-arsenal/` to a new folder and edit it, then copy one of the cards in `web/index.html`. The shader pack already has a "Coming soon" card waiting.
 
