@@ -57,7 +57,9 @@ While it's in your hand, you take no fall damage.
 
 ### Install
 1. Use a **Fabric** instance for Minecraft **26.3** (in Prism Launcher, for example) with **Fabric API** installed.
-2. Build the mod (see below) and copy `hero-arsenal/build/libs/hero-arsenal-1.0.0.jar` into the instance's `mods` folder.
+2. Download [`hero-arsenal-1.0.0.jar`](https://github.com/xandertaylorx/minecraft-mods/releases/latest) and put it in the instance's `mods` folder.
+
+Website: **https://xandertaylorx.github.io/minecraft-mods/**
 
 ---
 
@@ -85,7 +87,7 @@ Results are printed as `HA-TEST PASS/FAIL` lines, and screenshots go to `build/r
 
 ## Website
 
-[`web/`](web/) holds the mods' advertising site, a hand-coded throwback to a 2009 fan site (dirt background, beveled boxes, marquee, blinking NEW! tags). It's plain HTML and CSS with no build step, so you can host the folder anywhere (GitHub Pages, Netlify, etc.). To preview it locally:
+[`web/`](web/) holds the mods' advertising site, a hand-coded throwback to a 2009 fan site (dirt background, beveled boxes, marquee, blinking NEW! tags). It's plain HTML and CSS with no build step, and it deploys automatically to [GitHub Pages](https://xandertaylorx.github.io/minecraft-mods/) whenever `web/` changes on `main`. To preview it locally:
 
 ```bash
 python3 -m http.server 8099 --directory web
