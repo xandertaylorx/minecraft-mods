@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"id": "hero_arsenal_test",
+	"version": "1.0.0",
+	"name": "Hero Arsenal Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["com.heroarsenal.test.HeroArsenalClientTest"]
+	},
+	"depends": { "hero_arsenal": "*" }
+}

@@ -1,0 +1,9 @@
+{
+  "item.hero_arsenal.mjolnir": "Mjolnir",
+  "item.hero_arsenal.star_shield": "Star Shield",
+  "item.hero_arsenal.pulse_gauntlet": "Pulse Gauntlet",
+  "item.hero_arsenal.web_shooter": "Web Shooter",
+  "entity.hero_arsenal.mjolnir": "Mjolnir",
+  "entity.hero_arsenal.star_shield": "Star Shield",
+  "entity.hero_arsenal.web_shot": "Web"
+}

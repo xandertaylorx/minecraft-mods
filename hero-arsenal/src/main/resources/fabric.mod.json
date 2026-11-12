@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "hero_arsenal",
+	"version": "${version}",
+	"name": "Hero Arsenal",
+	"description": "Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters.",
+	"authors": ["Hero Arsenal devs"],
+	"license": "All-Rights-Reserved",
+	"icon": "assets/hero_arsenal/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.heroarsenal.HeroArsenal"],
+		"client": ["com.heroarsenal.client.HeroArsenalClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

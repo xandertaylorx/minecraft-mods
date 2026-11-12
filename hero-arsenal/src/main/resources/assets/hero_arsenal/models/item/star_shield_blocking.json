@@ -1,0 +1,73 @@
+{
+ "parent": "hero_arsenal:item/star_shield_in_hand",
+ "display": {
+  "thirdperson_righthand": {
+   "rotation": [
+    -90,
+    0,
+    0
+   ],
+   "translation": [
+    -3,
+    2,
+    0
+   ],
+   "scale": [
+    1,
+    1,
+    1
+   ]
+  },
+  "thirdperson_lefthand": {
+   "rotation": [
+    -90,
+    0,
+    0
+   ],
+   "translation": [
+    -3,
+    2,
+    0
+   ],
+   "scale": [
+    1,
+    1,
+    1
+   ]
+  },
+  "firstperson_righthand": {
+   "rotation": [
+    45,
+    0,
+    0
+   ],
+   "translation": [
+    3,
+    16,
+    -2
+   ],
+   "scale": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  },
+  "firstperson_lefthand": {
+   "rotation": [
+    45,
+    0,
+    0
+   ],
+   "translation": [
+    3,
+    16,
+    -2
+   ],
+   "scale": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  }
+ }
+}
