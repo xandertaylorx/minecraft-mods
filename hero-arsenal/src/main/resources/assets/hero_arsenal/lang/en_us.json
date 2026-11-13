@@ -3,7 +3,9 @@
   "item.hero_arsenal.star_shield": "Star Shield",
   "item.hero_arsenal.pulse_gauntlet": "Pulse Gauntlet",
   "item.hero_arsenal.web_shooter": "Web Shooter",
+  "item.hero_arsenal.orbital_laser": "Orbital Laser",
   "entity.hero_arsenal.mjolnir": "Mjolnir",
   "entity.hero_arsenal.star_shield": "Star Shield",
-  "entity.hero_arsenal.web_shot": "Web"
+  "entity.hero_arsenal.web_shot": "Web",
+  "entity.hero_arsenal.orbital_strike": "Orbital Strike"
 }

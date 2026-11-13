@@ -1,5 +1,6 @@
 package com.heroarsenal.test;
 
+import com.heroarsenal.registry.ModEntities;
 import com.heroarsenal.registry.ModItems;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +11,14 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.client.CameraType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * Plays through every item in a real client and saves screenshots.
@@ -39,7 +42,8 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 				"item replace entity @a hotbar.0 with hero_arsenal:mjolnir",
 				"item replace entity @a hotbar.1 with hero_arsenal:star_shield",
 				"item replace entity @a hotbar.2 with hero_arsenal:pulse_gauntlet",
-				"item replace entity @a hotbar.3 with hero_arsenal:web_shooter"
+				"item replace entity @a hotbar.3 with hero_arsenal:web_shooter",
+				"item replace entity @a hotbar.4 with hero_arsenal:orbital_laser"
 			)) {
 				server.runCommand(c);
 			}
@@ -149,6 +153,56 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 			ctx.takeScreenshot("16_web_swing");
 			double zAfter = server.computeOnServer(s -> player(s).getZ());
 			check("Web swing pulled the player toward the wall (z " + fmt(zBefore) + " -> " + fmt(zAfter) + ")", zAfter > zBefore + 2.0);
+
+			// --- Orbital Laser: mark, charge, beam, crater, cooldown ---
+			server.runCommand("kill @e[type=husk]");
+			server.runCommand("tp @a 0 -60 -40 0 0");
+			spawnHusks(server, "0 -60 -28", "2 -60 -27", "-2 -60 -29");
+			ctx.waitTicks(30);
+			selectSlot(ctx, 4);
+			ctx.takeScreenshot("17_orbital_laser_first_person");
+			input.lookAt(0.0F, 8.0F);
+			input.pressKey(o -> o.keyUse);
+			ctx.waitTicks(2);
+			int strikes = countStrikes(server);
+			check("Orbital Laser marked a target (" + strikes + " strike)", strikes == 1);
+			boolean cooling = server.computeOnServer(s -> player(s).getCooldowns().isOnCooldown(player(s).getInventory().getItem(4)));
+			check("Orbital Laser is on cooldown after use", cooling);
+			input.pressKey(o -> o.keyUse);
+			ctx.waitTicks(2);
+			check("Orbital Laser can't be spammed during cooldown", countStrikes(server) == 1);
+			int healthyDuringCharge = 3 - countHurtOrDeadHusks(server);
+			check("Nothing is hurt while it charges", healthyDuringCharge == 3);
+			ctx.waitTicks(25);
+			ctx.takeScreenshot("18_orbital_laser_charging");
+			camera(ctx, CameraType.THIRD_PERSON_BACK);
+			ctx.waitTicks(22);
+			ctx.takeScreenshot("19_orbital_laser_beam");
+			ctx.waitTicks(10);
+			ctx.takeScreenshot("20_orbital_laser_beam_late");
+			int hurtByLaser = countHurtOrDeadHusks(server);
+			check("Orbital beam hit all 3 husks (hit " + hurtByLaser + ")", hurtByLaser == 3);
+			boolean gone = waitFor(server, s -> s.overworld().getEntities(ModEntities.ORBITAL_STRIKE, e -> true).isEmpty(), 120);
+			check("Strike finished and cleaned itself up", gone);
+			int carved = server.computeOnServer(s -> {
+				int air = 0;
+				for (int dx = -3; dx <= 3; dx++) {
+					for (int dz = -3; dz <= 3; dz++) {
+						for (int y = -63; y <= -61; y++) {
+							if (s.overworld().getBlockState(new BlockPos(dx, y, -28 + dz)).isAir()) {
+								air++;
+							}
+						}
+					}
+				}
+				return air;
+			});
+			check("Beam carved a crater (" + carved + " of 147 ground blocks gone)", carved > 100);
+			boolean fire = server.computeOnServer(s -> BlockPos.betweenClosedStream(-8, -64, -36, 8, -58, -20)
+				.anyMatch(p -> s.overworld().getBlockState(p).is(Blocks.FIRE)));
+			check("Crater is on fire", fire);
+			ctx.takeScreenshot("21_orbital_laser_crater");
+			camera(ctx, CameraType.FIRST_PERSON);
 		} finally {
 			for (String r : this.results) {
 				System.out.println("HA-TEST " + r);
@@ -196,6 +250,10 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 			int hurt = (int) husks.stream().filter(h -> h.getHealth() < h.getMaxHealth()).count();
 			return hurt + (3 - husks.size());
 		});
+	}
+
+	private static int countStrikes(TestServerContext server) {
+		return server.computeOnServer(s -> s.overworld().getEntities(ModEntities.ORBITAL_STRIKE, e -> true).size());
 	}
 
 	private static boolean waitFor(TestServerContext server, Predicate<MinecraftServer> condition, int timeout) {

@@ -2,6 +2,7 @@ package com.heroarsenal.registry;
 
 import com.heroarsenal.HeroArsenal;
 import com.heroarsenal.item.MjolnirItem;
+import com.heroarsenal.item.OrbitalLaserItem;
 import com.heroarsenal.item.PulseGauntletItem;
 import com.heroarsenal.item.StarShieldItem;
 import com.heroarsenal.item.WebShooterItem;
@@ -36,6 +37,12 @@ public final class ModItems {
 		"web_shooter",
 		WebShooterItem::new,
 		new Item.Properties().stacksTo(1).rarity(Rarity.RARE)
+	);
+
+	public static final Item ORBITAL_LASER = register(
+		"orbital_laser",
+		OrbitalLaserItem::new,
+		new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()
 	);
 
 	private ModItems() {

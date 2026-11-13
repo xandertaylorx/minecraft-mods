@@ -24,6 +24,7 @@ public class HeroArsenal implements ModInitializer {
 			output.accept(ModItems.STAR_SHIELD);
 			output.accept(ModItems.PULSE_GAUNTLET);
 			output.accept(ModItems.WEB_SHOOTER);
+			output.accept(ModItems.ORBITAL_LASER);
 		});
 	}
 }

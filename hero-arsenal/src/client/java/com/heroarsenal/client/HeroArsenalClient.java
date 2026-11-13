@@ -1,5 +1,6 @@
 package com.heroarsenal.client;
 
+import com.heroarsenal.client.render.OrbitalStrikeRenderer;
 import com.heroarsenal.client.render.ReturningWeaponRenderer;
 import com.heroarsenal.registry.ModEntities;
 import com.heroarsenal.registry.ModItems;
@@ -16,5 +17,6 @@ public class HeroArsenalClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.STAR_SHIELD,
 			ctx -> new ReturningWeaponRenderer<>(ctx, () -> new ItemStack(ModItems.STAR_SHIELD), ReturningWeaponRenderer.Spin.FLAT, 1.0F));
 		EntityRendererRegistry.register(ModEntities.WEB_SHOT, ctx -> new ThrownItemRenderer<>(ctx, 0.75F, false));
+		EntityRendererRegistry.register(ModEntities.ORBITAL_STRIKE, OrbitalStrikeRenderer::new);
 	}
 }

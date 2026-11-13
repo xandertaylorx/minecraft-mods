@@ -3,7 +3,7 @@
 	"id": "hero_arsenal",
 	"version": "${version}",
 	"name": "Hero Arsenal",
-	"description": "Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters.",
+	"description": "Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet, web shooters and an orbital laser.",
 	"authors": ["Hero Arsenal devs"],
 	"license": "All-Rights-Reserved",
 	"icon": "assets/hero_arsenal/icon.png",

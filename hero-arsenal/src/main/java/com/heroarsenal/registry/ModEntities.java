@@ -2,6 +2,7 @@ package com.heroarsenal.registry;
 
 import com.heroarsenal.HeroArsenal;
 import com.heroarsenal.entity.MjolnirEntity;
+import com.heroarsenal.entity.OrbitalStrikeEntity;
 import com.heroarsenal.entity.StarShieldEntity;
 import com.heroarsenal.entity.WebShotEntity;
 import net.minecraft.core.Registry;
@@ -26,6 +27,11 @@ public final class ModEntities {
 	public static final EntityType<WebShotEntity> WEB_SHOT = register(
 		"web_shot",
 		EntityType.Builder.<WebShotEntity>of(WebShotEntity::new, MobCategory.MISC).noLootTable().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10)
+	);
+
+	public static final EntityType<OrbitalStrikeEntity> ORBITAL_STRIKE = register(
+		"orbital_strike",
+		EntityType.Builder.<OrbitalStrikeEntity>of(OrbitalStrikeEntity::new, MobCategory.MISC).noLootTable().noSave().fireImmune().sized(0.5F, 0.5F).clientTrackingRange(16).updateInterval(20)
 	);
 
 	private ModEntities() {

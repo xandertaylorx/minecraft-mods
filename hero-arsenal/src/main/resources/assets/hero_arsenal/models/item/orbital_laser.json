@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/handheld",
+ "textures": {
+  "layer0": "hero_arsenal:item/orbital_laser"
+ }
+}

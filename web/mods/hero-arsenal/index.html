@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hero Arsenal · XanderCraft</title>
-<meta name="description" content="Hero Arsenal: a Fabric mod for Minecraft 26.3 with a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters.">
+<meta name="description" content="Hero Arsenal: a Fabric mod for Minecraft 26.3 with a lightning hammer, a ricochet shield, a blaster gauntlet, web shooters and an orbital laser.">
 <link rel="icon" href="img/mjolnir.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,14 +29,14 @@
 <div class="hero" style="background-image: url('img/hero-banner.png')">
 	<div class="wrap">
 		<div class="tags">
-			<span class="tag status-live">v1.0.0</span>
+			<span class="tag status-live">v1.1.0</span>
 			<span class="tag loader">Fabric</span>
 			<span class="tag">MC 26.3</span>
 		</div>
 		<h1>Hero <b>Arsenal</b></h1>
-		<p class="tagline">Four superhero weapons, each with two powers. Throw a hammer that calls down lightning, then catch it when it flies back.</p>
+		<p class="tagline">Five superhero weapons. Throw a hammer that calls down lightning, then catch it when it flies back, or call a plasma beam down from orbit.</p>
 		<div class="btns">
-			<a class="btn go" href="../../downloads/hero-arsenal-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn go" href="../../downloads/hero-arsenal-1.1.0.jar" download>Download v1.1.0</a>
 			<a class="btn" href="#items">See the items</a>
 		</div>
 	</div>
@@ -102,6 +102,19 @@
 					<p class="note">No fall damage while it's in your hand.</p>
 				</div>
 			</article>
+
+			<article class="item panel">
+				<img class="slot" src="img/orbital_laser.png" alt="Orbital Laser">
+				<div>
+					<h3>Orbital Laser</h3>
+					<span class="rarity">Epic</span>
+					<ul>
+						<li><span><kbd>Right-Click</kbd> a block</span><span>Mark a target up to 128 blocks away. A <b>target ring</b> charges for 2.5 seconds, then a <b>plasma beam</b> hits from the sky.</span></li>
+						<li><span>Impact</span><span>Blasts a <b>crater</b>, sets it on <b>fire</b>, and throws back every mob within 8 blocks (up to 28 damage).</span></li>
+					</ul>
+					<p class="note">The blast never hurts you (the fire still can). 15-second cooldown. Won't break blocks in spawn protection or with <code>tnt_explodes</code> off.</p>
+				</div>
+			</article>
 		</div>
 	</section>
 
@@ -114,6 +127,8 @@
 			<a href="img/mjolnir-lightning.png"><img src="img/mjolnir-lightning.png" alt="Mjolnir calling lightning on a group of husks"></a>
 			<a href="img/shield-blocking.png"><img src="img/shield-blocking.png" alt="Blocking with the Star Shield"></a>
 			<a href="img/gauntlet-blast.png"><img src="img/gauntlet-blast.png" alt="Pulse Gauntlet blasting a husk"></a>
+			<a href="img/orbital-beam.png"><img src="img/orbital-beam.png" alt="Orbital Laser beam hitting a group of husks"></a>
+			<a href="img/orbital-charging.png"><img src="img/orbital-charging.png" alt="Orbital Laser target ring charging up"></a>
 			<a href="img/web-hit.png"><img src="img/web-hit.png" alt="Web Shooter webbing a husk"></a>
 			<a href="img/shield-held.png"><img src="img/shield-held.png" alt="Holding the Star Shield"></a>
 			<a href="img/mjolnir-held.png"><img src="img/mjolnir-held.png" alt="Holding Mjolnir"></a>
@@ -126,10 +141,10 @@
 		</div>
 		<div class="dl panel">
 			<div>
-				<h3>Hero Arsenal v1.0.0</h3>
+				<h3>Hero Arsenal v1.1.0</h3>
 				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. <a href="../../#install">How to install</a> · <a href="../../downloads/">All downloads</a></p>
 			</div>
-			<a class="btn go" href="../../downloads/hero-arsenal-1.0.0.jar" download>Download .jar</a>
+			<a class="btn go" href="../../downloads/hero-arsenal-1.1.0.jar" download>Download .jar</a>
 		</div>
 	</section>
 
@@ -141,6 +156,7 @@
 			<details class="panel"><summary>Does it work with Forge or NeoForge?</summary><p>No, it's Fabric only for now.</p></details>
 			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes. Install it on the server and on every player's game.</p></details>
 			<details class="panel"><summary>Will the lightning burn down my house?</summary><p>No. Hero Arsenal lightning never sets blocks on fire. Mobs still burn, though.</p></details>
+			<details class="panel"><summary>Will the Orbital Laser lag my server?</summary><p>No. The crater is carved a few dozen blocks per tick instead of all at once, the beam is drawn with a handful of shapes rather than thousands of particles, and the item does nothing while it sits in your inventory.</p></details>
 			<details class="panel"><summary>I threw Mjolnir with a full inventory. Where did it go?</summary><p>It drops on the ground right next to you.</p></details>
 		</div>
 	</section>

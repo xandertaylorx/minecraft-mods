@@ -4,7 +4,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 
 | Mod | What it adds | Loader | Minecraft |
 | --- | --- | --- | --- |
-| [**Hero Arsenal**](hero-arsenal/) | Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet and web shooters | Fabric | 26.3 |
+| [**Hero Arsenal**](hero-arsenal/) | Superhero gear: a lightning hammer, a ricochet shield, a blaster gauntlet, web shooters and an orbital laser | Fabric | 26.3 |
 | [**Blockshine Shaders**](blockshine/) | Fast BSL-style shader pack: glassy reflective water, soft clouds, god rays, lens flare, golden sunsets. About 1.5× BSL's FPS in our test | Iris | 26.3 |
 | [**BlockOS Computers**](blockos/) | Placeable computers with a desktop, apps and games, and BlockScript programs that control redstone, sense the world and talk wirelessly | Fabric | 26.3 |
 | [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
@@ -13,7 +13,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 
 ## <img src="hero-arsenal/docs/icon.png" width="32" align="top"> Hero Arsenal
 
-Four superhero weapons. Each one has a main ability on **right-click** and a second one on **sneak + right-click**. You'll find them all in the **Combat** creative tab.
+Five superhero weapons. Most have a main ability on **right-click** and a second one on **sneak + right-click**. You'll find them all in the **Combat** creative tab.
 
 ![Mjolnir calling lightning on a group of mobs](hero-arsenal/docs/mjolnir-lightning.png)
 
@@ -53,6 +53,18 @@ While it's in your hand, you take no fall damage.
 
 While it's in your hand, you take no fall damage.
 
+### 🛰️ Orbital Laser
+| Do this | What happens |
+| --- | --- |
+| Right-click a block (up to 128 blocks away) | Marks the spot. A glowing target ring charges up for 2.5 seconds with rising sparks and warning beeps, then a plasma beam hits from the sky. |
+
+The beam blasts a crater about 12 blocks wide, sets the ground on fire and throws back and burns every mob within 8 blocks (up to 28 damage in the middle). The blast never hurts you, but watch out for the fire and the drop. 15-second cooldown. Bedrock, obsidian and other blast-proof blocks survive, and it won't break blocks in spawn protection, in adventure mode, or when the `tnt_explodes` game rule is off.
+
+<p>
+  <img src="hero-arsenal/docs/orbital-charging.png" width="49%" alt="Orbital Laser target ring charging up">
+  <img src="hero-arsenal/docs/orbital-beam.png" width="49%" alt="Orbital Laser beam hitting a group of husks">
+</p>
+
 <p>
   <img src="hero-arsenal/docs/gauntlet-blast.png" width="49%" alt="Pulse Gauntlet blast">
   <img src="hero-arsenal/docs/web-hit.png" width="49%" alt="Web Shooter hitting a mob">
@@ -60,7 +72,7 @@ While it's in your hand, you take no fall damage.
 
 ### Install
 1. Use a **Fabric** instance for Minecraft **26.3** (in Prism Launcher, for example) with **Fabric API** installed.
-2. Download [`hero-arsenal-1.0.0.jar`](https://xandertaylorx.github.io/minecraft-mods/downloads/) from the site and put it in the instance's `mods` folder.
+2. Download [`hero-arsenal-1.1.0.jar`](https://xandertaylorx.github.io/minecraft-mods/downloads/) from the site and put it in the instance's `mods` folder.
 
 Mod page: **https://xandertaylorx.github.io/minecraft-mods/mods/hero-arsenal/**
 
