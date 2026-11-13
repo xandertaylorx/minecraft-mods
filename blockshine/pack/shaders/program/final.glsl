@@ -33,7 +33,7 @@ void main() {
 #else
 	// Brighter in caves (eyes adjusting), and a little brighter at night so nights look moody, not black
 	float sky = float(eyeBrightnessSmooth.y) / 240.0;
-	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 1.2, nightFactor(sunDir.y) * sky);
+	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 0.9, nightFactor(sunDir.y) * sky);
 #endif
 
 	// Golden color grade around sunrise/sunset, cool silver at night
@@ -44,9 +44,8 @@ void main() {
 	float golden = sunsetFactor(sunDir.y) * smoothstep(-0.08, 0.04, sunDir.y) * (1.0 - rainStrength);
 	grade = mix(vec3(1.0), vec3(1.16, 0.96, 0.72), golden);
 	satBoost = golden * 0.25;
-	grade = mix(grade, vec3(0.88, 0.90, 0.93), dayFactor(sunDir.y) * (1.0 - golden));   // calmer, slightly cool daylight
-	grade = mix(grade, vec3(0.84, 0.98, 1.04), nightFactor(sunDir.y));                  // moody teal night
-	satBoost -= nightFactor(sunDir.y) * 0.42;                    // colors fade in the dark, like real night vision
+	grade = mix(grade, vec3(0.80, 0.96, 1.08), nightFactor(sunDir.y));                  // moody teal night
+	satBoost -= nightFactor(sunDir.y) * 0.12;   // lit.glsl already drains color where it's dark; keep the night's blue
 #endif
 	flareCol = vec3(0.0);
 	sunScreen = vec2(0.5);
@@ -72,8 +71,16 @@ flat in vec3 flareCol;
 
 layout(location = 0) out vec4 outColor;
 
-vec3 filmic(vec3 x) {   // ACES-style curve: rich contrast, soft highlight rolloff
-	return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
+// Tone curve: extended Reinhard (white point 4) on brightness, so hues and saturation survive
+// instead of shifting like a per-channel curve; only the brightest colors drift toward white.
+vec3 tonemap(vec3 x) {
+	const float W2 = 16.0;
+	x *= 1.5;
+	float L = luma(x);
+	float Lt = L * (1.0 + L / W2) / (1.0 + L);
+	vec3 keepHue = x * (Lt / max(L, 1e-5));
+	vec3 perChan = x * (1.0 + x / W2) / (1.0 + x);
+	return clamp(mix(keepHue, perChan, smoothstep(0.45, 0.95, Lt)), 0.0, 1.0);
 }
 
 #ifdef LENS_FLARE
@@ -124,7 +131,7 @@ void main() {
 		if (vis > 0.0) c += lensFlare(texcoord) * flareCol * vis;
 	}
 #endif
-	c = filmic(c * exposure * grade);
+	c = tonemap(c * exposure * grade);
 	float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
 	c = max(mix(vec3(l), c, SATURATION + satBoost), 0.0);
 	c = pow(c, vec3(1.0 / 2.2));

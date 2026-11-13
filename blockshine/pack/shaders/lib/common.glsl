@@ -28,7 +28,7 @@ uniform ivec2 eyeBrightnessSmooth;
 #define ID_EMISSIVE   10020
 #define ID_LAVA       10021
 
-const vec3 TORCH_COLOR = vec3(1.0, 0.55, 0.22);
+const vec3 TORCH_COLOR = vec3(1.0, 0.64, 0.32);
 
 // True if the depth at screen point uv is sky or beyond render distance (e.g. clouds).
 // Clouds write depth but shouldn't block lens flare or sun rays. Uses the real projection, so it's exact.
@@ -40,6 +40,12 @@ bool isSkyAt(vec2 uv, float d) {
 
 float luma(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
 vec3 toLinear(vec3 c) { return c * c * (c * 0.2 + 0.8); }   // cheap ~gamma 2.2
+
+// Sky light reaching a face depends on which way it points: tops see the whole sky, sides half of it,
+// undersides only bounce light. Keeps shaded areas from looking flat. 1.0 top, 0.78 N/S, 0.70 E/W, 0.52 bottom.
+float faceShade(vec3 wn) {
+	return 0.76 + 0.24 * wn.y - 0.08 * abs(wn.x) + 0.02 * abs(wn.z);
+}
 
 // Sun direction in world space (y = up). Uses the real sun even at night.
 vec3 worldSunDir() { return normalize(mat3(gbufferModelViewInverse) * sunPosition); }
@@ -61,7 +67,7 @@ vec3 sunLightColor(float h) {
 #else
 	vec3 day    = vec3(1.00, 0.96, 0.92) * 1.30;
 	vec3 sunset = vec3(1.00, 0.50, 0.18) * 1.75;
-	vec3 night  = vec3(0.60, 0.68, 0.85) * 0.11;          // soft, silvery moonlight
+	vec3 night  = vec3(0.42, 0.60, 0.95) * 0.09;          // cool blue moonlight
 	vec3 c = mix(sunset, day, smoothstep(0.08, 0.45, h));
 	c = mix(night, c, smoothstep(-0.08, 0.03, h));
 	return c * (1.0 - rainStrength * 0.8) * SUN_BRIGHTNESS;
@@ -74,9 +80,9 @@ vec3 ambientColor(float h) {
 #elif defined END
 	return vec3(0.10, 0.08, 0.16);
 #else
-	vec3 day    = vec3(0.34, 0.47, 0.74) * 0.92;
+	vec3 day    = vec3(0.30, 0.46, 0.86) * 0.92;   // clear blue skylight fills the shade
 	vec3 sunset = vec3(0.50, 0.36, 0.34) * 0.55;
-	vec3 night  = vec3(0.032, 0.040, 0.060);
+	vec3 night  = vec3(0.018, 0.036, 0.062);       // deep teal-blue moonlit shade
 	vec3 c = mix(sunset, day, smoothstep(0.05, 0.35, h));
 	c = mix(night, c, smoothstep(-0.12, 0.05, h));
 	c = mix(c, vec3(luma(c)) * 0.75, rainStrength * 0.7);

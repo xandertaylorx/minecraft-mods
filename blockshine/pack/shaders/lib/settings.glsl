@@ -11,6 +11,9 @@
 #define TORCH_BRIGHTNESS 1.0 // [0.6 0.8 1.0 1.2 1.4 1.6]
 #define EMISSIVE_BLOCKS
 #define MIN_LIGHT 0.015 // [0.0 0.005 0.01 0.015 0.025 0.04]
+// Sun vs shade balance for blocks. Strong sun with soft blue shade is what gives depth.
+#define SUN_GAIN 1.45
+#define SHADE_AMBIENT 0.80
 
 // ---- World ----
 #define WAVING_PLANTS
@@ -39,7 +42,7 @@
 #define LENS_FLARE_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
 #define LIGHT_SHAFT_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
 #define EXPOSURE 1.0 // [0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.5]
-#define SATURATION 0.98 // [0.8 0.9 1.0 1.05 1.10 1.15 1.20 1.30]
+#define SATURATION 1.05 // [0.8 0.9 1.0 1.05 1.10 1.15 1.20 1.30]
 #define VIGNETTE
 
 // Iris only lists a toggle as an option if it's checked with #ifdef somewhere.

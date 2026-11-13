@@ -34,6 +34,7 @@ flat out float nightF;
 flat out int blockId;
 out float isFoliage;
 out float sssAmount;
+out float faceAmb;
 #ifdef WATER_PASS
 out vec3 worldPos;
 out vec3 worldNormal;
@@ -75,6 +76,7 @@ void main() {
 	// Foliage is thin: light it softly from both sides instead of by face direction
 	NdotL = noNormal ? 0.6 : (foliage ? 0.28 + 0.30 * abs(dot(wn, lightDir)) : max(dot(wn, lightDir), 0.0));
 	isFoliage = foliage ? 1.0 : 0.0;
+	faceAmb = (noNormal || foliage) ? 0.9 : faceShade(wn);
 	// How much the light shines through toward the camera (strongest looking into the sun through leaves)
 	sssAmount = pow(max(dot(normalize(playerPos), lightDir), 0.0), 4.0);
 
@@ -125,6 +127,7 @@ flat in float nightF;
 flat in int blockId;
 in float isFoliage;
 in float sssAmount;
+in float faceAmb;
 #ifdef WATER_PASS
 in vec3 worldPos;
 in vec3 worldNormal;
@@ -143,12 +146,21 @@ layout(location = 0) out vec4 outColor;
 #endif
 
 void main() {
+#ifdef TERRAIN
+	// separateAo: vertex alpha is ambient occlusion, not transparency
+	float ao = tint.a;
+	vec4 albedo = texture(gtexture, texcoord) * vec4(tint.rgb, 1.0);
+#else
+	float ao = 1.0;
 	vec4 albedo = texture(gtexture, texcoord) * tint;
+#endif
 #ifndef WATER_PASS
 	if (albedo.a < 0.1) discard;
 #endif
 	albedo.rgb = mix(albedo.rgb, entityColor.rgb, entityColor.a);
 	vec3 col = toLinear(albedo.rgb);
+	// Very bright textures (sand, snow, quartz) get toned down a little so they don't glare in full sun
+	col /= 1.0 + max(col.r, max(col.g, col.b)) * 0.22;
 
 	float sh = 1.0;
 #ifdef USE_SHADOWS
@@ -170,14 +182,25 @@ void main() {
 	outWaterTint = vec4(0.0);
 #endif
 
+	// Colors drain away where there's barely any light (deep caves, moonlit shade), like real low-light vision
+	float seen = max(skyL * (1.0 - nightF * 0.55), blockL * 1.2);
+	col = mix(col, vec3(luma(col)) * vec3(0.92, 0.97, 1.08), (1.0 - smoothstep(0.05, 0.55, seen)) * 0.55);
+
+	// Indirect light (sky + torches) is dimmed fully by AO and by face direction;
+	// direct sun only feels a little AO, so sunlit faces stay clean and shade gets depth.
+	float aoInd = ao * ao;
+	float aoSun = mix(1.0, ao, 0.35);
 #if defined NETHER || defined END
-	vec3 light = ambCol                       // no sky light in these dimensions: constant ambient instead
+	vec3 indirect = ambCol;                    // no sky light in these dimensions: constant ambient instead
 #else
-	vec3 light = ambCol * (skyL * skyL)
+	vec3 indirect = ambCol * (skyL * skyL) * SHADE_AMBIENT;
 #endif
-	           + vec3(MIN_LIGHT + nightVision * 0.35)
-	           + TORCH_COLOR * (pow(blockL, 6.0) * 2.0 + blockL * blockL * 0.04) * TORCH_BRIGHTNESS
-	           + sunCol * (NdotL * sh * smoothstep(0.05, 0.6, skyL));
+	// Bright core near the torch plus a wide warm falloff that reaches the surroundings
+	indirect += TORCH_COLOR * (pow(blockL, 5.0) * 1.7 + blockL * blockL * 0.14) * TORCH_BRIGHTNESS;
+	indirect = indirect * faceAmb + vec3(MIN_LIGHT + nightVision * 0.35);
+
+	vec3 sunLit = sunCol * SUN_GAIN * (NdotL * sh * smoothstep(0.05, 0.6, skyL));
+	vec3 light = indirect * aoInd + sunLit * aoSun;
 
 #ifdef FOLIAGE_GLOW
 	// Leaves and grass glow when the sun shines through them toward you (subsurface scattering)
