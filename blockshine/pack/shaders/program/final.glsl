@@ -9,6 +9,8 @@ const int colortex1Format = RGBA8;            // water: normal.xz, sky light, ma
 const int colortex2Format = RGBA8;            // water: biome tint, sun shadow
 const vec4 colortex1ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
 const vec4 colortex2ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
+const int colortex3Format = RGBA16F;          // TAA history (kept between frames)
+const bool colortex3Clear = false;
 */
 
 uniform sampler2D colortex0;

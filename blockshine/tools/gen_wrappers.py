@@ -19,9 +19,11 @@ PROGRAMS = {
     'gbuffers_textured_lit':('lit.glsl',    []),
     'gbuffers_terrain':     ('lit.glsl',    ['TERRAIN']),
     'gbuffers_water':       ('lit.glsl',    ['TERRAIN', 'WATER_PASS']),
+    'deferred':             ('ao.glsl',     []),
     'composite':            ('water.glsl',  []),
     'composite1':           ('shafts.glsl', []),
     'composite2':           ('bloom.glsl',  []),
+    'composite3':           ('taa.glsl',    []),
     'final':                ('final.glsl',  []),
 }
 DIMENSIONS = {'': [], 'world-1': ['NETHER'], 'world1': ['END']}

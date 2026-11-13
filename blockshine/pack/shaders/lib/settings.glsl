@@ -15,6 +15,11 @@
 #define SUN_GAIN 1.45
 #define SHADE_AMBIENT 0.80
 
+#define SSAO
+#define AO_SAMPLES 6 // [4 6 8 12]
+#define AO_RADIUS 0.6 // [0.4 0.6 0.8 1.0]
+#define AO_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
+
 // ---- World ----
 #define WAVING_PLANTS
 #define WAVING_LEAVES
@@ -44,6 +49,7 @@
 #define EXPOSURE 1.0 // [0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.5]
 #define SATURATION 1.05 // [0.8 0.9 1.0 1.05 1.10 1.15 1.20 1.30]
 #define VIGNETTE
+#define TAA
 
 // Iris only lists a toggle as an option if it's checked with #ifdef somewhere.
 // SHADOWS, BLOOM and LIGHT_SHAFTS switch whole passes on/off in shaders.properties, so reference them here.
@@ -62,4 +68,8 @@
 #ifdef WATER_SSR
 #endif
 #ifdef FOLIAGE_GLOW
+#endif
+#ifdef SSAO
+#endif
+#ifdef TAA
 #endif

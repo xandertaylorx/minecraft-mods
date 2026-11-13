@@ -63,7 +63,7 @@ void main() {
 	#endif
 #endif
 	blockId = id;
-	gl_Position = gl_ProjectionMatrix * viewPos;
+	gl_Position = taaJitter(gl_ProjectionMatrix * viewPos);
 
 	// Particles and some entities have no normal; treat them as facing the light.
 	vec3 vn = gl_NormalMatrix * gl_Normal;

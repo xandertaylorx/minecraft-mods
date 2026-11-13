@@ -104,6 +104,42 @@ public class BlockshineClientTest implements FabricClientGameTest {
 				int vanillaFps = best.get("vanilla (no shaders)");
 				best.forEach((k, v) -> result("FPS " + k + ": " + v + " (" + pct(v, vanillaFps) + "% of vanilla)"));
 
+				// ---- Optional: benchmark the compare pack with different option sets ----
+				// -PotherVariants=/path/to/file, one "label|KEY=VALUE KEY2=VALUE" per line (empty options = defaults).
+				// Options go into "<pack>.txt" next to the zip, which is where Iris keeps a pack's settings.
+				String variantsFile = System.getProperty("blockshine.otherVariants", "");
+				if (compare && !variantsFile.isEmpty()) try {
+					String otherName = Path.of(other).getFileName().toString();
+					Path optFile = gameDir.resolve("shaderpacks").resolve(otherName + ".txt");
+					for (String line : Files.readAllLines(Path.of(variantsFile))) {
+						if (line.isBlank() || line.startsWith("#") || !line.contains("|")) continue;
+						String label = line.substring(0, line.indexOf('|')).trim();
+						StringBuilder sb = new StringBuilder();
+						for (String kv : line.substring(line.indexOf('|') + 1).trim().split("\\s+"))
+							if (kv.contains("=")) sb.append(kv).append('\n');
+						Files.writeString(optFile, sb.toString());
+						ctx.runOnClient(mc -> {
+							try {
+								Iris.getIrisConfig().setShaderPackName(otherName);
+								Iris.getIrisConfig().setShadersEnabled(true);
+								Iris.getIrisConfig().save();
+								Iris.reload();
+							} catch (IOException e) {
+								throw new UncheckedIOException(e);
+							}
+						});
+						ctx.waitTicks(40);
+						look(ctx, 0.0F, 12.0F);
+						String err = Iris.getStoredError().map(Throwable::toString).orElse(null);
+						int fps = Math.max(measureFps(ctx), measureFps(ctx));
+						result("FPS other[" + label + "]: " + fps + " (" + pct(fps, vanillaFps) + "% of vanilla)" + (err == null ? "" : " ERROR " + err));
+						ctx.takeScreenshot("03_variant_" + label.replaceAll("[^A-Za-z0-9]+", "_"));
+					}
+					Files.deleteIfExists(optFile);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+
 				// ---- Optional: isolate what makes HIGH slow (-Dblockshine.isolate=true) ----
 				if (Boolean.getBoolean("blockshine.isolate")) {
 					String[][] variants = {

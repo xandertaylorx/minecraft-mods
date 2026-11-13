@@ -19,6 +19,32 @@ uniform float near;
 uniform float nightVision;
 uniform int isEyeInWater;
 uniform ivec2 eyeBrightnessSmooth;
+uniform int frameCounter;
+
+// ---------------- Temporal anti-aliasing ----------------
+// Each frame the whole picture is nudged by a sub-pixel amount (an 8-step Halton(2,3) pattern).
+// The TAA pass blends frames together, so edges and fine texture detail get averaged smooth.
+vec2 taaOffset() {
+	const vec2 seq[8] = vec2[8](
+		vec2( 0.000, -0.167), vec2(-0.250,  0.167), vec2( 0.250, -0.389), vec2(-0.375, -0.056),
+		vec2( 0.125,  0.278), vec2(-0.125, -0.278), vec2( 0.375,  0.056), vec2(-0.438,  0.389));
+	return seq[frameCounter & 7];
+}
+// Apply to a clip-space vertex position (no-op when TAA is off).
+vec4 taaJitter(vec4 clip) {
+#ifdef TAA
+	clip.xy += taaOffset() * 2.0 / vec2(viewWidth, viewHeight) * clip.w;
+#endif
+	return clip;
+}
+// Per-frame offset for noise patterns, so TAA averages filter noise away (shadows, AO).
+float frameNoiseShift() {
+#ifdef TAA
+	return float(frameCounter & 15) * 0.6180339;
+#else
+	return 0.0;
+#endif
+}
 
 // Block IDs from block.properties
 #define ID_PLANT      10001

@@ -14,6 +14,8 @@ An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (
 - **Clouds are value noise painted into the sky**, so there's no extra geometry. Vanilla clouds are off.
 - **Bloom from GPU mipmaps.** It reads 5 blurred mip levels, with no blur passes.
 - **Passes switch off completely** when their effect is off (`program.*.enabled`), not just skipped with an `if` inside the shader.
+- **TAA does double duty.** Frames are jittered by sub-pixel amounts and blended (9 + 1 reads per pixel), which smooths edges and also lets shadows and AO use cheap per-frame noise that averages out.
+- **Screen-space AO in one pass** over solid blocks only (6–8 depth reads), faded out past 64 blocks where fog hides it.
 - **Mac-friendly.** OpenGL 4.1-compatible only: no compute shaders, no image storage.
 
 ## Layout

@@ -12,7 +12,7 @@ void main() {
 	sunDirW = worldSunDir();
 	sunCol = sunLightColor(sunDirW.y);
 	ambCol = ambientColor(sunDirW.y);
-	gl_Position = ftransform();
+	gl_Position = taaJitter(ftransform());
 }
 #endif
 

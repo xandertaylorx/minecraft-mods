@@ -14,7 +14,7 @@ void main() {
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	tint = gl_Color;
 	vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
-	gl_Position = gl_ProjectionMatrix * viewPos;
+	gl_Position = taaJitter(gl_ProjectionMatrix * viewPos);
 
 	vec3 sunDir = worldSunDir();
 	sunCol = sunLightColor(sunDir.y);

@@ -9,8 +9,14 @@ vec3 distortShadow(vec3 p) {
 #if defined SHADOW_LOOKUP && defined FRAGMENT
 uniform sampler2DShadow shadowtex0;
 
-// Cheap per-pixel noise to hide filter patterns
-float ign(vec2 p) { return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
+// Cheap per-pixel noise to hide filter patterns. Shifts every frame with TAA on, so the samples
+// land somewhere new each frame and TAA blends them into a much softer edge for free.
+float ign(vec2 p) { return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715))) + frameNoiseShift()); }
+#ifdef TAA
+const float SOFTEN = 1.6;   // wider filter: TAA hides the extra noise
+#else
+const float SOFTEN = 1.0;
+#endif
 
 // One hardware-filtered lookup, used by volumetric light.
 float shadowTap(vec3 shadowClip) {
@@ -32,7 +38,7 @@ float getShadow(vec3 shadowClip) {
 	// 4 lookups in a small rotated square
 	float texel = 1.0 / float(textureSize(shadowtex0, 0).x);
 	float a = ign(gl_FragCoord.xy) * 6.2831853;
-	vec2 r = vec2(cos(a), sin(a)) * texel * 1.25;
+	vec2 r = vec2(cos(a), sin(a)) * texel * 1.25 * SOFTEN;
 	vec2 r2 = vec2(-r.y, r.x);
 	return 0.25 * (texture(shadowtex0, p + vec3(r, 0.0)) + texture(shadowtex0, p - vec3(r, 0.0))
 	             + texture(shadowtex0, p + vec3(r2, 0.0)) + texture(shadowtex0, p - vec3(r2, 0.0)));
@@ -43,7 +49,7 @@ float getShadow(vec3 shadowClip) {
 	float s = 0.0;
 	for (int i = 0; i < 8; i++) {
 		float ang = a + float(i) * 2.3999632;
-		float rad = sqrt((float(i) + 0.5) / 8.0) * 2.2 * texel;
+		float rad = sqrt((float(i) + 0.5) / 8.0) * 2.2 * SOFTEN * texel;
 		s += texture(shadowtex0, p + vec3(cos(ang) * rad, sin(ang) * rad, 0.0));
 	}
 	return s * 0.125;
