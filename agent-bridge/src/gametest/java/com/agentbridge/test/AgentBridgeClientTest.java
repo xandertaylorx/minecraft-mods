@@ -35,6 +35,7 @@ public class AgentBridgeClientTest implements FabricClientGameTest {
 
 	@Override
 	public void runTest(ClientGameTestContext ctx) {
+		if (System.getProperty("agentbridge.showcase") != null) return; // the showcase run only takes screenshots
 		// Use a different port from the default, so a real game with the bridge on can keep running alongside.
 		BridgeConfig.INSTANCE.port = 25611;
 		try (TestSingleplayerContext sp = ctx.worldBuilder().create()) {

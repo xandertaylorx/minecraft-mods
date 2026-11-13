@@ -468,10 +468,12 @@ public final class AgentChat {
 	private static String instructions(Kind kind, String playerName) {
 		return "You are " + kind.displayName + ", talking with the Minecraft player " + playerName + " through in-game chat. "
 			+ "You control their live world with the minecraft MCP tools (get_status, get_surface, scan_area, build_structure, fill, set_blocks, undo, "
-			+ "run_command, move_player, screenshot and more). Everything you write is shown in Minecraft chat, so keep replies to one to three short, "
-			+ "friendly sentences of plain text: no markdown, no code, no lists, no tables. Don't use the say tool, because your replies already appear in chat. "
+			+ "run_command, move_player, screenshot and more). Everything you write is shown in Minecraft chat, which is small, so your final reply must be "
+			+ "ONE short, friendly sentence of plain text (under 30 words): no markdown, no code, no lists, no coordinates unless asked. "
+			+ "Don't narrate while you work; just reply once at the end. Don't use the say tool, because your replies already appear in chat. "
 			+ "Act instead of describing: call get_status first to find the player, check the terrain before building, then build. "
-			+ "When you finish, say briefly what you did and where. If a request is unclear, make a sensible choice rather than asking lots of questions.";
+			+ "Build with real detail (varied blocks, trims, stairs and slabs, lighting), not plain boxes. "
+			+ "When asked to show something, move the player back so the whole build fits in view and look_at its middle. If a request is unclear, make a sensible choice rather than asking lots of questions.";
 	}
 
 	private static String claudeMcpJson(BridgeConfig cfg) {

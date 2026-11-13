@@ -20,12 +20,15 @@
 	.showcase { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; align-items: center; }
 	.showcase .frame { display: block; border: 4px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,.45); line-height: 0; }
 	.showcase img { width: 100%; }
-	.chat { padding: 20px; font-size: 16px; }
-	.chat p { margin: 0 0 12px; color: #cfcfd4; }
-	.chat p:last-child { margin: 0; }
-	.chat .you { color: #fff; }
-	.chat .ai { color: #8be9fd; }
-	@media (max-width: 760px) { .two, .showcase { grid-template-columns: 1fr; } .cmds td:first-child { width: 45%; } }
+	.uses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+	.use { margin: 0; overflow: hidden; display: flex; flex-direction: column; }
+	.use .frame { display: block; line-height: 0; border-bottom: 4px solid #000; }
+	.use img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+	.use figcaption { padding: 18px 20px 20px; }
+	.use h3 { margin-bottom: 8px; }
+	.use p { margin: 0; color: #cfcfd4; font-size: 15px; }
+	.use .ask { font-family: ui-monospace, Menlo, monospace; font-size: 14px; color: var(--gold); background: #0b0f0c; border: 3px solid #000; padding: 10px 12px; margin: 0 0 10px; }
+	@media (max-width: 760px) { .two, .showcase, .uses { grid-template-columns: 1fr; } .cmds td:first-child { width: 45%; } }
 </style>
 </head>
 <body>
@@ -43,10 +46,10 @@
 	</div>
 </header>
 
-<div class="hero photo" style="background-image: url('img/cottage.png'); background-position: 50% 45%">
+<div class="hero photo" style="background-image: url('img/tower.jpg'); background-position: 50% 30%">
 	<div class="wrap">
 		<div class="tags">
-			<span class="tag status-live">v1.1.0</span>
+			<span class="tag status-live">v1.1.1</span>
 			<span class="tag loader">Fabric</span>
 			<span class="tag">MC 26.3</span>
 			<span class="tag">AI</span>
@@ -54,7 +57,7 @@
 		<h1>Agent <b>Bridge</b></h1>
 		<p class="tagline">Talk to Claude Code or Codex right in Minecraft chat. Type <code>@claude build a castle</code> and watch it go up.</p>
 		<div class="btns">
-			<a class="btn go" href="../../downloads/agent-bridge-1.1.0.jar" download>Download v1.1.0</a>
+			<a class="btn go" href="../../downloads/agent-bridge-1.1.1.jar" download>Download v1.1.1</a>
 			<a class="btn" href="#chat">How chat works</a>
 		</div>
 	</div>
@@ -64,26 +67,52 @@
 
 	<section id="demo">
 		<div class="section-head">
-			<h2>One prompt, one cottage</h2>
-			<p>A real test run, not a mock-up.</p>
+			<h2>What you can ask for</h2>
+			<p>One real session with Claude, typed into chat. These are real screenshots with the <a href="../blockshine/">Blockshine</a> shaders, not mock-ups.</p>
 		</div>
-		<div class="showcase">
-			<div class="frame"><img src="img/cottage.png" alt="An oak cottage with a spruce roof, door and windows that Claude Code built"></div>
-			<div class="chat panel">
-				<p class="you"><b>You:</b> Build a small cozy cottage about 12 blocks east of me, then take a screenshot to check it.</p>
-				<p class="ai"><b>Claude:</b> checks the ground → builds 188 blocks in one go → adds a path, lantern and bed → turns your camera to face it → takes a screenshot.</p>
-				<p class="ai"><b>Claude:</b> "I built a 7×7 oak cottage with log corners, a spruce peaked roof, a door and two windows. The screenshot confirms it looks right."</p>
-			</div>
+		<div class="uses">
+			<figure class="use panel">
+				<a class="frame" data-lightbox href="img/tower-chat.jpg"><img src="img/tower-chat.jpg" alt="A crenellated stone watchtower with red banners against a sunset, with Claude's reply in chat" loading="lazy"></a>
+				<figcaption>
+					<h3>🏰 Build anything</h3>
+					<p class="ask">@claude build a tall medieval stone watchtower with crenellations, arrow slits, banners and a glowing lantern room on top, on the riverbank near me. Then show it to me with the sunset behind it.</p>
+					<p>It checks the terrain, builds the tower, then flies your camera to a good viewpoint.</p>
+				</figcaption>
+			</figure>
+			<figure class="use panel">
+				<a class="frame" data-lightbox href="img/garden-chat.jpg"><img src="img/garden-chat.jpg" alt="Cherry blossom trees in front of the watchtower at golden hour, with Claude's reply in chat" loading="lazy"></a>
+				<figcaption>
+					<h3>🌸 Shape the land</h3>
+					<p class="ask">@claude plant a small cherry blossom grove with a little pond and a stone path leading to the tower, then show me.</p>
+					<p>It remembers what it built before, so "the tower" just works.</p>
+				</figcaption>
+			</figure>
+			<figure class="use panel">
+				<a class="frame" data-lightbox href="img/look-chat.jpg"><img src="img/look-chat.jpg" alt="The watchtower and coast, with Claude describing what it sees in chat" loading="lazy"></a>
+				<figcaption>
+					<h3>👀 Ask what it sees</h3>
+					<p class="ask">@claude what can you see around us?</p>
+					<p>It looks around and answers. Here it also noticed that one of its boats had sunk, and fixed it without being asked.</p>
+				</figcaption>
+			</figure>
+			<figure class="use panel">
+				<a class="frame" data-lightbox href="img/night.jpg"><img src="img/night.jpg" alt="The tower, garden and dock from above at night, lit by lanterns" loading="lazy"></a>
+				<figcaption>
+					<h3>🌙 Change the world</h3>
+					<p class="ask">@claude make it night and light the path and dock with lanterns on posts, then show me the whole scene from above.</p>
+					<p>It runs game commands for time, weather and mobs, and then decorates.</p>
+				</figcaption>
+			</figure>
 		</div>
 	</section>
 
 	<section id="chat">
 		<div class="section-head">
 			<h2>Just type in chat</h2>
-			<p>New in 1.1.0. No terminal needed.</p>
+			<p>No terminal needed.</p>
 		</div>
 		<div class="showcase">
-			<div class="frame"><img src="img/chat.png" alt="Claude replying in Minecraft chat after building a stone brick well"></div>
+			<div class="frame"><img src="img/tower.jpg" alt="The finished watchtower on the coast at sunset" loading="lazy"></div>
 			<div class="panel files-wrap">
 				<table class="cmds">
 					<tr><td>@claude &lt;message&gt;</td><td>Ask Claude Code anything, like <code>@claude build a lighthouse</code></td></tr>
@@ -196,10 +225,10 @@ http_headers = { Authorization = <span class="s">"Bearer &lt;token&gt;"</span> }
 		<div class="section-head"><h2>Download</h2></div>
 		<div class="dl panel">
 			<div>
-				<h3>Agent Bridge v1.1.0</h3>
+				<h3>Agent Bridge v1.1.1</h3>
 				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. <a href="../../downloads/">All downloads</a></p>
 			</div>
-			<a class="btn go" href="../../downloads/agent-bridge-1.1.0.jar" download>Download .jar</a>
+			<a class="btn go" href="../../downloads/agent-bridge-1.1.1.jar" download>Download .jar</a>
 		</div>
 	</section>
 
@@ -218,5 +247,6 @@ http_headers = { Authorization = <span class="s">"Bearer &lt;token&gt;"</span> }
 	</div>
 </footer>
 
+<script src="../../js/lightbox.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 	"name": "Agent Bridge Tests",
 	"environment": "*",
 	"entrypoints": {
-		"fabric-client-gametest": ["com.agentbridge.test.AgentBridgeClientTest"]
+		"fabric-client-gametest": ["com.agentbridge.test.AgentBridgeClientTest", "com.agentbridge.test.AgentBridgeShowcase"]
 	},
 	"depends": { "agent_bridge": "*" }
 }

@@ -2,9 +2,9 @@
 
 Lets an AI agent like **Claude Code** or **Codex** see and build in your Minecraft world. Type `@claude build a cozy cottage next to me` in chat and watch it happen live.
 
-![A cottage Claude Code built through Agent Bridge](docs/claude-cottage.png)
+![A watchtower and cherry grove Claude built from chat, with Blockshine shaders](docs/garden-chat.jpg)
 
-*Claude Code built this from one prompt. It checked the ground, built the cottage in one go, then moved the camera and took a screenshot to check its work.*
+*One real session: Claude built the watchtower, then the cherry grove and pond, from messages typed into Minecraft chat. Shown with the [Blockshine](../blockshine/) shader pack.*
 
 Under the hood, the mod runs a small [MCP](https://modelcontextprotocol.io) server inside the game. MCP is the standard way AI agents connect to outside tools.
 
@@ -12,7 +12,7 @@ Under the hood, the mod runs a small [MCP](https://modelcontextprotocol.io) serv
 
 The easiest way. No terminal needed once Claude Code or Codex is installed and logged in on the same computer.
 
-1. Put `agent-bridge-1.1.0.jar` in your `mods` folder, next to Fabric API (Minecraft 26.3).
+1. Put `agent-bridge-1.1.1.jar` in your `mods` folder, next to Fabric API (Minecraft 26.3).
 2. Open a world with cheats on, or be op on a server.
 3. Type in chat:
 
@@ -22,7 +22,7 @@ The easiest way. No terminal needed once Claude Code or Codex is installed and l
 
 The bridge turns itself on, and Claude's replies and progress show up in chat:
 
-![Claude answering in Minecraft chat](docs/chat.png)
+![Claude answering in Minecraft chat](docs/tower-chat.jpg)
 
 | Type this | What happens |
 | --- | --- |
@@ -132,5 +132,13 @@ The jar ends up in `build/libs/`.
 ```
 
 This opens a real world, turns the bridge on and calls every tool over HTTP, the same way an AI client would. It runs 25 checks and prints them as `AB-TEST` lines. It uses port 25611, so it can run while your own game has the bridge on.
+
+Website screenshots come from a showcase run with Iris and the Blockshine pack in a normal world. It types a short script of `@claude` messages into chat:
+
+```bash
+AGENT_BRIDGE_SCRIPT=$PWD/showcase.txt AGENT_BRIDGE_SEED=meadowlight ./gradlew runClientGameTest -Pshowcase=1
+```
+
+The script format is described at the top of `AgentBridgeShowcase.java`.
 
 Set `AGENT_BRIDGE_CHAT=1` to also test chat with the real AI. It types `@claude` and `@codex` messages into Minecraft chat and checks the build, a follow-up question, and `stop`, for 33 checks in total. This uses your Claude Code login and a little plan usage. Set `AGENT_BRIDGE_LIVE=1` to keep the world open for a real AI: the URL and token go to `build/run/clientGameTest/agent-bridge-live.txt`, and the test ends once you create `build/run/clientGameTest/agent-bridge-done`.

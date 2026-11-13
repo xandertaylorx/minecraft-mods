@@ -29,10 +29,32 @@ fabricApi {
 	}
 }
 
+repositories {
+	maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' }
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Only for the showcase run (./gradlew runClientGameTest -Pshowcase), which takes the
+	// website screenshots with Iris + the Blockshine shader pack. Normal test runs stay vanilla.
+	gametestCompileOnly "maven.modrinth:iris:${project.iris_version}"
+	gametestCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+	if (project.hasProperty("showcase")) {
+		gametestRuntimeOnly "maven.modrinth:iris:${project.iris_version}"
+		gametestRuntimeOnly "maven.modrinth:sodium:${project.sodium_version}"
+	}
+}
+
+afterEvaluate {
+	tasks.matching { it.name == 'runClientGameTest' }.configureEach {
+		if (project.hasProperty("showcase")) {
+			jvmArgs "-Dagentbridge.showcase=${project.property('showcase')}"
+			jvmArgs "-Dagentbridge.shaderPack=${file('../blockshine/pack').absolutePath}"
+		}
+	}
 }
 
 processResources {

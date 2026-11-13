@@ -136,7 +136,8 @@ public final class Tools {
 
 		add("move_player", "Move or turn the player",
 			"Teleports the player and/or turns their camera. All fields are optional. look_at turns the camera to face a point, "
-				+ "which is handy before taking a screenshot.",
+				+ "which is handy before taking a screenshot. In creative the player starts flying, so they stay at the height you choose. "
+				+ "To show off a build, stand back far enough that all of it fits in view (about 1.5x its largest size) and look_at its middle.",
 			schema(props(
 				"x", number("Target x"), "y", number("Target y"), "z", number("Target z"),
 				"yaw", number("Horizontal angle: 0 south, 90 west, 180 north, -90 east"),
@@ -529,6 +530,11 @@ public final class Tools {
 		}
 		pitch = Mth.clamp(pitch, -90.0F, 90.0F);
 		p.teleportTo(p.level(), x, y, z, Set.<Relative>of(), yaw, pitch, true);
+		// In creative, start flying so the player stays where they were put instead of dropping to the ground.
+		if (p.getAbilities().mayfly && !p.getAbilities().flying) {
+			p.getAbilities().flying = true;
+			p.onUpdateAbilities();
+		}
 		Bridge.activity(server, "moved you");
 		return textResult(String.format(Locale.ROOT, "Player now at %.1f %.1f %.1f, yaw %.0f, pitch %.0f.", x, y, z, Mth.wrapDegrees(yaw), pitch));
 	}

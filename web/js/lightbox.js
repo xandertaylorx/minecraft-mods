@@ -1,7 +1,7 @@
 // Gallery lightbox: click a screenshot to view it large, ✕ / Esc / click outside to close,
 // arrows (or swipe on phones) to flip through. Works on every .gallery on the page.
 (function () {
-	var links = Array.prototype.slice.call(document.querySelectorAll('.gallery a'));
+	var links = Array.prototype.slice.call(document.querySelectorAll('.gallery a, a[data-lightbox]'));
 	if (!links.length) return;
 
 	var box = document.createElement('div');

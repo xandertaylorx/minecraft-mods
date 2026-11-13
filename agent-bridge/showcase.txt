@@ -1,0 +1,21 @@
+tools off
+look 90 5
+wait 40
+chat @claude build a tall medieval stone watchtower with crenellations, arrow slits, banners and a glowing lantern room on top, on the riverbank near me. Then show it to me from a good angle with the sunset behind it.
+where
+shot 01_tower_chat
+clean 01_tower
+chat @claude nice! now add a wooden dock on the river next to it with a couple of boats tied up, then show me the tower and dock together.
+where
+shot 02_dock_chat
+clean 02_dock
+chat @claude what can you see around us?
+shot 03_look_chat
+chat @claude plant a small cherry blossom grove with a little pond and a stone path leading to the tower, then show me.
+where
+shot 04_garden_chat
+clean 04_garden
+chat @claude make it night and light the path and dock with lanterns on posts, then show me the whole scene from above.
+where
+shot 05_night_chat
+clean 05_night
