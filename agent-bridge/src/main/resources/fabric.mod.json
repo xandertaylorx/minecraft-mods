@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "agent_bridge",
+	"version": "${version}",
+	"name": "Agent Bridge",
+	"description": "Lets AI agents like Claude Code and Codex see and build in your world through MCP. Turn it on with /agent on.",
+	"authors": ["TizTech"],
+	"license": "All-Rights-Reserved",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.agentbridge.AgentBridge"],
+		"client": ["com.agentbridge.client.AgentBridgeClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

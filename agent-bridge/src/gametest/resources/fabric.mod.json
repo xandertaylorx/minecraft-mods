@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"id": "agent_bridge_test",
+	"version": "1.0.0",
+	"name": "Agent Bridge Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["com.agentbridge.test.AgentBridgeClientTest"]
+	},
+	"depends": { "agent_bridge": "*" }
+}
