@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Bridge · XanderCraft</title>
+<meta name="description" content="Agent Bridge: a Fabric mod that lets AI agents like Claude Code and Codex see and build in your Minecraft world through MCP. Turn it on with /agent on.">
+<link rel="icon" href="img/robot.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css?v=5">
+<style>
+	.code { background: #0b0f0c; border: 4px solid #000; padding: 14px 16px; overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px; line-height: 1.55; color: #cfffe0; margin: 0; white-space: pre-wrap; word-break: break-all; }
+	.code .k { color: #ff79c6; } .code .c { color: #8be9fd; } .code .s { color: #f1fa8c; } .code .m { color: #6a7a8a; }
+	.cmds { width: 100%; border-collapse: collapse; font-size: 15px; }
+	.cmds td { padding: 7px 12px; border-top: 2px solid rgba(0,0,0,.35); vertical-align: top; }
+	.cmds td:first-child { width: 34%; font-family: ui-monospace, Menlo, monospace; color: var(--gold); }
+	.two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+	.showcase { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; align-items: center; }
+	.showcase .frame { display: block; border: 4px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,.45); line-height: 0; }
+	.showcase img { width: 100%; }
+	.chat { padding: 20px; font-size: 16px; }
+	.chat p { margin: 0 0 12px; color: #cfcfd4; }
+	.chat p:last-child { margin: 0; }
+	.chat .you { color: #fff; }
+	.chat .ai { color: #8be9fd; }
+	@media (max-width: 760px) { .two, .showcase { grid-template-columns: 1fr; } .cmds td:first-child { width: 45%; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#setup">Setup</a>
+			<a href="#tools">What it can do</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero photo" style="background-image: url('img/cottage.png'); background-position: 50% 45%">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">AI</span>
+		</div>
+		<h1>Agent <b>Bridge</b></h1>
+		<p class="tagline">Let an AI agent like Claude Code or Codex build in your world. Type <code>/agent on</code>, ask for a castle, and watch it go up.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/agent-bridge-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#setup">How to connect</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="demo">
+		<div class="section-head">
+			<h2>One prompt, one cottage</h2>
+			<p>A real test run, not a mock-up.</p>
+		</div>
+		<div class="showcase">
+			<div class="frame"><img src="img/cottage.png" alt="An oak cottage with a spruce roof, door and windows that Claude Code built"></div>
+			<div class="chat panel">
+				<p class="you"><b>You:</b> Build a small cozy cottage about 12 blocks east of me, then take a screenshot to check it.</p>
+				<p class="ai"><b>Claude:</b> checks the ground → builds 188 blocks in one go → adds a path, lantern and bed → turns your camera to face it → takes a screenshot.</p>
+				<p class="ai"><b>Claude:</b> "I built a 7×7 oak cottage with log corners, a spruce peaked roof, a door and two windows. The screenshot confirms it looks right."</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="setup">
+		<div class="section-head">
+			<h2>Setup</h2>
+			<p>About a minute, and you only do it once.</p>
+		</div>
+		<div class="steps">
+			<div class="step panel">
+				<h3>Install</h3>
+				<p>Put the <code>.jar</code> in your Fabric 26.3 <code>mods</code> folder, next to <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>.</p>
+			</div>
+			<div class="step panel">
+				<h3>Turn it on</h3>
+				<p>Open a world with cheats on and type <code>/agent on</code>. It's off every time you start the game.</p>
+			</div>
+			<div class="step panel">
+				<h3>Connect your AI</h3>
+				<p>Click <b>[Copy Claude Code command]</b> or <b>[Copy Codex config]</b> in chat and paste it where it goes.</p>
+			</div>
+			<div class="step panel">
+				<h3>Ask away</h3>
+				<p>Start your AI and ask it to build, explore or change the weather. Its activity shows above your hotbar.</p>
+			</div>
+		</div>
+		<div class="two" style="margin-top:20px">
+			<div>
+				<h3>Claude Code</h3>
+<pre class="code"><span class="m"># paste into your terminal (the button fills in your token)</span>
+<span class="k">claude</span> mcp add --transport http minecraft <span class="c">http://127.0.0.1:25599/mcp</span> --header <span class="s">"Authorization: Bearer &lt;token&gt;"</span></pre>
+			</div>
+			<div>
+				<h3>Codex</h3>
+<pre class="code"><span class="m"># add to ~/.codex/config.toml</span>
+<span class="k">[mcp_servers.minecraft]</span>
+url = <span class="s">"http://127.0.0.1:25599/mcp"</span>
+http_headers = { Authorization = <span class="s">"Bearer &lt;token&gt;"</span> }</pre>
+			</div>
+		</div>
+	</section>
+
+	<section id="tools">
+		<div class="section-head">
+			<h2>What the AI can do</h2>
+			<p>12 tools, over <a href="https://modelcontextprotocol.io">MCP</a>.</p>
+		</div>
+		<div class="two">
+			<div class="panel files-wrap">
+				<table class="cmds">
+					<tr><td>get_status</td><td>Where you are and what you're looking at, plus game mode, health, held item, time and weather</td></tr>
+					<tr><td>get_surface</td><td>A height map of the ground, so builds sit on the terrain</td></tr>
+					<tr><td>scan_area</td><td>Reads every block in a box, layer by layer</td></tr>
+					<tr><td>get_entities</td><td>Mobs, animals, items and players nearby</td></tr>
+					<tr><td>screenshot</td><td>Sees your screen to check its work</td></tr>
+					<tr><td>say</td><td>Chats with you while it works</td></tr>
+				</table>
+			</div>
+			<div class="panel files-wrap">
+				<table class="cmds">
+					<tr><td>build_structure</td><td>Builds a whole structure in one call, from text layers</td></tr>
+					<tr><td>fill</td><td>Solid, hollow or outline boxes, or clearing an area</td></tr>
+					<tr><td>set_blocks</td><td>Single blocks for details</td></tr>
+					<tr><td>undo</td><td>Reverts its last builds</td></tr>
+					<tr><td>run_command</td><td>Game commands like <code>/time</code>, <code>/summon</code> and <code>/give</code></td></tr>
+					<tr><td>move_player</td><td>Moves you, or turns your camera to face a point</td></tr>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<section id="commands">
+		<div class="section-head"><h2>In-game commands</h2></div>
+		<div class="panel files-wrap">
+			<table class="cmds">
+				<tr><td>/agent on</td><td>Starts the bridge. The AI acts for whoever ran it.</td></tr>
+				<tr><td>/agent off</td><td>Stops it. The AI can't reach the game until you turn it back on.</td></tr>
+				<tr><td>/agent status</td><td>Shows whether it's on, and which AI last connected</td></tr>
+				<tr><td>/agent setup</td><td>Shows the copy-to-clipboard connect buttons again</td></tr>
+				<tr><td>/agent undo [steps]</td><td>Undoes the AI's last builds yourself</td></tr>
+				<tr><td>/agent newtoken</td><td>Makes a new secret token. Old connections stop working.</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="faq">
+		<div class="section-head"><h2>FAQ</h2></div>
+		<div class="faq">
+			<details class="panel"><summary>Can other people or websites control my game?</summary><p>No. The bridge only listens on your own computer (<code>127.0.0.1</code>), every request needs a secret token, and requests from web pages are rejected. It also does nothing until you type <code>/agent on</code>.</p></details>
+			<details class="panel"><summary>What if the AI wrecks something?</summary><p>Every build the AI makes can be undone, up to the last 50, either by asking it or with <code>/agent undo</code>. Changes made through game commands can't be undone, and undo doesn't put back items that were inside chests.</p></details>
+			<details class="panel"><summary>Can the AI op itself or stop my server?</summary><p>No. Its commands have game-master permission, so it can use things like <code>/fill</code>, <code>/tp</code> and <code>/give</code>, but not <code>/op</code>, <code>/stop</code>, <code>/ban</code> or <code>/agent</code>.</p></details>
+			<details class="panel"><summary>Why doesn't the game pause when I switch windows?</summary><p>While the bridge is on, the game keeps running when you click into another window, so you can talk to your AI and still see blocks appear. Your normal setting comes back when you turn it off.</p></details>
+			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes, on a LAN world you host or on a server running the mod. On a dedicated server the bridge runs on the server machine, and screenshots don't work there.</p></details>
+			<details class="panel"><summary>Which AIs work with it?</summary><p>Anything that supports MCP over HTTP. It's tested with Claude Code. Codex uses the config shown above.</p></details>
+		</div>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>Agent Bridge v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/agent-bridge-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/agent-bridge">Source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+</body>
+</html>
