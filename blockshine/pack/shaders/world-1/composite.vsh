@@ -1,4 +1,4 @@
 #version 330 compatibility
 #define VERTEX
 #define NETHER
-#include "/program/shafts.glsl"
+#include "/program/water.glsl"

@@ -31,6 +31,8 @@ out float fogF;
 flat out vec3 sunCol;
 flat out vec3 ambCol;
 flat out int blockId;
+out float isFoliage;
+out float sssAmount;
 #ifdef WATER_PASS
 out vec3 worldPos;
 out vec3 worldNormal;
@@ -69,7 +71,11 @@ void main() {
 	vec3 sunDir = worldSunDir();
 	vec3 lightDir = normalize(mat3(gbufferModelViewInverse) * shadowLightPosition);
 	bool foliage = id == ID_PLANT || id == ID_LEAVES || id == ID_PLANT_FULL;
-	NdotL = (foliage || noNormal) ? 0.7 : max(dot(wn, lightDir), 0.0);
+	// Foliage is thin: light it softly from both sides instead of by face direction
+	NdotL = noNormal ? 0.7 : (foliage ? 0.35 + 0.35 * abs(dot(wn, lightDir)) : max(dot(wn, lightDir), 0.0));
+	isFoliage = foliage ? 1.0 : 0.0;
+	// How much the light shines through toward the camera (strongest looking into the sun through leaves)
+	sssAmount = pow(max(dot(normalize(playerPos), lightDir), 0.0), 4.0);
 
 	sunCol = sunLightColor(sunDir.y);
 	ambCol = ambientColor(sunDir.y);
@@ -114,6 +120,8 @@ in float fogF;
 flat in vec3 sunCol;
 flat in vec3 ambCol;
 flat in int blockId;
+in float isFoliage;
+in float sssAmount;
 #ifdef WATER_PASS
 in vec3 worldPos;
 in vec3 worldNormal;
@@ -121,19 +129,15 @@ in vec3 viewDirW;
 flat in vec3 sunDirW;
 flat in vec3 lightDirW;
 
-// Three sine waves; returns the slope of the surface as a normal.
-vec3 waterNormal(vec2 p, float t) {
-	vec2 d = vec2(0.0);
-	vec2 d1 = vec2(0.80, 0.60), d2 = vec2(-0.45, 0.89), d3 = vec2(0.97, -0.24);
-	d += d1 * 0.050 * cos(dot(d1, p) * 1.6 + t * 1.6);
-	d += d2 * 0.035 * cos(dot(d2, p) * 2.7 + t * 2.1);
-	d += d3 * 0.020 * cos(dot(d3, p) * 4.9 + t * 2.9);
-	return normalize(vec3(-d.x, 1.0, -d.y));
-}
-#endif
-
-/* RENDERTARGETS: 0 */
+// Water itself is shaded later in the water pass (program/water.glsl), which can see what's underneath.
+// Here water only records: face normal, sky light, biome tint and sun shadow.
+// (The RENDERTARGETS line lives in the generated gbuffers_*.fsh entry files so each program has exactly one.)
 layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outWaterData;
+layout(location = 2) out vec4 outWaterTint;
+#else
+layout(location = 0) out vec4 outColor;
+#endif
 
 void main() {
 	vec4 albedo = texture(gtexture, texcoord) * tint;
@@ -150,6 +154,19 @@ void main() {
 
 	float skyL = lmcoord.y;
 	float blockL = lmcoord.x;
+
+#ifdef WATER_PASS
+	if (blockId == ID_WATER) {
+		vec3 n = normalize(worldNormal);
+		outColor = vec4(0.0);                                  // leave the scene underneath untouched
+		outWaterData = vec4(n.xz * 0.5 + 0.5, skyL, 1.0);       // a = 1 marks water
+		outWaterTint = vec4(tint.rgb, sh);
+		return;
+	}
+	outWaterData = vec4(0.0);
+	outWaterTint = vec4(0.0);
+#endif
+
 #if defined NETHER || defined END
 	vec3 light = ambCol                       // no sky light in these dimensions: constant ambient instead
 #else
@@ -158,6 +175,11 @@ void main() {
 	           + vec3(MIN_LIGHT + nightVision * 0.35)
 	           + TORCH_COLOR * (pow(blockL, 6.0) * 2.0 + blockL * blockL * 0.04) * TORCH_BRIGHTNESS
 	           + sunCol * (NdotL * sh * smoothstep(0.05, 0.6, skyL));
+
+#ifdef FOLIAGE_GLOW
+	// Leaves and grass glow when the sun shines through them toward you (subsurface scattering)
+	if (isFoliage > 0.5) light += sunCol * sssAmount * sh * smoothstep(0.05, 0.6, skyL) * 0.9;
+#endif
 
 	vec3 lit = col * light;
 	float alpha = albedo.a;
@@ -168,31 +190,6 @@ void main() {
 		lit += col * glow * 3.5;
 	}
 	if (blockId == ID_LAVA) lit += col * 1.1;
-#endif
-
-#ifdef WATER_PASS
-	if (blockId == ID_WATER) {
-		vec3 n = normalize(worldNormal);
-	#ifdef WATER_WAVES
-		if (n.y > 0.5) n = waterNormal(worldPos.xz, frameTimeCounter);
-	#endif
-		vec3 v = normalize(viewDirW);
-		float cosT = clamp(dot(-v, n), 0.0, 1.0);
-		float fres = 0.06 + 0.94 * pow(1.0 - cosT, 4.0);
-		vec3 base = col * light * 0.42;
-	#ifdef WATER_REFLECTIONS
-		vec3 r = reflect(v, n);
-		r.y = abs(r.y);
-		vec3 refl = skyColor(r, sunDirW) * smoothstep(0.3, 0.95, skyL);
-		float spec = pow(max(dot(r, lightDirW), 0.0), 240.0);
-		refl += sunCol * spec * sh * 7.0;
-		lit = mix(base, refl, fres);
-		alpha = mix(0.72, 1.0, fres);
-	#else
-		lit = base;
-		alpha = 0.7;
-	#endif
-	}
 #endif
 
 	lit = mix(lit, fogCol, fogF);

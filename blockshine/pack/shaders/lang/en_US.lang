@@ -48,3 +48,12 @@ option.VL_STRENGTH=God Ray Strength
 option.LENS_FLARE=Lens Flare
 option.LENS_FLARE_STRENGTH=Lens Flare Strength
 option.LIGHT_SHAFTS.comment=Sun rays. Cheap screen rays on Medium; with God Rays on they become real volumetric light.
+option.WATER_SSR=Water Reflects the World
+option.WATER_SSR.comment=Trees, hills and buildings show up in water. Off = water reflects only the sky (faster).
+option.SSR_STEPS=Reflection Quality
+option.WATER_DEPTH_FOG=Water Murkiness
+option.SOFT_CLOUDS=Soft Clouds
+option.CLOUD_DETAIL=Cloud Detail
+option.CLOUD_AMOUNT=Cloud Amount
+option.FOLIAGE_GLOW=Sunlit Leaves
+option.FOLIAGE_GLOW.comment=Leaves and grass glow when the sun shines through them.

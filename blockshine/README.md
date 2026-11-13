@@ -1,6 +1,6 @@
 # Blockshine Shaders
 
-An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (soft shadows, volumetric god rays, lens flare, time-of-day atmosphere, starry nights, swaying plants, shiny water, bloom), built for speed so it runs well on low-end PCs and Macs.
+An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (soft shadows, glassy water with screen-space reflections and depth color, soft clouds, volumetric god rays, lens flare, time-of-day atmosphere and color grading, starry nights, gusty wind, sunlit leaves, bloom), built for speed so it runs well on low-end PCs and Macs.
 
 **Download:** https://xandertaylorx.github.io/minecraft-mods/mods/blockshine/
 
@@ -10,6 +10,8 @@ An original Iris shader pack for Minecraft 26.3. It aims for a warm, soft look (
 - **32-bit HDR buffer** (`R11F_G11F_B10F`) instead of 64-bit.
 - **Hardware-filtered shadows** with a distorted shadow map. Mobs and chests don't cast shadows (your player does), and the shadow pass only covers the shadow distance.
 - **God rays step through the shadow map along a precomputed path**, with 8 samples, and only on High. Lens-flare visibility is 5 cached depth reads.
+- **Water is shaded in one composite pass and touches only water pixels**: depth color, refraction and screen-space reflections (12–20 steps plus a 4-step refine).
+- **Clouds are value noise painted into the sky**, so there's no extra geometry. Vanilla clouds are off.
 - **Bloom from GPU mipmaps.** It reads 5 blurred mip levels, with no blur passes.
 - **Passes switch off completely** when their effect is off (`program.*.enabled`), not just skipped with an `if` inside the shader.
 - **Mac-friendly.** OpenGL 4.1-compatible only: no compute shaders, no image storage.
@@ -28,7 +30,8 @@ pack/shaders/
 ```bash
 ./gradlew packZip                 # build/blockshine-<version>.zip
 ./gradlew runClientGameTest       # real client + Iris + Sodium: compile check, screenshots, FPS per profile
-./gradlew runClientGameTest -PcompareWith=/path/to/OtherPack.zip   # also benchmark another pack you have
+./gradlew runClientGameTest -PcompareWith=/path/to/OtherPack.zip   # also benchmark + screenshot another pack you have
+./gradlew runClientGameTest -Pisolate     # measure High with one feature off at a time
 python3 tools/gen_wrappers.py     # after adding a program
 ```
 Screenshots go to `build/run/clientGameTest/screenshots/`, and results are printed as `BS-TEST` lines.

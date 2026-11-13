@@ -34,6 +34,9 @@ void main() {
 #endif
 
 #ifdef FRAGMENT
+#ifdef SKYTEXTURED
+#include "/lib/clouds.glsl"
+#endif
 #ifndef NO_TEXTURE
 uniform sampler2D gtexture;
 #endif
@@ -62,6 +65,10 @@ void main() {
 	// Bright sun/moon so bloom picks them up; the moon gets a cool silver tint
 	float isMoon = step(sunCol.r, sunCol.b);   // moonlight is bluer than sunlight
 	col *= mix(vec3(3.0), vec3(2.2, 2.5, 3.2), isMoon) * (1.0 - rainStrength);
+	vec4 ndc = vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, 1.0, 1.0);
+	vec4 vp = gbufferProjectionInverse * ndc;
+	vec3 dirW = normalize(mat3(gbufferModelViewInverse) * (vp.xyz / vp.w));
+	col *= 1.0 - cloudLayer(dirW, worldSunDir(), sunCol, ambCol).a * 0.85;   // sun hides behind clouds
 #elif defined LIGHTNING
 	col *= 6.0;
 #elif defined WEATHER

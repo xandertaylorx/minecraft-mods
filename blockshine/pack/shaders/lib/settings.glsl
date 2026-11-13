@@ -18,11 +18,18 @@
 #define WAVE_SPEED 1.0 // [0.5 0.75 1.0 1.25 1.5 2.0]
 #define WATER_WAVES
 #define WATER_REFLECTIONS
+#define WATER_SSR
+#define SSR_STEPS 12 // [8 12 16 20 24]
+#define WATER_DEPTH_FOG 1.0 // [0.5 0.75 1.0 1.5 2.0]
+#define SOFT_CLOUDS
+#define CLOUD_DETAIL 4 // [3 4 5]
+#define CLOUD_AMOUNT 1.0 // [0.0 0.5 1.0 1.5 2.0]
+#define FOLIAGE_GLOW
 #define FOG_DENSITY 1.0 // [0.0 0.5 0.75 1.0 1.5 2.0]
 
 // ---- Post ----
 #define BLOOM
-#define BLOOM_STRENGTH 0.10 // [0.04 0.06 0.08 0.10 0.12 0.15 0.20]
+#define BLOOM_STRENGTH 0.14 // [0.04 0.06 0.08 0.10 0.12 0.15 0.20]
 #define LIGHT_SHAFTS
 #define LIGHT_SHAFT_SAMPLES 6 // [6 8 12 16]
 //#define VOLUMETRIC_LIGHT
@@ -46,4 +53,10 @@
 #ifdef VOLUMETRIC_LIGHT
 #endif
 #ifdef LENS_FLARE
+#endif
+#ifdef SOFT_CLOUDS
+#endif
+#ifdef WATER_SSR
+#endif
+#ifdef FOLIAGE_GLOW
 #endif

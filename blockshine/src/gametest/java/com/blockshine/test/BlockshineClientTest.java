@@ -41,6 +41,8 @@ public class BlockshineClientTest implements FabricClientGameTest {
 				mc.options.renderDistance().set(12);
 				// The test sits still, so vanilla's AFK limiter would cap FPS at 30 after a minute.
 				mc.options.inactivityFpsLimit().set(net.minecraft.client.InactivityFpsLimit.MINIMIZED);
+				// If the window loses focus the game opens the pause menu, which caps FPS at 60. Don't.
+				mc.options.pauseOnLostFocus = false;
 			});
 
 			try (TestSingleplayerContext sp = ctx.worldBuilder().create()) {
@@ -51,58 +53,79 @@ public class BlockshineClientTest implements FabricClientGameTest {
 				input.pressKey(o -> o.keyToggleGui);
 				ctx.waitTicks(20);
 
-				// ---- Baseline: vanilla, shaders off ----
-				setShaders(ctx, false, gameDir, null);
-				look(ctx, 0.0F, 12.0F);
-				ctx.takeScreenshot("00_vanilla_noon");
-				int vanillaFps = measureFps(ctx);
-				result("FPS vanilla (no shaders): " + vanillaFps);
-
-				// ---- Each profile: compile check + FPS + noon screenshot ----
-				for (String profile : List.of("POTATO", "LOW", "MEDIUM", "HIGH")) {
-					setShaders(ctx, true, gameDir, profiles.get(profile));
-					look(ctx, 0.0F, 12.0F);
-					String err = Iris.getStoredError().map(Throwable::toString).orElse(null);
-					check(profile + " compiles and loads", err == null && PACK.equals(Iris.getCurrentPackName()), err);
-					int fps = measureFps(ctx);
-					result("FPS " + profile + ": " + fps + " (" + pct(fps, vanillaFps) + "% of vanilla)");
-					ctx.takeScreenshot("01_" + profile.toLowerCase() + "_noon");
-				}
-
-				// ---- Optional: compare against another pack the user already has (never copied into the repo) ----
+				// ---- FPS: two rounds, keep each setup's best. macOS throttles the window while it's
+				// covered by other windows, which can randomly sink one reading; the best of two is reliable.
 				String other = System.getProperty("blockshine.compareWith", "");
-				if (!other.isEmpty() && Files.exists(Path.of(other))) {
-					Path otherPack = Path.of(other);
-					String otherName = otherPack.getFileName().toString();
-					try {
-						Files.copy(otherPack, gameDir.resolve("shaderpacks").resolve(otherName), StandardCopyOption.REPLACE_EXISTING);
-					} catch (IOException e) {
-						throw new UncheckedIOException(e);
+				boolean compare = !other.isEmpty() && Files.exists(Path.of(other));
+				Map<String, Integer> best = new LinkedHashMap<>();
+				for (int round = 0; round < 2; round++) {
+					setShaders(ctx, false, gameDir, null);
+					look(ctx, 0.0F, 12.0F);
+					if (round == 0) ctx.takeScreenshot("00_vanilla_noon");
+					best.merge("vanilla (no shaders)", measureFps(ctx), Math::max);
+					for (String profile : List.of("POTATO", "LOW", "MEDIUM", "HIGH")) {
+						setShaders(ctx, true, gameDir, profiles.get(profile));
+						look(ctx, 0.0F, 12.0F);
+						if (round == 0) {
+							String err = Iris.getStoredError().map(Throwable::toString).orElse(null);
+							check(profile + " compiles and loads", err == null && PACK.equals(Iris.getCurrentPackName()), err);
+							ctx.takeScreenshot("01_" + profile.toLowerCase() + "_noon");
+						}
+						best.merge(profile, measureFps(ctx), Math::max);
 					}
-					ctx.runOnClient(mc -> {
+					if (compare) {
+						String otherName = Path.of(other).getFileName().toString();
 						try {
-							Iris.getIrisConfig().setShaderPackName(otherName);
-							Iris.getIrisConfig().setShadersEnabled(true);
-							Iris.getIrisConfig().save();
-							Iris.reload();
+							Files.copy(Path.of(other), gameDir.resolve("shaderpacks").resolve(otherName), StandardCopyOption.REPLACE_EXISTING);
 						} catch (IOException e) {
 							throw new UncheckedIOException(e);
 						}
-					});
-					ctx.waitTicks(40);
-					look(ctx, 0.0F, 12.0F);
-					int otherFps = measureFps(ctx);
-					result("FPS " + otherName + " (default settings): " + otherFps + " (" + pct(otherFps, vanillaFps) + "% of vanilla)");
-					ctx.takeScreenshot("02_compare_" + otherName.replace(".zip", ""));
+						ctx.runOnClient(mc -> {
+							try {
+								Iris.getIrisConfig().setShaderPackName(otherName);
+								Iris.getIrisConfig().setShadersEnabled(true);
+								Iris.getIrisConfig().save();
+								Iris.reload();
+							} catch (IOException e) {
+								throw new UncheckedIOException(e);
+							}
+						});
+						ctx.waitTicks(40);
+						look(ctx, 0.0F, 12.0F);
+						best.merge(otherName + " (default settings)", measureFps(ctx), Math::max);
+						if (round == 0) {
+							ctx.takeScreenshot("02_compare_" + otherName.replace(".zip", ""));
+							// Same views the Blockshine shots use, for side-by-side looks (kept in build/, never committed)
+							compareShots(ctx, server, "cmp_other");
+						}
+					}
 				}
+				int vanillaFps = best.get("vanilla (no shaders)");
+				best.forEach((k, v) -> result("FPS " + k + ": " + v + " (" + pct(v, vanillaFps) + "% of vanilla)"));
 
-				setShaders(ctx, false, gameDir, null);
-				look(ctx, 0.0F, 12.0F);
-				int vanillaFps2 = measureFps(ctx);
-				result("FPS vanilla again (drift check): " + vanillaFps2);
+				// ---- Optional: isolate what makes HIGH slow (-Dblockshine.isolate=true) ----
+				if (Boolean.getBoolean("blockshine.isolate")) {
+					String[][] variants = {
+						{"HIGH again", ""},
+						{"HIGH -SSR", "WATER_SSR=false"},
+						{"HIGH -godrays", "VOLUMETRIC_LIGHT=false"},
+						{"HIGH clouds4", "CLOUD_DETAIL=4"},
+						{"HIGH shadow1024", "shadowMapResolution=1024"},
+						{"HIGH filter1", "SHADOW_FILTER=1"},
+						{"HIGH again2", ""},
+					};
+					for (String[] v : variants) {
+						Map<String, String> opts = new LinkedHashMap<>(profiles.get("HIGH"));
+						if (!v[1].isEmpty()) opts.put(v[1].split("=")[0], v[1].split("=")[1]);
+						setShaders(ctx, true, gameDir, opts);
+						look(ctx, 0.0F, 12.0F);
+						result("FPS " + v[0] + ": " + measureFps(ctx));
+					}
+				}
 
 				// ---- Times of day on MEDIUM ----
 				setShaders(ctx, true, gameDir, profiles.get("MEDIUM"));
+				compareShots(ctx, server, "cmp_ours");
 				shot(ctx, server, "time set 1500", 0.0F, 12.0F, "10_medium_morning");
 				shot(ctx, server, "time set 12400", 90.0F, 2.0F, "11_medium_sunset_west");
 				shot(ctx, server, "time set 12400", 0.0F, 12.0F, "12_medium_sunset_scene");
@@ -195,6 +218,21 @@ public class BlockshineClientTest implements FabricClientGameTest {
 		)) {
 			s.runCommand(c);
 		}
+	}
+
+	/** A fixed set of views used to compare looks between packs. */
+	private void compareShots(ClientGameTestContext ctx, TestServerContext server, String prefix) {
+		server.runCommand("tp @a 0 -60 0 0 0");
+		shot(ctx, server, "time set 6000", 0.0F, 12.0F, prefix + "_a_noon");
+		server.runCommand("tp @a 0 -59 4 0 0");
+		shot(ctx, server, "time set 6000", 0.0F, 40.0F, prefix + "_b_water");
+		server.runCommand("tp @a 9 -60 8 90 0");
+		shot(ctx, server, "time set 11900", 95.0F, -6.0F, prefix + "_c_sunset_water");
+		server.runCommand("tp @a -10 -60 4 0 0");
+		shot(ctx, server, "time set 4000", 160.0F, -10.0F, prefix + "_d_leaves");
+		server.runCommand("tp @a 0 -60 0 0 0");
+		shot(ctx, server, "time set 18000", 0.0F, 8.0F, prefix + "_e_night");
+		server.runCommand("time set 6000");
 	}
 
 	private void shot(ClientGameTestContext ctx, TestServerContext server, String cmd, float yaw, float pitch, String name) {

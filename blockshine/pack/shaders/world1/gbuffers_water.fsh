@@ -3,4 +3,5 @@
 #define END
 #define TERRAIN
 #define WATER_PASS
+/* RENDERTARGETS: 0,1,2 */
 #include "/program/lit.glsl"

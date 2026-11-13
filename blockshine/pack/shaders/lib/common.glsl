@@ -48,7 +48,7 @@ vec3 worldSunDir() { return normalize(mat3(gbufferModelViewInverse) * sunPositio
 // h = sun height (-1..1). These run per vertex, not per pixel.
 
 float dayFactor(float h)    { return smoothstep(-0.06, 0.18, h); }
-float sunsetFactor(float h) { return clamp(1.0 - abs(h - 0.04) * 3.2, 0.0, 1.0); }
+float sunsetFactor(float h) { return clamp(1.0 - abs(h - 0.10) * 2.1, 0.0, 1.0); }
 float nightFactor(float h)  { return 1.0 - smoothstep(-0.14, 0.02, h); }
 // Dawn: sun low and in the east (+X). Used for morning mist.
 float morningFactor(vec3 sunDir) {
@@ -59,10 +59,10 @@ vec3 sunLightColor(float h) {
 #if defined NETHER || defined END
 	return vec3(0.0);
 #else
-	vec3 day    = vec3(1.00, 0.95, 0.88) * 1.75;
-	vec3 sunset = vec3(1.00, 0.42, 0.12) * 1.7;
+	vec3 day    = vec3(1.00, 0.96, 0.91) * 1.42;
+	vec3 sunset = vec3(1.00, 0.50, 0.18) * 1.75;
 	vec3 night  = vec3(0.42, 0.56, 1.00) * 0.28;          // silvery-blue moonlight
-	vec3 c = mix(sunset, day, smoothstep(0.05, 0.35, h));
+	vec3 c = mix(sunset, day, smoothstep(0.08, 0.45, h));
 	c = mix(night, c, smoothstep(-0.08, 0.03, h));
 	return c * (1.0 - rainStrength * 0.8) * SUN_BRIGHTNESS;
 #endif
@@ -74,7 +74,7 @@ vec3 ambientColor(float h) {
 #elif defined END
 	return vec3(0.10, 0.08, 0.16);
 #else
-	vec3 day    = vec3(0.36, 0.48, 0.72) * 0.75;
+	vec3 day    = vec3(0.36, 0.48, 0.72) * 0.88;
 	vec3 sunset = vec3(0.50, 0.36, 0.34) * 0.55;
 	vec3 night  = vec3(0.05, 0.075, 0.15);
 	vec3 c = mix(sunset, day, smoothstep(0.05, 0.35, h));
@@ -98,15 +98,15 @@ vec3 skyColor(vec3 dir, vec3 sunDir) {
 	float up = max(dir.y, 0.0);
 	float horizon = pow(1.0 - up, 3.0);
 
-	vec3 zenith = mix(vec3(0.004, 0.009, 0.030), vec3(0.07, 0.22, 0.75), day);
+	vec3 zenith = mix(vec3(0.004, 0.009, 0.030), vec3(0.07, 0.22, 0.75), day * (1.0 - sunset * 0.6));
 	vec3 hor    = mix(vec3(0.020, 0.032, 0.075), vec3(0.40, 0.58, 0.92), day);
-	zenith = mix(zenith, vec3(0.10, 0.10, 0.32), sunset * 0.7);   // purple-blue sky overhead at sunset
+	zenith = mix(zenith, vec3(0.30, 0.20, 0.20), sunset * 0.75);  // warm, dusky sky overhead at sunset
 	vec3 col = mix(zenith, hor, horizon);
 
 	// Warm sunset band, strongest on the sun's side of the sky
 	float sunSide = dot(dir, sunDir) * 0.5 + 0.5;
-	vec3 sunsetCol = mix(vec3(0.42, 0.16, 0.24), vec3(1.05, 0.34, 0.06), sunSide * sunSide);
-	col = mix(col, sunsetCol, sunset * pow(1.0 - up, 1.6) * (0.45 + 0.55 * sunSide));
+	vec3 sunsetCol = mix(vec3(0.48, 0.24, 0.16), vec3(1.00, 0.42, 0.07), sunSide * sunSide);
+	col = mix(col, sunsetCol, sunset * pow(1.0 - up, 0.6) * (0.65 + 0.35 * sunSide));
 
 	// Deep orange right at the horizon under the sun
 	col = mix(col, vec3(1.0, 0.28, 0.04), sunset * pow(1.0 - up, 7.0) * pow(sunSide, 4.0) * 0.85);
@@ -135,7 +135,7 @@ vec3 skyColor(vec3 dir, vec3 sunDir) {
 // How thick the air is right now: misty dawns, clear noons, hazy golden dusk, light night mist.
 float airDensity(vec3 sunDir) {
 	float h = sunDir.y;
-	return (1.0 + morningFactor(sunDir) * 3.0 + sunsetFactor(h) * 1.0 + nightFactor(h) * 0.8 + rainStrength * 5.0) * FOG_DENSITY;
+	return (1.0 + morningFactor(sunDir) * 3.0 + sunsetFactor(h) * 0.5 + nightFactor(h) * 0.8 + rainStrength * 5.0) * FOG_DENSITY;
 }
 
 // How much fog covers something at view-space distance `dist`.
@@ -147,7 +147,7 @@ float fogAmount(float dist, vec3 sunDir) {
 #elif defined END
 	float haze = 1.0 - exp(-dist * 0.006 * FOG_DENSITY);
 #else
-	float haze = 1.0 - exp(-dist * 0.0018 * airDensity(sunDir));
+	float haze = 1.0 - exp(-dist * 0.0032 * airDensity(sunDir));
 #endif
 	// Border fog hides the edge of the render distance
 	float border = smoothstep(far * 0.72, far, dist);

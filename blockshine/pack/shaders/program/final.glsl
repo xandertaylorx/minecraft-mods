@@ -5,6 +5,10 @@
 
 /*
 const int colortex0Format = R11F_G11F_B10F;   // 32-bit HDR: half the memory traffic of RGBA16F
+const int colortex1Format = RGBA8;            // water: normal.xz, sky light, mask
+const int colortex2Format = RGBA8;            // water: biome tint, sun shadow
+const vec4 colortex1ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
+const vec4 colortex2ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
 */
 
 uniform sampler2D colortex0;
@@ -14,6 +18,8 @@ uniform sampler2D depthtex0;
 #ifdef VERTEX
 out vec2 texcoord;
 flat out float exposure;
+flat out vec3 grade;
+flat out float satBoost;
 flat out vec2 sunScreen;
 flat out vec3 flareCol;
 
@@ -30,6 +36,16 @@ void main() {
 	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 1.45, nightFactor(sunDir.y) * sky);
 #endif
 
+	// Golden color grade around sunrise/sunset, cool silver at night
+#if defined NETHER || defined END
+	grade = vec3(1.0);
+	satBoost = 0.0;
+#else
+	float golden = sunsetFactor(sunDir.y) * smoothstep(-0.08, 0.04, sunDir.y) * (1.0 - rainStrength);
+	grade = mix(vec3(1.0), vec3(1.16, 0.96, 0.72), golden);
+	satBoost = golden * 0.25;
+	grade = mix(grade, vec3(0.92, 0.98, 1.10), nightFactor(sunDir.y));
+#endif
 	flareCol = vec3(0.0);
 	sunScreen = vec2(0.5);
 #if defined LENS_FLARE && !defined NETHER && !defined END
@@ -47,6 +63,8 @@ void main() {
 #ifdef FRAGMENT
 in vec2 texcoord;
 flat in float exposure;
+flat in vec3 grade;
+flat in float satBoost;
 flat in vec2 sunScreen;
 flat in vec3 flareCol;
 
@@ -104,9 +122,9 @@ void main() {
 		if (vis > 0.0) c += lensFlare(texcoord) * flareCol * vis;
 	}
 #endif
-	c = filmic(c * exposure);
+	c = filmic(c * exposure * grade);
 	float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
-	c = max(mix(vec3(l), c, SATURATION), 0.0);
+	c = max(mix(vec3(l), c, SATURATION + satBoost), 0.0);
 	c = pow(c, vec3(1.0 / 2.2));
 #ifdef VIGNETTE
 	vec2 v = texcoord - 0.5;

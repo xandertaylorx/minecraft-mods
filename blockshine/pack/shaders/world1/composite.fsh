@@ -1,4 +1,4 @@
 #version 330 compatibility
 #define FRAGMENT
 #define END
-#include "/program/shafts.glsl"
+#include "/program/water.glsl"

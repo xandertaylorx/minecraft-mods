@@ -36,7 +36,7 @@
 			<span class="tag">Mac + Windows</span>
 		</div>
 		<h1>Block<b>shine</b></h1>
-		<p class="tagline">God rays through the trees, lens flares, misty mornings, golden sunsets and starry nights, built from the ground up to run fast on any computer, including Macs.</p>
+		<p class="tagline">Glassy water, soft clouds, god rays, lens flares, golden sunsets and starry nights, built from the ground up to run fast on any computer, including Macs.</p>
 		<div class="btns">
 			<a class="btn go" href="../../downloads/blockshine-1.0.0.zip" download>Download v1.0.0</a>
 			<a class="btn" href="#speed">How fast is it?</a>
@@ -55,10 +55,11 @@
 			<div class="step panel"><h3>God rays</h3><p>Sunlight streams through gaps in the leaves as real beams of light, visible from any angle (High).</p></div>
 			<div class="step panel"><h3>Lens flare</h3><p>Look toward the sun for a soft glow, a streak and colored ghosts. Hidden when trees or hills block the sun.</p></div>
 			<div class="step panel"><h3>Living atmosphere</h3><p>Misty pink dawns, clear blue noons, golden-hazed sunsets and a faint blue mist at night.</p></div>
+			<div class="step panel"><h3>Soft clouds</h3><p>Fluffy painted clouds that drift, glow orange at sunset and turn moonlit blue at night.</p></div>
 			<div class="step panel"><h3>Starry nights</h3><p>Silvery-blue moonlight, a glowing halo around the moon and twinkling stars.</p></div>
 			<div class="step panel"><h3>Soft shadows</h3><p>Trees, buildings and you cast soft shadows that move with the sun and moon.</p></div>
-			<div class="step panel"><h3>Living world</h3><p>Grass, flowers, crops and leaves sway in the wind (more when it rains).</p></div>
-			<div class="step panel"><h3>Shiny water</h3><p>Rippling water that reflects the sky and blazes with the sun at sunset.</p></div>
+			<div class="step panel"><h3>Wind &amp; sunlit leaves</h3><p>Gusts roll across fields so whole patches of grass lean together. Leaves glow when the sun shines through them.</p></div>
+			<div class="step panel"><h3>Glassy water</h3><p>Mirror reflections of trees and terrain, clear shallows that deepen to dark teal, and a bottom that wobbles through the waves.</p></div>
 			<div class="step panel"><h3>Glowing lights</h3><p>Torches, lanterns, glowstone and lava glow, with soft bloom around bright things.</p></div>
 		</div>
 	</section>
@@ -72,16 +73,16 @@
 			<table class="files perf">
 				<thead><tr><th>Setup</th><th>Avg FPS</th><th>What's on</th></tr></thead>
 				<tbody>
-					<tr><td><b>No shaders (vanilla)</b></td><td data-label="FPS">533</td><td data-label="On" class="muted">Nothing</td></tr>
-					<tr><td><b>Blockshine Potato</b></td><td data-label="FPS">291</td><td data-label="On" class="muted">Lighting, sky, fog, water. No shadows.</td></tr>
-					<tr><td><b>Blockshine Low</b></td><td data-label="FPS">262</td><td data-label="On" class="muted">+ sharp shadows, bloom, lens flare, waving grass</td></tr>
-					<tr><td><b>Blockshine Medium</b> (default)</td><td data-label="FPS">271</td><td data-label="On" class="muted">+ soft shadows, sun rays, waving leaves, water waves</td></tr>
-					<tr><td><b>Blockshine High</b></td><td data-label="FPS">227</td><td data-label="On" class="muted">+ volumetric god rays, extra-soft 2048 shadows</td></tr>
-					<tr><td><b>BSL v10.1.8</b> (default settings)</td><td data-label="FPS">185</td><td data-label="On" class="muted">For comparison</td></tr>
+					<tr><td><b>No shaders (vanilla)</b></td><td data-label="FPS">399</td><td data-label="On" class="muted">Nothing</td></tr>
+					<tr><td><b>Blockshine Potato</b></td><td data-label="FPS">282</td><td data-label="On" class="muted">Lighting, sky, soft clouds, see-through water. No shadows.</td></tr>
+					<tr><td><b>Blockshine Low</b></td><td data-label="FPS">217</td><td data-label="On" class="muted">+ sharp shadows, bloom, lens flare, waving grass</td></tr>
+					<tr><td><b>Blockshine Medium</b> (default)</td><td data-label="FPS">210</td><td data-label="On" class="muted">+ soft shadows, water reflections, sun rays, waving leaves</td></tr>
+					<tr><td><b>Blockshine High</b></td><td data-label="FPS">203</td><td data-label="On" class="muted">+ volumetric god rays, extra-soft 2048 shadows</td></tr>
+					<tr><td><b>BSL v10.1.8</b> (default settings)</td><td data-label="FPS">139</td><td data-label="On" class="muted">For comparison</td></tr>
 				</tbody>
 			</table>
 		</div>
-		<p class="hash" style="margin-top:12px">Measured in one run on an Apple M1 Pro MacBook: same scene, 12-chunk render distance, small test window, Iris 1.11.7 + Sodium, median of 8 readings per setup. Your numbers will be different. In this run, Medium was about 1.5× BSL's FPS, and High (with full volumetric god rays) about 1.2×. Blockshine is its own pack and isn't affiliated with BSL.</p>
+		<p class="hash" style="margin-top:12px">Measured on an Apple M1 Pro MacBook: same scene, 12-chunk render distance, small test window, Iris 1.11.7 + Sodium. Each setup measured in two rounds, best median of 8 readings. Your numbers will be different. Here, Medium and High both ran at about 1.5× BSL's FPS. Blockshine is its own pack and isn't affiliated with BSL.</p>
 	</section>
 
 	<section id="mac">
@@ -111,15 +112,16 @@
 			<p>Medium profile unless noted. Click to see full size.</p>
 		</div>
 		<div class="gallery">
-			<a href="img/godrays.jpg"><img src="img/godrays.jpg" alt="God rays and lens flare over a pond at sunset (High)"></a>
-			<a href="../../img/hero-golden-hour.jpg"><img src="../../img/hero-golden-hour.jpg" alt="Golden hour sun glinting on water (High)"></a>
-			<a href="img/night.jpg"><img src="img/night.jpg" alt="Starry night over the pond with torches"></a>
-			<a href="img/sunrise-mist.jpg"><img src="img/sunrise-mist.jpg" alt="Misty pink sunrise"></a>
+			<a href="../../img/hero-golden-hour.jpg"><img src="../../img/hero-golden-hour.jpg" alt="Golden hour: lens flare and trees reflected in the pond (High)"></a>
+			<a href="img/godrays.jpg"><img src="img/godrays.jpg" alt="Sunset glinting on glassy water (High)"></a>
+			<a href="img/water.jpg"><img src="img/water.jpg" alt="Trees reflected in clear water at noon"></a>
+			<a href="img/sunset-water.jpg"><img src="img/sunset-water.jpg" alt="Late afternoon light on the pond"></a>
+			<a href="img/night.jpg"><img src="img/night.jpg" alt="Moonlit clouds and stars over the pond"></a>
+			<a href="img/sunrise-mist.jpg"><img src="img/sunrise-mist.jpg" alt="Misty sunrise"></a>
 			<a href="img/night-sky.jpg"><img src="img/night-sky.jpg" alt="Moon halo and twinkling stars"></a>
 			<a href="img/lens-flare.jpg"><img src="img/lens-flare.jpg" alt="Lens flare looking toward the sun"></a>
+			<a href="img/shadows.jpg"><img src="img/shadows.jpg" alt="Soft tree shadows and soft clouds"></a>
 			<a href="img/evening.jpg"><img src="img/evening.jpg" alt="Evening light over flowers and trees"></a>
-			<a href="img/noon.jpg"><img src="img/noon.jpg" alt="Noon with soft tree shadows"></a>
-			<a href="img/water.jpg"><img src="img/water.jpg" alt="Rippling water reflecting the sky"></a>
 			<a href="img/nether.jpg"><img src="img/nether.jpg" alt="The Nether with glowing glowstone and lava"></a>
 			<a href="img/vanilla.jpg"><img src="img/vanilla.jpg" alt="The same scene without shaders"></a>
 		</div>
