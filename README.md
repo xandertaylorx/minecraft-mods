@@ -56,14 +56,16 @@ While it's in your hand, you take no fall damage.
 ### 🛰️ Orbital Laser
 | Do this | What happens |
 | --- | --- |
-| Right-click a block (up to 128 blocks away) | Marks the spot. A glowing target ring charges up for 2.5 seconds with rising sparks and warning beeps, then a plasma beam hits from the sky. |
+| Right-click a block (up to 128 blocks away) | Marks the spot. Glowing target rings, light pillars and a lock-on laser charge up for 2.5 seconds with rising sparks and warning beeps, then a huge plasma beam hits from the sky for 3 seconds. |
 
-The beam blasts a crater about 12 blocks wide, sets the ground on fire and throws back and burns every mob within 8 blocks (up to 28 damage in the middle). The blast never hurts you, but watch out for the fire and the drop. 15-second cooldown. Bedrock, obsidian and other blast-proof blocks survive, and it won't break blocks in spawn protection, in adventure mode, or when the `tnt_explodes` game rule is off.
+The beam blasts a crater about 25 blocks wide and 14 deep, flings chunks of the ground into the air, scorches the crater floor into magma, blackstone and basalt, and sets it all on fire. Every mob within 16 blocks gets thrown back and burned (up to 40 damage in the middle). The blast never hurts you, but watch out for the fire and the drop. 5-second cooldown. Bedrock, obsidian and other blast-proof blocks survive, and it won't break blocks in spawn protection, in adventure mode, or when the `tnt_explodes` game rule is off.
 
 <p>
   <img src="hero-arsenal/docs/orbital-charging.png" width="49%" alt="Orbital Laser target ring charging up">
   <img src="hero-arsenal/docs/orbital-beam.png" width="49%" alt="Orbital Laser beam hitting a group of husks">
 </p>
+
+![The crater left behind by the Orbital Laser](hero-arsenal/docs/orbital-crater.png)
 
 <p>
   <img src="hero-arsenal/docs/gauntlet-blast.png" width="49%" alt="Pulse Gauntlet blast">
@@ -72,7 +74,7 @@ The beam blasts a crater about 12 blocks wide, sets the ground on fire and throw
 
 ### Install
 1. Use a **Fabric** instance for Minecraft **26.3** (in Prism Launcher, for example) with **Fabric API** installed.
-2. Download [`hero-arsenal-1.1.0.jar`](https://xandertaylorx.github.io/minecraft-mods/downloads/) from the site and put it in the instance's `mods` folder.
+2. Download [`hero-arsenal-1.2.0.jar`](https://xandertaylorx.github.io/minecraft-mods/downloads/) from the site and put it in the instance's `mods` folder.
 
 Mod page: **https://xandertaylorx.github.io/minecraft-mods/mods/hero-arsenal/**
 

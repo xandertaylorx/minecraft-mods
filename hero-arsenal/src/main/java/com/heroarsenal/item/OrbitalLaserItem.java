@@ -21,13 +21,13 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Orbital Laser.
- * - Right-click a block up to 128 blocks away to mark it. A target ring charges up for 2.5 seconds,
- *   then a plasma beam hits from the sky: crater, fire, big damage and knockback in an 8-block radius.
- * - 15 second cooldown. The item does nothing while idle (no inventory ticking).
+ * - Right-click a block up to 128 blocks away to mark it. Target rings charge up for 2.5 seconds,
+ *   then a plasma beam hits from the sky: a 25-block crater, flung debris, scorched burning ground, big damage and knockback in a 16-block radius.
+ * - 5 second cooldown. The item does nothing while idle (no inventory ticking).
  */
 public class OrbitalLaserItem extends Item {
 	public static final double RANGE = 128.0;
-	public static final int COOLDOWN = 300;
+	public static final int COOLDOWN = 100;
 	private static final int MISS_COOLDOWN = 10;
 
 	public OrbitalLaserItem(Item.Properties properties) {

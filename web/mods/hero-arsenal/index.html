@@ -29,14 +29,14 @@
 <div class="hero" style="background-image: url('img/hero-banner.png')">
 	<div class="wrap">
 		<div class="tags">
-			<span class="tag status-live">v1.1.0</span>
+			<span class="tag status-live">v1.2.0</span>
 			<span class="tag loader">Fabric</span>
 			<span class="tag">MC 26.3</span>
 		</div>
 		<h1>Hero <b>Arsenal</b></h1>
 		<p class="tagline">Five superhero weapons. Throw a hammer that calls down lightning, then catch it when it flies back, or call a plasma beam down from orbit.</p>
 		<div class="btns">
-			<a class="btn go" href="../../downloads/hero-arsenal-1.1.0.jar" download>Download v1.1.0</a>
+			<a class="btn go" href="../../downloads/hero-arsenal-1.2.0.jar" download>Download v1.2.0</a>
 			<a class="btn" href="#items">See the items</a>
 		</div>
 	</div>
@@ -109,10 +109,10 @@
 					<h3>Orbital Laser</h3>
 					<span class="rarity">Epic</span>
 					<ul>
-						<li><span><kbd>Right-Click</kbd> a block</span><span>Mark a target up to 128 blocks away. A <b>target ring</b> charges for 2.5 seconds, then a <b>plasma beam</b> hits from the sky.</span></li>
-						<li><span>Impact</span><span>Blasts a <b>crater</b>, sets it on <b>fire</b>, and throws back every mob within 8 blocks (up to 28 damage).</span></li>
+						<li><span><kbd>Right-Click</kbd> a block</span><span>Mark a target up to 128 blocks away. <b>Target rings</b> and light pillars charge for 2.5 seconds, then a huge <b>plasma beam</b> hits from the sky.</span></li>
+						<li><span>Impact</span><span>Blasts a 25-block <b>crater</b>, flings <b>debris</b>, scorches the floor into magma and sets it on <b>fire</b>. Throws back every mob within 16 blocks (up to 40 damage).</span></li>
 					</ul>
-					<p class="note">The blast never hurts you (the fire still can). 15-second cooldown. Won't break blocks in spawn protection or with <code>tnt_explodes</code> off.</p>
+					<p class="note">The blast never hurts you (the fire still can). 5-second cooldown. Won't break blocks in spawn protection or with <code>tnt_explodes</code> off.</p>
 				</div>
 			</article>
 		</div>
@@ -128,6 +128,7 @@
 			<a href="img/shield-blocking.png"><img src="img/shield-blocking.png" alt="Blocking with the Star Shield"></a>
 			<a href="img/gauntlet-blast.png"><img src="img/gauntlet-blast.png" alt="Pulse Gauntlet blasting a husk"></a>
 			<a href="img/orbital-beam.png"><img src="img/orbital-beam.png" alt="Orbital Laser beam hitting a group of husks"></a>
+			<a href="img/orbital-crater.png"><img src="img/orbital-crater.png" alt="The crater left behind by the Orbital Laser"></a>
 			<a href="img/orbital-charging.png"><img src="img/orbital-charging.png" alt="Orbital Laser target ring charging up"></a>
 			<a href="img/web-hit.png"><img src="img/web-hit.png" alt="Web Shooter webbing a husk"></a>
 			<a href="img/shield-held.png"><img src="img/shield-held.png" alt="Holding the Star Shield"></a>
@@ -141,10 +142,10 @@
 		</div>
 		<div class="dl panel">
 			<div>
-				<h3>Hero Arsenal v1.1.0</h3>
+				<h3>Hero Arsenal v1.2.0</h3>
 				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. <a href="../../#install">How to install</a> · <a href="../../downloads/">All downloads</a></p>
 			</div>
-			<a class="btn go" href="../../downloads/hero-arsenal-1.1.0.jar" download>Download .jar</a>
+			<a class="btn go" href="../../downloads/hero-arsenal-1.2.0.jar" download>Download .jar</a>
 		</div>
 	</section>
 
@@ -156,7 +157,7 @@
 			<details class="panel"><summary>Does it work with Forge or NeoForge?</summary><p>No, it's Fabric only for now.</p></details>
 			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes. Install it on the server and on every player's game.</p></details>
 			<details class="panel"><summary>Will the lightning burn down my house?</summary><p>No. Hero Arsenal lightning never sets blocks on fire. Mobs still burn, though.</p></details>
-			<details class="panel"><summary>Will the Orbital Laser lag my server?</summary><p>No. The crater is carved a few dozen blocks per tick instead of all at once, the beam is drawn with a handful of shapes rather than thousands of particles, and the item does nothing while it sits in your inventory.</p></details>
+			<details class="panel"><summary>Will the Orbital Laser lag my server?</summary><p>No. The crater is carved in capped batches spread over several ticks instead of all at once, the beam is drawn with a handful of shapes rather than thousands of particles, and the item does nothing while it sits in your inventory.</p></details>
 			<details class="panel"><summary>I threw Mjolnir with a full inventory. Where did it go?</summary><p>It drops on the ground right next to you.</p></details>
 		</div>
 	</section>

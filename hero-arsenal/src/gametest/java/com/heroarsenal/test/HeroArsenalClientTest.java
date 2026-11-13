@@ -156,12 +156,14 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 
 			// --- Orbital Laser: mark, charge, beam, crater, cooldown ---
 			server.runCommand("kill @e[type=husk]");
-			server.runCommand("tp @a 0 -60 -40 0 0");
-			spawnHusks(server, "0 -60 -28", "2 -60 -27", "-2 -60 -29");
+			// A solid stone mound so the crater has room to go deep (the flat world is only 3 blocks to bedrock).
+			server.runCommand("fill -18 -60 -46 18 -50 -10 minecraft:stone");
+			server.runCommand("tp @a 0 -49 -44 0 0");
+			spawnHusks(server, "0 -49 -28", "2 -49 -27", "-2 -49 -29");
 			ctx.waitTicks(30);
 			selectSlot(ctx, 4);
 			ctx.takeScreenshot("17_orbital_laser_first_person");
-			input.lookAt(0.0F, 8.0F);
+			input.lookAt(0.0F, 5.8F);
 			input.pressKey(o -> o.keyUse);
 			ctx.waitTicks(2);
 			int strikes = countStrikes(server);
@@ -188,7 +190,7 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 				int air = 0;
 				for (int dx = -3; dx <= 3; dx++) {
 					for (int dz = -3; dz <= 3; dz++) {
-						for (int y = -63; y <= -61; y++) {
+						for (int y = -55; y <= -50; y++) {
 							if (s.overworld().getBlockState(new BlockPos(dx, y, -28 + dz)).isAir()) {
 								air++;
 							}
@@ -197,10 +199,16 @@ public class HeroArsenalClientTest implements FabricClientGameTest {
 				}
 				return air;
 			});
-			check("Beam carved a crater (" + carved + " of 147 ground blocks gone)", carved > 100);
-			boolean fire = server.computeOnServer(s -> BlockPos.betweenClosedStream(-8, -64, -36, 8, -58, -20)
+			check("Beam carved a deep crater (" + carved + " of 294 blocks gone)", carved > 280);
+			boolean fire = server.computeOnServer(s -> BlockPos.betweenClosedStream(-16, -64, -44, 16, -45, -12)
 				.anyMatch(p -> s.overworld().getBlockState(p).is(Blocks.FIRE)));
 			check("Crater is on fire", fire);
+			boolean scorched = server.computeOnServer(s -> BlockPos.betweenClosedStream(-16, -64, -44, 16, -45, -12)
+				.anyMatch(p -> s.overworld().getBlockState(p).is(Blocks.MAGMA_BLOCK)));
+			check("Crater floor is scorched", scorched);
+			boolean wide = server.computeOnServer(s -> s.overworld().getBlockState(new BlockPos(10, -50, -28)).isAir()
+				&& s.overworld().getBlockState(new BlockPos(-10, -50, -28)).isAir());
+			check("Crater is over 20 blocks wide", wide);
 			ctx.takeScreenshot("21_orbital_laser_crater");
 			camera(ctx, CameraType.FIRST_PERSON);
 		} finally {
