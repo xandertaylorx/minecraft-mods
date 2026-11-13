@@ -441,3 +441,35 @@ footer p { margin: 6px 0 0; }
 	.lightbox .lb-next { right: calc(50% - 56px); }
 }
 .gallery a { cursor: zoom-in; }
+
+/* ---------- centred column ----------
+   The banner and the page content sit in one framed column down the middle,
+   with the deepslate background showing on both sides. */
+.hero {
+	max-width: calc(var(--wrap) - 40px);
+	margin: 34px auto 0;
+	border: 4px solid #000;
+	box-shadow: inset 3px 3px 0 var(--edge-light), 6px 6px 0 rgba(0, 0, 0, 0.45);
+}
+.hero .wrap { padding: 0 40px; }
+
+main.wrap {
+	max-width: calc(var(--wrap) - 40px);
+	margin: 20px auto 0;
+	padding: 8px 36px 44px;
+	background: rgba(22, 22, 26, 0.94);
+	border: 4px solid #000;
+	box-shadow: inset 3px 3px 0 var(--edge-light), inset -3px -3px 0 var(--edge-dark), 6px 6px 0 rgba(0, 0, 0, 0.45);
+}
+main.wrap > section { padding-top: 48px; }
+main.wrap > section:first-child { padding-top: 34px; }
+
+@media (max-width: 1080px) {
+	.hero, main.wrap { margin-left: 16px; margin-right: 16px; }
+}
+@media (max-width: 640px) {
+	.hero { margin-top: 26px; }
+	.hero .wrap { padding: 0 18px; }
+	main.wrap { padding: 4px 16px 32px; }
+	main.wrap > section { padding-top: 36px; }
+}
