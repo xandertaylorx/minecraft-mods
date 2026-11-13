@@ -30,6 +30,7 @@ out vec3 fogCol;
 out float fogF;
 flat out vec3 sunCol;
 flat out vec3 ambCol;
+flat out float nightF;
 flat out int blockId;
 out float isFoliage;
 out float sssAmount;
@@ -72,13 +73,14 @@ void main() {
 	vec3 lightDir = normalize(mat3(gbufferModelViewInverse) * shadowLightPosition);
 	bool foliage = id == ID_PLANT || id == ID_LEAVES || id == ID_PLANT_FULL;
 	// Foliage is thin: light it softly from both sides instead of by face direction
-	NdotL = noNormal ? 0.7 : (foliage ? 0.35 + 0.35 * abs(dot(wn, lightDir)) : max(dot(wn, lightDir), 0.0));
+	NdotL = noNormal ? 0.6 : (foliage ? 0.28 + 0.30 * abs(dot(wn, lightDir)) : max(dot(wn, lightDir), 0.0));
 	isFoliage = foliage ? 1.0 : 0.0;
 	// How much the light shines through toward the camera (strongest looking into the sun through leaves)
 	sssAmount = pow(max(dot(normalize(playerPos), lightDir), 0.0), 4.0);
 
 	sunCol = sunLightColor(sunDir.y);
 	ambCol = ambientColor(sunDir.y);
+	nightF = nightFactor(sunDir.y);
 
 #ifdef USE_SHADOWS
 	// Push the lookup point off the surface; more push farther away where shadow texels are bigger.
@@ -119,6 +121,7 @@ in vec3 fogCol;
 in float fogF;
 flat in vec3 sunCol;
 flat in vec3 ambCol;
+flat in float nightF;
 flat in int blockId;
 in float isFoliage;
 in float sssAmount;
@@ -149,7 +152,7 @@ void main() {
 
 	float sh = 1.0;
 #ifdef USE_SHADOWS
-	if (NdotL > 0.001) sh = mix(1.0, getShadow(shadowClip), SHADOW_STRENGTH);
+	if (NdotL > 0.001) sh = mix(1.0, getShadow(shadowClip), SHADOW_STRENGTH * (1.0 - nightF * 0.55));   // moon shadows are soft
 #endif
 
 	float skyL = lmcoord.y;
@@ -178,7 +181,7 @@ void main() {
 
 #ifdef FOLIAGE_GLOW
 	// Leaves and grass glow when the sun shines through them toward you (subsurface scattering)
-	if (isFoliage > 0.5) light += sunCol * sssAmount * sh * smoothstep(0.05, 0.6, skyL) * 0.9;
+	if (isFoliage > 0.5) light += sunCol * sssAmount * sh * smoothstep(0.05, 0.6, skyL) * 0.6;
 #endif
 
 	vec3 lit = col * light;

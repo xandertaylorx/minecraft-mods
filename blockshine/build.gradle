@@ -49,6 +49,7 @@ afterEvaluate {
 	tasks.matching { it.name == 'runClientGameTest' }.configureEach {
 		jvmArgs "-Dblockshine.packDir=${file('pack').absolutePath}"
 		// Optional benchmark against another pack you already have: ./gradlew runClientGameTest -PcompareWith=/path/to/Pack.zip
+		if (project.hasProperty("quick")) jvmArgs "-Dblockshine.quick=true"
 		if (project.hasProperty("isolate")) jvmArgs "-Dblockshine.isolate=true"
 		if (project.hasProperty("compareWith")) jvmArgs "-Dblockshine.compareWith=${project.property('compareWith')}"
 	}

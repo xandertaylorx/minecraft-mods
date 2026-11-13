@@ -43,13 +43,14 @@ vec4 cloudLayer(vec3 dir, vec3 sunDir, vec3 sunCol, vec3 ambCol) {
 
 	float thick = smoothstep(0.55, 0.95, n);
 	float sd = max(dot(dir, sunDir), 0.0);
-	vec3 lit = sunCol * 0.75 + ambCol * 1.25;
+	vec3 lit = sunCol * 0.75 + ambCol * 1.15;
 	vec3 shade = ambCol * 1.15 + sunCol * 0.18;
 	vec3 c = mix(lit, shade, thick);
 	c += sunCol * pow(sd, 8.0) * (1.0 - thick) * 0.55;    // silver lining toward the sun
 	c = mix(c, vec3(luma(c)) * 0.8, rainStrength * 0.7);
 
 	float fade = smoothstep(0.01, 0.18, dir.y);
+	c *= 1.0 - nightFactor(sunDir.y) * 0.45;                  // darker clouds at night
 	return vec4(c, coverage * fade * 0.92);
 #endif
 }

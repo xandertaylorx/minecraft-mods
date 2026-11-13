@@ -33,7 +33,7 @@ void main() {
 #else
 	// Brighter in caves (eyes adjusting), and a little brighter at night so nights look moody, not black
 	float sky = float(eyeBrightnessSmooth.y) / 240.0;
-	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 1.45, nightFactor(sunDir.y) * sky);
+	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 1.2, nightFactor(sunDir.y) * sky);
 #endif
 
 	// Golden color grade around sunrise/sunset, cool silver at night
@@ -44,7 +44,9 @@ void main() {
 	float golden = sunsetFactor(sunDir.y) * smoothstep(-0.08, 0.04, sunDir.y) * (1.0 - rainStrength);
 	grade = mix(vec3(1.0), vec3(1.16, 0.96, 0.72), golden);
 	satBoost = golden * 0.25;
-	grade = mix(grade, vec3(0.92, 0.98, 1.10), nightFactor(sunDir.y));
+	grade = mix(grade, vec3(0.88, 0.90, 0.93), dayFactor(sunDir.y) * (1.0 - golden));   // calmer, slightly cool daylight
+	grade = mix(grade, vec3(0.84, 0.98, 1.04), nightFactor(sunDir.y));                  // moody teal night
+	satBoost -= nightFactor(sunDir.y) * 0.42;                    // colors fade in the dark, like real night vision
 #endif
 	flareCol = vec3(0.0);
 	sunScreen = vec2(0.5);

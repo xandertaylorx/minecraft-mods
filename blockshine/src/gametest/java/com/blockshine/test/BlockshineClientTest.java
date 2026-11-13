@@ -58,7 +58,8 @@ public class BlockshineClientTest implements FabricClientGameTest {
 				String other = System.getProperty("blockshine.compareWith", "");
 				boolean compare = !other.isEmpty() && Files.exists(Path.of(other));
 				Map<String, Integer> best = new LinkedHashMap<>();
-				for (int round = 0; round < 2; round++) {
+				int rounds = Boolean.getBoolean("blockshine.quick") ? 1 : 2;
+				for (int round = 0; round < rounds; round++) {
 					setShaders(ctx, false, gameDir, null);
 					look(ctx, 0.0F, 12.0F);
 					if (round == 0) ctx.takeScreenshot("00_vanilla_noon");
@@ -214,7 +215,10 @@ public class BlockshineClientTest implements FabricClientGameTest {
 			"setblock 9 -61 8 minecraft:glowstone", "setblock -9 -61 9 minecraft:sea_lantern",
 			// a small stone hut for shadow + torch light
 			"fill 15 -60 2 19 -57 6 minecraft:stone_bricks hollow", "setblock 17 -59 2 minecraft:air", "setblock 17 -60 2 minecraft:air",
-			"setblock 17 -59 4 minecraft:wall_torch[facing=north]"
+			"setblock 17 -59 4 minecraft:wall_torch[facing=north]",
+			"fill 9 -60 6 13 -57 10 minecraft:oak_planks hollow", "fill 9 -60 6 13 -60 10 minecraft:cobblestone",
+			"fill 9 -56 6 13 -56 10 minecraft:spruce_planks", "setblock 11 -59 6 minecraft:glass_pane", "setblock 11 -60 6 minecraft:air",
+			"setblock 10 -59 5 minecraft:lantern", "setblock 12 -60 5 minecraft:torch", "fill 8 -61 4 14 -61 5 minecraft:dirt_path"
 		)) {
 			s.runCommand(c);
 		}
@@ -232,6 +236,15 @@ public class BlockshineClientTest implements FabricClientGameTest {
 		shot(ctx, server, "time set 4000", 160.0F, -10.0F, prefix + "_d_leaves");
 		server.runCommand("tp @a 0 -60 0 0 0");
 		shot(ctx, server, "time set 18000", 0.0F, 8.0F, prefix + "_e_night");
+		server.runCommand("tp @a 12 -60 -1 0 0");
+		shot(ctx, server, "time set 6000", -50.0F, 10.0F, prefix + "_f_blocks_house");
+		shot(ctx, server, "time set 18000", -50.0F, 10.0F, prefix + "_g_night_house");
+		server.runCommand("tp @a -11 -60 12 0 0");
+		shot(ctx, server, "time set 6000", 160.0F, -55.0F, prefix + "_h_under_leaves");
+		server.runCommand("tp @a -2 -60 1 0 0");
+		shot(ctx, server, "time set 6000", 0.0F, 40.0F, prefix + "_i_grass_close");
+		shot(ctx, server, "time set 14000", 0.0F, 5.0F, prefix + "_j_dusk");
+		server.runCommand("tp @a 0 -60 0 0 0");
 		server.runCommand("time set 6000");
 	}
 

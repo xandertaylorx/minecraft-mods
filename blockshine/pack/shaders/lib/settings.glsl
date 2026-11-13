@@ -39,7 +39,7 @@
 #define LENS_FLARE_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
 #define LIGHT_SHAFT_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
 #define EXPOSURE 1.0 // [0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.5]
-#define SATURATION 1.05 // [0.8 0.9 1.0 1.05 1.10 1.15 1.20 1.30]
+#define SATURATION 0.98 // [0.8 0.9 1.0 1.05 1.10 1.15 1.20 1.30]
 #define VIGNETTE
 
 // Iris only lists a toggle as an option if it's checked with #ifdef somewhere.
