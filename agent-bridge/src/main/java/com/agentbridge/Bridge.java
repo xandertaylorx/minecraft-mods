@@ -38,6 +38,7 @@ public final class Bridge {
 
 	public static synchronized void stop(MinecraftServer srv) {
 		if (http == null || (srv != null && srv != server)) return;
+		com.agentbridge.chat.AgentChat.stopAll();
 		http.stop();
 		http = null;
 		server = null;

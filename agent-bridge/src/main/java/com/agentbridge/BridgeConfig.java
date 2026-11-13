@@ -31,6 +31,24 @@ public final class BridgeConfig {
 	/** Show what the agent is doing in the action bar. */
 	public boolean showActivity = true;
 
+	// ---- In-game chat (@claude / @codex) ----
+	/** Allow talking to Claude Code and Codex from Minecraft chat. */
+	public boolean chatEnabled = true;
+	/** Full path to the claude command. Empty means find it automatically. */
+	public String claudePath = "";
+	/** Full path to the codex command. Empty means find it automatically. */
+	public String codexPath = "";
+	/** Model for Claude Code, e.g. "sonnet" or "opus". Empty uses your Claude Code default. */
+	public String claudeModel = "";
+	/** Model for Codex. Empty uses your Codex default. */
+	public String codexModel = "";
+	/** Show each tool the AI uses as a grey chat line. */
+	public boolean showToolCalls = true;
+	/** Stop an AI job that runs longer than this. */
+	public int chatTimeoutMinutes = 20;
+	/** Most steps Claude may take for one message. */
+	public int claudeMaxTurns = 60;
+
 	public static void load() {
 		try {
 			if (Files.exists(FILE)) {

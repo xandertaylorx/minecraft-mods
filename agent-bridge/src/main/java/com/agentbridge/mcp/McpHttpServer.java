@@ -184,7 +184,7 @@ public final class McpHttpServer {
 		JsonObject info = new JsonObject();
 		info.addProperty("name", "minecraft-agent-bridge");
 		info.addProperty("title", "Minecraft (Agent Bridge)");
-		info.addProperty("version", "1.0.0");
+		info.addProperty("version", "1.1.0");
 		result.add("serverInfo", info);
 		result.addProperty("instructions", Tools.INSTRUCTIONS);
 		ex.getResponseHeaders().set("Mcp-Session-Id", UUID.randomUUID().toString());

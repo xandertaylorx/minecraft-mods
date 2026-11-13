@@ -471,7 +471,9 @@ public final class Tools {
 		String cmd = reqString(a, "command").trim();
 		if (cmd.startsWith("/")) cmd = cmd.substring(1);
 		String root = cmd.split("\\s+", 2)[0].toLowerCase(Locale.ROOT);
-		if (root.equals("agent")) throw new ToolError("The agent cannot change the bridge itself.");
+		if (root.equals("agent") || root.equals("claude") || root.equals("codex")) {
+			throw new ToolError("The agent cannot change the bridge or start other agents.");
+		}
 
 		StringBuilder output = new StringBuilder();
 		CommandSource collector = new CommandSource() {
@@ -519,7 +521,7 @@ public final class Tools {
 		float yaw = a.has("yaw") ? a.get("yaw").getAsFloat() : p.getYRot();
 		float pitch = a.has("pitch") ? a.get("pitch").getAsFloat() : p.getXRot();
 		if (a.has("look_at")) {
-			JsonObject t = a.getAsJsonObject("look_at");
+			JsonObject t = requireObject(a, "look_at");
 			Vec3 eye = new Vec3(x, y + p.getEyeHeight(), z);
 			double dx = t.get("x").getAsDouble() - eye.x, dy = t.get("y").getAsDouble() - eye.y, dz = t.get("z").getAsDouble() - eye.z;
 			yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
@@ -722,13 +724,29 @@ public final class Tools {
 	}
 
 	private static JsonArray requireArray(JsonObject o, String k) {
-		if (!o.has(k) || !o.get(k).isJsonArray()) throw new ToolError("\"" + k + "\" must be an array");
-		return o.getAsJsonArray(k);
+		JsonElement e = unwrapJsonString(o.get(k));
+		if (e == null || !e.isJsonArray()) throw new ToolError("\"" + k + "\" must be an array");
+		return e.getAsJsonArray();
 	}
 
 	private static JsonObject requireObject(JsonObject o, String k) {
-		if (!o.has(k) || !o.get(k).isJsonObject()) throw new ToolError("\"" + k + "\" must be an object");
-		return o.getAsJsonObject(k);
+		JsonElement e = unwrapJsonString(o.get(k));
+		if (e == null || !e.isJsonObject()) throw new ToolError("\"" + k + "\" must be an object");
+		return e.getAsJsonObject();
+	}
+
+	/** Some AI clients send nested arrays/objects as a JSON string; accept that too. */
+	private static JsonElement unwrapJsonString(JsonElement e) {
+		if (e != null && e.isJsonPrimitive() && e.getAsJsonPrimitive().isString()) {
+			String s = e.getAsString().trim();
+			if (s.startsWith("[") || s.startsWith("{")) {
+				try {
+					return com.google.gson.JsonParser.parseString(s);
+				} catch (Exception ignored) {
+				}
+			}
+		}
+		return e;
 	}
 
 	// ---------------------------------------------------------------- JSON schema builders

@@ -35,6 +35,7 @@
 		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
 		<nav class="nav">
 			<a href="../../#mods">Mods</a>
+			<a href="#chat">Chat</a>
 			<a href="#setup">Setup</a>
 			<a href="#tools">What it can do</a>
 			<a href="#download">Download</a>
@@ -45,16 +46,16 @@
 <div class="hero photo" style="background-image: url('img/cottage.png'); background-position: 50% 45%">
 	<div class="wrap">
 		<div class="tags">
-			<span class="tag status-live">v1.0.0</span>
+			<span class="tag status-live">v1.1.0</span>
 			<span class="tag loader">Fabric</span>
 			<span class="tag">MC 26.3</span>
 			<span class="tag">AI</span>
 		</div>
 		<h1>Agent <b>Bridge</b></h1>
-		<p class="tagline">Let an AI agent like Claude Code or Codex build in your world. Type <code>/agent on</code>, ask for a castle, and watch it go up.</p>
+		<p class="tagline">Talk to Claude Code or Codex right in Minecraft chat. Type <code>@claude build a castle</code> and watch it go up.</p>
 		<div class="btns">
-			<a class="btn go" href="../../downloads/agent-bridge-1.0.0.jar" download>Download v1.0.0</a>
-			<a class="btn" href="#setup">How to connect</a>
+			<a class="btn go" href="../../downloads/agent-bridge-1.1.0.jar" download>Download v1.1.0</a>
+			<a class="btn" href="#chat">How chat works</a>
 		</div>
 	</div>
 </div>
@@ -76,10 +77,30 @@
 		</div>
 	</section>
 
+	<section id="chat">
+		<div class="section-head">
+			<h2>Just type in chat</h2>
+			<p>New in 1.1.0. No terminal needed.</p>
+		</div>
+		<div class="showcase">
+			<div class="frame"><img src="img/chat.png" alt="Claude replying in Minecraft chat after building a stone brick well"></div>
+			<div class="panel files-wrap">
+				<table class="cmds">
+					<tr><td>@claude &lt;message&gt;</td><td>Ask Claude Code anything, like <code>@claude build a lighthouse</code></td></tr>
+					<tr><td>@codex &lt;message&gt;</td><td>Ask Codex instead</td></tr>
+					<tr><td>@claude stop</td><td>Cancel what it's doing</td></tr>
+					<tr><td>@claude new</td><td>Start a fresh conversation. Otherwise it remembers what you said.</td></tr>
+					<tr><td>/claude · /codex</td><td>The same thing as a command</td></tr>
+				</table>
+			</div>
+		</div>
+		<p class="hash" style="margin-top:14px">Each message runs your own Claude Code or Codex in the background, already connected to your world. It uses your existing login and plan, so you don't need an API key. In chat mode the AI only gets the Minecraft tools: it can't touch your files or terminal. Claude Code or Codex has to be installed and logged in on the same computer as the game.</p>
+	</section>
+
 	<section id="setup">
 		<div class="section-head">
 			<h2>Setup</h2>
-			<p>About a minute, and you only do it once.</p>
+			<p>For chat, steps 1 and 4 are all you need. Steps 2 and 3 are for using your terminal instead.</p>
 		</div>
 		<div class="steps">
 			<div class="step panel">
@@ -88,15 +109,15 @@
 			</div>
 			<div class="step panel">
 				<h3>Turn it on</h3>
-				<p>Open a world with cheats on and type <code>/agent on</code>. It's off every time you start the game.</p>
+				<p>Type <code>/agent on</code> in a world with cheats on. It's off every time you start the game, and <code>@claude</code> turns it on for you.</p>
 			</div>
 			<div class="step panel">
-				<h3>Connect your AI</h3>
-				<p>Click <b>[Copy Claude Code command]</b> or <b>[Copy Codex config]</b> in chat and paste it where it goes.</p>
+				<h3>Connect your terminal</h3>
+				<p>Click <b>[Copy Claude Code command]</b> or <b>[Copy Codex config]</b> in chat and paste it where it goes. You only do this once.</p>
 			</div>
 			<div class="step panel">
 				<h3>Ask away</h3>
-				<p>Start your AI and ask it to build, explore or change the weather. Its activity shows above your hotbar.</p>
+				<p>Type <code>@claude</code> in chat, or start your AI in a terminal. Ask it to build, explore or change the weather.</p>
 			</div>
 		</div>
 		<div class="two" style="margin-top:20px">
@@ -166,7 +187,8 @@ http_headers = { Authorization = <span class="s">"Bearer &lt;token&gt;"</span> }
 			<details class="panel"><summary>Can the AI op itself or stop my server?</summary><p>No. Its commands have game-master permission, so it can use things like <code>/fill</code>, <code>/tp</code> and <code>/give</code>, but not <code>/op</code>, <code>/stop</code>, <code>/ban</code> or <code>/agent</code>.</p></details>
 			<details class="panel"><summary>Why doesn't the game pause when I switch windows?</summary><p>While the bridge is on, the game keeps running when you click into another window, so you can talk to your AI and still see blocks appear. Your normal setting comes back when you turn it off.</p></details>
 			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes, on a LAN world you host or on a server running the mod. On a dedicated server the bridge runs on the server machine, and screenshots don't work there.</p></details>
-			<details class="panel"><summary>Which AIs work with it?</summary><p>Anything that supports MCP over HTTP. It's tested with Claude Code. Codex uses the config shown above.</p></details>
+			<details class="panel"><summary>Which AIs work with it?</summary><p>Claude Code and Codex in chat, and anything that supports MCP over HTTP from a terminal. Chat with Claude Code is tested end to end. Codex follows its documented options but hasn't been tried on a real install yet.</p></details>
+			<details class="panel"><summary>Can other players on my world use my AI?</summary><p>Only players with cheats or op can talk to it, so your plan usage stays yours. Everyone can see the replies in chat.</p></details>
 		</div>
 	</section>
 
@@ -174,10 +196,10 @@ http_headers = { Authorization = <span class="s">"Bearer &lt;token&gt;"</span> }
 		<div class="section-head"><h2>Download</h2></div>
 		<div class="dl panel">
 			<div>
-				<h3>Agent Bridge v1.0.0</h3>
+				<h3>Agent Bridge v1.1.0</h3>
 				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. <a href="../../downloads/">All downloads</a></p>
 			</div>
-			<a class="btn go" href="../../downloads/agent-bridge-1.0.0.jar" download>Download .jar</a>
+			<a class="btn go" href="../../downloads/agent-bridge-1.1.0.jar" download>Download .jar</a>
 		</div>
 	</section>
 

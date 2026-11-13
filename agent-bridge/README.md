@@ -1,6 +1,6 @@
 # 🤖 Agent Bridge
 
-Lets an AI agent like **Claude Code** or **Codex** see and build in your Minecraft world. You turn it on in game, connect your AI once, and then just ask: *"build a cozy cottage next to me"*. You watch it happen live.
+Lets an AI agent like **Claude Code** or **Codex** see and build in your Minecraft world. Type `@claude build a cozy cottage next to me` in chat and watch it happen live.
 
 ![A cottage Claude Code built through Agent Bridge](docs/claude-cottage.png)
 
@@ -8,12 +8,41 @@ Lets an AI agent like **Claude Code** or **Codex** see and build in your Minecra
 
 Under the hood, the mod runs a small [MCP](https://modelcontextprotocol.io) server inside the game. MCP is the standard way AI agents connect to outside tools.
 
-## Quick start
+## Quick start: talk to the AI in chat
 
-1. Put `agent-bridge-1.0.0.jar` in your `mods` folder, next to Fabric API (Minecraft 26.3).
-2. Open a world and type **`/agent on`**. You need cheats on, or op on a server.
-3. Click **[Copy Claude Code command]** in chat, paste it into a terminal and press Enter. You only do this once, because the token stays the same between launches.
-4. Start `claude` and ask it to build something.
+The easiest way. No terminal needed once Claude Code or Codex is installed and logged in on the same computer.
+
+1. Put `agent-bridge-1.1.0.jar` in your `mods` folder, next to Fabric API (Minecraft 26.3).
+2. Open a world with cheats on, or be op on a server.
+3. Type in chat:
+
+```
+@claude build a stone watchtower on that hill
+```
+
+The bridge turns itself on, and Claude's replies and progress show up in chat:
+
+![Claude answering in Minecraft chat](docs/chat.png)
+
+| Type this | What happens |
+| --- | --- |
+| `@claude <message>` or `/claude <message>` | Asks Claude Code |
+| `@codex <message>` or `/codex <message>` | Asks Codex |
+| `@claude stop` | Cancels what it's doing |
+| `@claude new` | Starts a fresh conversation. Otherwise it remembers what you said before. |
+| `@claude` | Shows help |
+
+How it works: each message runs your own `claude` or `codex` command in the background, connected to your world. It uses your existing login and counts toward your normal plan usage, so no API key is needed. In chat mode the AI only gets the Minecraft tools. It can't read or change files on your computer or run terminal commands.
+
+The mod finds `claude` and `codex` the way your terminal does. If it can't, set `claudePath` or `codexPath` in the config. Only players with cheats or op can talk to the AI, so other people on your LAN world can't use up your plan.
+
+## Quick start: connect from your terminal
+
+You can also drive the game from a normal Claude Code or Codex session in your terminal:
+
+1. Open a world and type **`/agent on`**. You need cheats on, or op on a server.
+2. Click **[Copy Claude Code command]** in chat, paste it into a terminal and press Enter. You only do this once, because the token stays the same between launches.
+3. Start `claude` and ask it to build something.
 
 For **Codex**, click **[Copy Codex config]** instead and paste it into `~/.codex/config.toml`. It looks like this:
 
@@ -59,7 +88,8 @@ The action bar shows what the agent is doing as it works, for example `🤖 Clau
 
 - **Only your computer can connect.** The server listens on `127.0.0.1` only, and every request needs the secret token.
 - **Web pages can't reach it.** Requests from browser pages that aren't on localhost are rejected.
-- **Commands are limited.** `run_command` has game-master permission, so it can use `/fill`, `/tp` or `/give`, but not `/op`, `/stop` or `/ban`, and it can't run `/agent`.
+- **Commands are limited.** `run_command` has game-master permission, so it can use `/fill`, `/tp` or `/give`, but not `/op`, `/stop` or `/ban`, and it can't run `/agent`, `/claude` or `/codex`.
+- **Chat mode can only touch the game.** When you use `@claude` or `@codex`, the AI gets only the Minecraft tools, not your files or terminal.
 - **Builds can be undone.** The last 50 build actions can be reverted, either by the AI or with `/agent undo`. Changes made through `run_command` can't be undone.
 - **It's only on when you say so.** Nothing listens until you type `/agent on`.
 
@@ -76,6 +106,12 @@ The action bar shows what the agent is doing as it works, for example `🤖 Clau
 | `undoHistory` | `50` | How many build actions undo remembers |
 | `allowCommands` | `true` | Turn off to disable `run_command` |
 | `showActivity` | `true` | Show agent activity in the action bar |
+| `chatEnabled` | `true` | Allow `@claude` and `@codex` in chat |
+| `claudePath` / `codexPath` | empty | Full path to the command, if it isn't found automatically |
+| `claudeModel` / `codexModel` | empty | Model to use, e.g. `sonnet`. Empty uses your usual default. |
+| `showToolCalls` | `true` | Show each tool the AI uses as a grey chat line |
+| `chatTimeoutMinutes` | `20` | Stop an AI job that runs longer than this |
+| `claudeMaxTurns` | `60` | Most steps Claude may take for one message |
 
 ## Notes
 
@@ -95,4 +131,6 @@ The jar ends up in `build/libs/`.
 ./gradlew runClientGameTest
 ```
 
-This opens a real world, turns the bridge on and calls every tool over HTTP, the same way an AI client would. It runs 24 checks and prints them as `AB-TEST` lines. Set `AGENT_BRIDGE_LIVE=1` to keep the world open for a real AI: the URL and token go to `build/run/clientGameTest/agent-bridge-live.txt`, and the test ends once you create `build/run/clientGameTest/agent-bridge-done`.
+This opens a real world, turns the bridge on and calls every tool over HTTP, the same way an AI client would. It runs 25 checks and prints them as `AB-TEST` lines. It uses port 25611, so it can run while your own game has the bridge on.
+
+Set `AGENT_BRIDGE_CHAT=1` to also test chat with the real AI. It types `@claude` and `@codex` messages into Minecraft chat and checks the build, a follow-up question, and `stop`, for 33 checks in total. This uses your Claude Code login and a little plan usage. Set `AGENT_BRIDGE_LIVE=1` to keep the world open for a real AI: the URL and token go to `build/run/clientGameTest/agent-bridge-live.txt`, and the test ends once you create `build/run/clientGameTest/agent-bridge-done`.

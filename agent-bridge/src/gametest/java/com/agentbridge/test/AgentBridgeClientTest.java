@@ -1,6 +1,7 @@
 package com.agentbridge.test;
 
 import com.agentbridge.BridgeConfig;
+import com.agentbridge.chat.AgentChat;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.net.URI;
@@ -34,6 +35,8 @@ public class AgentBridgeClientTest implements FabricClientGameTest {
 
 	@Override
 	public void runTest(ClientGameTestContext ctx) {
+		// Use a different port from the default, so a real game with the bridge on can keep running alongside.
+		BridgeConfig.INSTANCE.port = 25611;
 		try (TestSingleplayerContext sp = ctx.worldBuilder().create()) {
 			sp.getConnection().waitForChunksRender();
 			TestServerContext server = sp.getServer();
@@ -84,6 +87,11 @@ public class AgentBridgeClientTest implements FabricClientGameTest {
 			check("door gap is air",
 				server.computeOnServer(s -> s.overworld().getBlockState(new BlockPos(0, -59, -8)).isAir()));
 
+			String asString = callText(ctx, "build_structure",
+				"{\"origin\":{\"x\":-2,\"y\":-55,\"z\":-12},\"palette\":\"{\\\"#\\\":\\\"stone\\\"}\",\"layers\":\"[[\\\"#\\\"]]\"}");
+			check("build_structure accepts layers/palette sent as JSON strings: " + asString, asString.contains("1 blocks changed"));
+			callText(ctx, "undo", "{}");
+
 			String scan = callText(ctx, "scan_area", "{\"x1\":-2,\"y1\":-60,\"z1\":-12,\"x2\":2,\"y2\":-58,\"z2\":-8}");
 			check("scan_area sees the hut", scan.contains("stone_bricks") && scan.contains("oak_planks") && scan.contains("glass_pane"));
 			log("scan_area:\n" + scan);
@@ -133,6 +141,10 @@ public class AgentBridgeClientTest implements FabricClientGameTest {
 			}
 			ctx.takeScreenshot("01_after_scripted_build");
 
+			if (System.getenv("AGENT_BRIDGE_CHAT") != null) {
+				chatTests(ctx, server);
+			}
+
 			if (System.getenv("AGENT_BRIDGE_LIVE") != null) {
 				Path info = Path.of("agent-bridge-live.txt");
 				Path done = Path.of("agent-bridge-done");
@@ -155,6 +167,75 @@ public class AgentBridgeClientTest implements FabricClientGameTest {
 		for (String r : results) System.out.println("AB-TEST " + r);
 		System.out.println("AB-TEST SUMMARY " + (results.size() - failures) + " passed, " + failures + " failed");
 		if (failures > 0) throw new AssertionError(failures + " Agent Bridge checks failed");
+	}
+
+	/**
+	 * Talks to the real AI CLIs through Minecraft chat (AGENT_BRIDGE_CHAT=1). Uses your Claude Code login and plan usage.
+	 */
+	private void chatTests(ClientGameTestContext ctx, TestServerContext server) {
+		// Without cheats/op, chat must not start an AI.
+		chat(ctx, "@claude build a house");
+		check("players without op can't start the AI", !AgentChat.isBusy(AgentChat.Kind.CLAUDE));
+		// Like turning cheats on (singleplayer has no /op command).
+		server.runOnServer(s -> s.getPlayerList().getPlayers().forEach(p -> s.getPlayerList().op(p.nameAndId())));
+		ctx.waitTicks(10);
+
+		// Codex: with Codex not installed this checks the friendly error; with it installed it's a real round trip.
+		int start = AgentChat.recentLines().size();
+		chat(ctx, "@codex say hi in five words or fewer");
+		waitIdle(ctx, AgentChat.Kind.CODEX, 20 * 60 * 4);
+		List<String> codex = newLines(start);
+		log("codex chat:\n" + String.join("\n", codex));
+		check("@codex answers or explains it isn't installed",
+			codex.stream().anyMatch(l -> l.startsWith("Codex: ") || l.contains("couldn't find Codex")));
+
+		// Claude: build through chat.
+		int undoBefore = server.computeOnServer(s -> com.agentbridge.Bridge.undo().size());
+		start = AgentChat.recentLines().size();
+		chat(ctx, "@claude build a small stone brick well with an oak roof about 8 blocks south of me, then tell me in one sentence what you built.");
+		waitIdle(ctx, AgentChat.Kind.CLAUDE, 20 * 60 * 6);
+		List<String> first = newLines(start);
+		log("claude chat 1:\n" + String.join("\n", first));
+		check("@claude used tools", first.stream().anyMatch(l -> l.startsWith("Claude tool: ")));
+		check("@claude replied in chat", first.stream().anyMatch(l -> l.startsWith("Claude: ")));
+		check("@claude had no errors", first.stream().noneMatch(l -> l.startsWith("Claude error")));
+		int undoAfter = server.computeOnServer(s -> com.agentbridge.Bridge.undo().size());
+		check("@claude changed blocks (undo " + undoBefore + " -> " + undoAfter + ")", undoAfter > undoBefore);
+		ctx.waitTicks(20);
+		ctx.takeScreenshot("03_claude_chat_build");
+
+		// Follow-up: the conversation must carry on.
+		start = AgentChat.recentLines().size();
+		chat(ctx, "@claude what did you just build? answer in one short sentence without using any tools.");
+		waitIdle(ctx, AgentChat.Kind.CLAUDE, 20 * 60 * 3);
+		List<String> second = newLines(start);
+		log("claude chat 2:\n" + String.join("\n", second));
+		check("@claude remembers the conversation", second.stream().anyMatch(l -> l.startsWith("Claude: ") && l.toLowerCase().contains("well")));
+
+		// Stop: cancel a job part-way.
+		start = AgentChat.recentLines().size();
+		chat(ctx, "@claude build a huge castle with four towers right next to me");
+		ctx.waitTicks(60);
+		chat(ctx, "@claude stop");
+		waitIdle(ctx, AgentChat.Kind.CLAUDE, 20 * 30);
+		List<String> stopped = newLines(start);
+		log("claude stop:\n" + String.join("\n", stopped));
+		check("@claude stop cancels", !AgentChat.isBusy(AgentChat.Kind.CLAUDE) && stopped.stream().anyMatch(l -> l.contains("Stopped.")));
+	}
+
+	private static void chat(ClientGameTestContext ctx, String message) {
+		ctx.runOnClient(mc -> mc.player.connection.sendChat(message));
+		ctx.waitTicks(5);
+	}
+
+	private static void waitIdle(ClientGameTestContext ctx, AgentChat.Kind kind, int maxTicks) {
+		for (int i = 0; i < maxTicks && AgentChat.isBusy(kind); i++) ctx.waitTick();
+		ctx.waitTicks(10);
+	}
+
+	private static List<String> newLines(int from) {
+		List<String> all = AgentChat.recentLines();
+		return new ArrayList<>(all.subList(Math.min(from, all.size()), all.size()));
 	}
 
 	private record Resp(int status, String body) {
