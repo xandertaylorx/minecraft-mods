@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "blockos",
+	"version": "${version}",
+	"name": "BlockOS Computers",
+	"description": "Placeable computers with a real desktop: terminal, files, notepad, paint, snake, calculator and more, plus BlockScript programs that control redstone, sense the world and talk wirelessly.",
+	"authors": ["XanderCraft"],
+	"license": "MIT",
+	"icon": "assets/blockos/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.blockos.BlockOS"],
+		"client": ["com.blockos.client.BlockOSClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

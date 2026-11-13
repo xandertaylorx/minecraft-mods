@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlockOS Computers · XanderCraft</title>
+<meta name="description" content="BlockOS: placeable Minecraft computers with a real desktop, apps and games, plus BlockScript programs that control redstone, sense the world and talk wirelessly.">
+<link rel="icon" href="img/computer.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css?v=4">
+<style>
+	.code { background: #0b0f0c; border: 4px solid #000; padding: 14px 16px; overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px; line-height: 1.55; color: #cfffe0; margin: 0; }
+	.code .k { color: #ff79c6; } .code .c { color: #8be9fd; } .code .n { color: #bd93f9; } .code .s { color: #f1fa8c; } .code .m { color: #6a7a8a; }
+	.cmds { width: 100%; border-collapse: collapse; font-size: 15px; }
+	.cmds td { padding: 7px 12px; border-top: 2px solid rgba(0,0,0,.35); vertical-align: top; }
+	.cmds td:first-child { width: 42%; font-family: ui-monospace, Menlo, monospace; color: var(--gold); }
+	.two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+	@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#apps">Apps</a>
+			<a href="#world">World control</a>
+			<a href="#blockscript">BlockScript</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero photo" style="background-image: url('img/desktop-sunset.jpg'); background-position: 50% 40%">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">Redstone</span>
+		</div>
+		<h1>Block<b>OS</b></h1>
+		<p class="tagline">A real computer you can place in your world. Paint, play Snake, chat between bases, and write programs that open doors, run farms and sound alarms.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/blockos-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#blockscript">Learn BlockScript</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="apps">
+		<div class="section-head">
+			<h2>A whole desktop</h2>
+			<p>Right-click the computer to boot BlockOS. Nine apps, five color themes, three wallpapers.</p>
+		</div>
+		<div class="steps">
+			<div class="step panel"><h3>Terminal</h3><p>40+ commands, history with the arrow keys, and colored output.</p></div>
+			<div class="step panel"><h3>Files &amp; Notepad</h3><p>Folders, text files and a proper editor with BlockScript syntax colors and a Run button.</p></div>
+			<div class="step panel"><h3>Paint</h3><p>Pixel art with pen, fill and eraser and 16 colors. Pictures are saved on the computer.</p></div>
+			<div class="step panel"><h3>Snake</h3><p>A classic snake game that speeds up, with a high score saved on the computer.</p></div>
+			<div class="step panel"><h3>Calc &amp; Clock</h3><p>A calculator that does real maths, a big digital clock, the date, Minecraft time and a stopwatch.</p></div>
+			<div class="step panel"><h3>Messenger</h3><p>Chat between computers anywhere in the world on numbered channels.</p></div>
+		</div>
+		<div class="gallery" style="margin-top:24px">
+			<a href="img/desktop.jpg"><img src="img/desktop.jpg" alt="BlockOS desktop"></a>
+			<a href="img/terminal.jpg"><img src="img/terminal.jpg" alt="Terminal running ls, time and scan"></a>
+			<a href="img/notepad.jpg"><img src="img/notepad.jpg" alt="Notepad editing a BlockScript program"></a>
+			<a href="img/paint.jpg"><img src="img/paint.jpg" alt="Paint with a smiley"></a>
+			<a href="img/snake.jpg"><img src="img/snake.jpg" alt="Snake game"></a>
+			<a href="img/calc.jpg"><img src="img/calc.jpg" alt="Calculator"></a>
+			<a href="img/clock.jpg"><img src="img/clock.jpg" alt="Clock and stopwatch"></a>
+			<a href="img/messenger.jpg"><img src="img/messenger.jpg" alt="Messenger chatting between computers"></a>
+			<a href="img/files.jpg"><img src="img/files.jpg" alt="File manager"></a>
+			<a href="img/settings.jpg"><img src="img/settings.jpg" alt="Settings with themes and wallpapers"></a>
+			<a href="img/desktop-sunset.jpg"><img src="img/desktop-sunset.jpg" alt="Ocean theme with sunset wallpaper"></a>
+			<a href="img/in-world.jpg"><img src="img/in-world.jpg" alt="The computer in the world lighting a lamp"></a>
+		</div>
+	</section>
+
+	<section id="world">
+		<div class="section-head">
+			<h2>It controls your world</h2>
+			<p>Sides are as seen from the front of the screen: front back left right top bottom.</p>
+		</div>
+		<div class="steps">
+			<div class="step panel"><h3>Redstone out</h3><p><code>redstone right on</code> powers lamps, doors, pistons, anything. Any strength from 0 to 15, on any side.</p></div>
+			<div class="step panel"><h3>Redstone in</h3><p>Read buttons, levers, pressure plates and daylight sensors with <code>input left</code>.</p></div>
+			<div class="step panel"><h3>Senses</h3><p>Nearby players, time of day, weather, and which block is on each side.</p></div>
+			<div class="step panel"><h3>Sound &amp; chat</h3><p>Play note-block music and send messages to players nearby.</p></div>
+			<div class="step panel"><h3>Wireless</h3><p>Computers talk to each other on channels, at any distance and across dimensions.</p></div>
+			<div class="step panel"><h3>Always on</h3><p>Programs keep running after you close the screen, and <code>startup.bs</code> starts on its own.</p></div>
+		</div>
+	</section>
+
+	<section id="blockscript">
+		<div class="section-head">
+			<h2>BlockScript</h2>
+			<p>A tiny programming language made for Minecraft. Every computer comes with example programs in <code>programs/</code>.</p>
+		</div>
+		<div class="two">
+			<div>
+				<h3>Automatic door</h3>
+<pre class="code"><span class="m"># opens an iron door when someone walks up</span>
+<span class="k">loop</span>
+  <span class="k">if</span> players(<span class="n">4</span>) &gt; <span class="n">0</span>
+    <span class="c">redstone</span> front on
+  <span class="k">else</span>
+    <span class="c">redstone</span> front off
+  <span class="k">end</span>
+  <span class="k">wait</span> <span class="n">0.25</span>
+<span class="k">end</span></pre>
+			</div>
+			<div>
+				<h3>Intruder alarm</h3>
+<pre class="code"><span class="m"># pressure plate on the left side</span>
+<span class="k">loop</span>
+  <span class="k">if</span> input(left) &gt; <span class="n">0</span>
+    <span class="c">say</span> Intruder alert!
+    <span class="c">send</span> <span class="n">1</span> intruder at base
+    <span class="k">repeat</span> <span class="n">4</span>
+      <span class="c">play</span> bell <span class="n">18</span>
+      <span class="k">wait</span> <span class="n">0.2</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="k">wait</span> <span class="n">0.2</span>
+<span class="k">end</span></pre>
+			</div>
+		</div>
+		<div class="panel files-wrap" style="margin-top:20px">
+			<table class="cmds">
+				<tr><td>set x = 5 + 2</td><td>Variables. Use them in expressions as <code>x</code>, and in commands as <code>$x</code> or <code>${x * 2}</code>.</td></tr>
+				<tr><td>if / else / end</td><td>Do something only when a condition is true, using <code>== != &lt; &gt; and or not</code>.</td></tr>
+				<tr><td>loop … end</td><td>Repeat forever. <code>while cond … end</code> repeats while true. <code>repeat 5 … end</code> repeats a set number of times. <code>break</code> leaves the loop.</td></tr>
+				<tr><td>wait 0.5</td><td>Pause, in seconds.</td></tr>
+				<tr><td>print "hi " + x</td><td>Show text in the terminal.</td></tr>
+				<tr><td>input(side) · players(range) · night() · raining() · time() · random(6) · message() · block(side)</td><td>Ask about the world: redstone strength, nearby players, day/night, weather, the next wireless message, which block is next to it.</td></tr>
+				<tr><td>any terminal command</td><td><code>redstone</code>, <code>send</code>, <code>say</code>, <code>play</code>, <code>write</code> and the rest all work inside programs.</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="commands">
+		<div class="section-head"><h2>Terminal commands</h2><p>Type <code>help</code> on the computer to see these any time.</p></div>
+		<div class="panel files-wrap">
+			<table class="cmds">
+				<tr><td>ls · cat · write · append · rm · mv · cp · edit</td><td>Files and folders (64 KB per computer)</td></tr>
+				<tr><td>run &lt;program&gt; · stop · ps · reboot</td><td>Start and stop BlockScript programs</td></tr>
+				<tr><td>redstone &lt;side|all&gt; &lt;on|off|0-15&gt; · input [side]</td><td>Redstone out and in</td></tr>
+				<tr><td>scan · players · weather · time · date</td><td>Sense the world (and the real-world date)</td></tr>
+				<tr><td>play &lt;instrument&gt; &lt;0-24&gt; · beep · say</td><td>Note sounds and chat messages</td></tr>
+				<tr><td>listen &lt;channel&gt; · send &lt;channel&gt; &lt;text&gt; · inbox</td><td>Wireless between computers</td></tr>
+				<tr><td>calc · echo · label · clear · about</td><td>Everything else</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>BlockOS Computers v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. Crafting recipe: 5 iron ingots, 1 glass pane, 2 redstone and 1 quartz (iron around the glass pane, redstone–quartz–redstone along the bottom). Also in the creative Redstone tab. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/blockos-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+	<section id="faq">
+		<div class="section-head"><h2>FAQ</h2></div>
+		<div class="faq">
+			<details class="panel"><summary>Do programs keep running when I walk away?</summary><p>Yes, as long as the computer's chunk is loaded. They even pick up again after you reload the world.</p></details>
+			<details class="panel"><summary>Can a program crash my game?</summary><p>No. Programs run a small number of steps per tick, so even an endless loop can't freeze anything. Use <code>stop</code> to end one.</p></details>
+			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes. Install it on the server and on every player's game. Programs run on the server.</p></details>
+			<details class="panel"><summary>Do I keep my files if I break the computer?</summary><p>Not in 1.0: breaking the computer wipes it. Keep important programs in a second computer, or just don't break it.</p></details>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/blockos">BlockOS source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+</body>
+</html>
