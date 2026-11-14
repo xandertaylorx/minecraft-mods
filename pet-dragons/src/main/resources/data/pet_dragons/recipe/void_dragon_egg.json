@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond",
+    "E": "minecraft:ender_pearl",
+    "X": "minecraft:crying_obsidian"
+  },
+  "pattern": [
+    "DED",
+    "EXE",
+    "DED"
+  ],
+  "result": {
+    "id": "pet_dragons:void_dragon_egg"
+  }
+}

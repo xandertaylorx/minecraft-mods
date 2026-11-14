@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"id": "pet_dragons_test",
+	"version": "1.0.0",
+	"name": "Pet Dragons Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["com.petdragons.test.PetDragonsClientTest"]
+	},
+	"depends": { "pet_dragons": "*" }
+}

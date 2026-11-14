@@ -1,0 +1,10 @@
+{
+  "itemGroup.pet_dragons": "Pet Dragons",
+  "entity.pet_dragons.dragon": "Dragon",
+  "key.pet_dragons.breathe": "Breathe Fire (riding a dragon)",
+  "block.pet_dragons.ember_dragon_egg": "Ember Dragon Egg",
+  "block.pet_dragons.frost_dragon_egg": "Frost Dragon Egg",
+  "block.pet_dragons.verdant_dragon_egg": "Verdant Dragon Egg",
+  "block.pet_dragons.void_dragon_egg": "Void Dragon Egg",
+  "block.pet_dragons.sun_dragon_egg": "Sun Dragon Egg"
+}

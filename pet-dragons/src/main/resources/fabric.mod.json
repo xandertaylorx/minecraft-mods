@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "pet_dragons",
+	"version": "${version}",
+	"name": "Pet Dragons",
+	"description": "Craft a dragon egg, keep it warm, and raise the hatchling into a rideable, fire-breathing dragon. Five kinds: Ember, Frost, Verdant, Void and Sun.",
+	"authors": ["XanderCraft"],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.petdragons.PetDragons"],
+		"client": ["com.petdragons.client.PetDragonsClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

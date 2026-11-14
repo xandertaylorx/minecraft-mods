@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond",
+    "E": "minecraft:ender_pearl",
+    "X": "minecraft:glowstone"
+  },
+  "pattern": [
+    "DED",
+    "EXE",
+    "DED"
+  ],
+  "result": {
+    "id": "pet_dragons:sun_dragon_egg"
+  }
+}

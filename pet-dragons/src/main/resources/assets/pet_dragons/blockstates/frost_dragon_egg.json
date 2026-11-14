@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "hatch=0": {
+      "model": "pet_dragons:block/frost_dragon_egg_0"
+    },
+    "hatch=1": {
+      "model": "pet_dragons:block/frost_dragon_egg_1"
+    },
+    "hatch=2": {
+      "model": "pet_dragons:block/frost_dragon_egg_2"
+    },
+    "hatch=3": {
+      "model": "pet_dragons:block/frost_dragon_egg_3"
+    }
+  }
+}
