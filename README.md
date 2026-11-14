@@ -8,6 +8,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 | [**Blockshine Shaders**](blockshine/) | Fast BSL-style shader pack: glassy reflective water, soft clouds, god rays, lens flare, golden sunsets. About 1.5× BSL's FPS in our test | Iris | 26.3 |
 | [**BlockOS Computers**](blockos/) | Placeable computers with a desktop, apps and games, and BlockScript programs that control redstone, sense the world and talk wirelessly | Fabric | 26.3 |
 | [**Agent Bridge**](agent-bridge/) | Lets Claude Code and Codex see and build in your world. Talk to them in chat with `@claude` or `@codex` | Fabric | 26.3 |
+| [**Better Dogs**](better-dogs/) | Sneak + right-click your dog for its settings: invincible, auto-collect dropped items (food / good stuff / everything), guard mode, regen, glow and more | Fabric | 26.3 |
 | [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
 
 ---

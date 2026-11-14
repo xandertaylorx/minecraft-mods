@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"id": "better_dogs",
+	"version": "${version}",
+	"name": "Better Dogs",
+	"description": "Sneak + right-click your dog to open its settings: make it invincible, have it fetch dropped items for you (food, good stuff or everything), guard you, heal over time, glow, run faster and more.",
+	"authors": ["XanderCraft"],
+	"license": "MIT",
+	"icon": "assets/better_dogs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.betterdogs.BetterDogs"],
+		"client": ["com.betterdogs.client.BetterDogsClient"]
+	},
+	"mixins": ["better_dogs.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

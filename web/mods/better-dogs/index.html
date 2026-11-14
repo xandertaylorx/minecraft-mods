@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Better Dogs · XanderCraft</title>
+<meta name="description" content="Better Dogs: sneak + right-click your dog to open its settings. Make it invincible, have it fetch dropped items for you, guard you, heal, glow and run faster.">
+<link rel="icon" href="img/dog.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css?v=7">
+<style>
+	.cmds { width: 100%; border-collapse: collapse; font-size: 15px; }
+	.cmds td { padding: 7px 12px; border-top: 2px solid rgba(0,0,0,.35); vertical-align: top; }
+	.cmds td:first-child { width: 30%; color: var(--gold); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#settings">Settings</a>
+			<a href="#fetch">Fetch</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero photo" style="background-image: url('img/biscuit.jpg'); background-position: 50% 35%">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">Pets</span>
+		</div>
+		<h1>Better <b>Dogs</b></h1>
+		<p class="tagline">Sneak + right-click your dog to open its settings. Make it invincible, have it fetch dropped loot for you, guard you from mobs and more.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/better-dogs-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#settings">See the settings</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="settings">
+		<div class="section-head">
+			<h2>Every dog gets a settings screen</h2>
+			<p>Hold sneak and right-click a dog you've tamed. Settings are saved on each dog, so every dog can be set up differently. Normal right-click still makes it sit or stand.</p>
+		</div>
+		<div class="gallery">
+			<a href="img/settings.jpg"><img src="img/settings.jpg" alt="The dog settings screen"></a>
+			<a href="img/fetching.jpg"><img src="img/fetching.jpg" alt="A glowing dog running to fetch cooked beef"></a>
+			<a href="img/biscuit.jpg"><img src="img/biscuit.jpg" alt="Biscuit the dog with a lime collar, next to a hotbar of fetched loot"></a>
+		</div>
+		<div class="panel files-wrap" style="margin-top:24px">
+			<table class="cmds">
+				<tr><td>Invincible</td><td>Nothing can hurt your dog: mobs, lava, fire, falling, drowning or explosions. Only <code>/kill</code> and the void still work.</td></tr>
+				<tr><td>Auto-collect</td><td>Your dog picks up dropped items near you and brings them straight to your inventory. Choose <b>Off</b>, <b>Food only</b>, <b>Good stuff</b> or <b>Everything</b>.</td></tr>
+				<tr><td>Behavior</td><td><b>Defend</b>: a normal dog. <b>Guard</b>: also hunts any hostile mob that comes near you (but leaves creepers alone). <b>Passive</b>: never fights.</td></tr>
+				<tr><td>Regeneration</td><td>Heals half a heart every 2 seconds.</td></tr>
+				<tr><td>Safe from you</td><td>Your own swings, arrows and explosions can't hurt your dog by accident. On by default.</td></tr>
+				<tr><td>Swift paws</td><td>Runs 40% faster, so it keeps up when you sprint.</td></tr>
+				<tr><td>Glow</td><td>Outlined through walls so you never lose it.</td></tr>
+				<tr><td>Danger alert</td><td>Barks and makes hostile mobs near you glow for a few seconds, even behind walls.</td></tr>
+				<tr><td>Name, collar, sit, call</td><td>Rename it without a name tag, pick any collar color, make it sit or stand, or teleport it to you with <b>Call to me</b>.</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="fetch">
+		<div class="section-head">
+			<h2>Fetch modes</h2>
+			<p>Your dog only picks up items within about 20 blocks of you, and never takes things you threw away yourself.</p>
+		</div>
+		<div class="steps">
+			<div class="step panel"><h3>Food only</h3><p>Meat, fish, bread, apples and anything else you can eat. Rotten flesh, spider eyes and poisonous potatoes are skipped.</p></div>
+			<div class="step panel"><h3>Good stuff</h3><p>Food, plus ores, gems, ingots, coal, redstone, mob drops like bones, string, gunpowder and leather, tools, armor, enchanted books and rare items. It skips dirt, cobblestone, seeds and other junk.</p></div>
+			<div class="step panel"><h3>Everything</h3><p>Every dropped item near you. Handy after mining or a big fight.</p></div>
+		</div>
+		<p style="margin-top:14px; color: var(--muted)">The screen also shows your dog's health and how many items it has fetched and mobs it has defeated.</p>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>Better Dogs v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. Works on dogs you've already tamed. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/better-dogs-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+	<section id="faq">
+		<div class="section-head"><h2>FAQ</h2></div>
+		<div class="faq">
+			<details class="panel"><summary>Can other players change my dog?</summary><p>No. Only the owner can open a dog's settings. Everyone else gets "That's not your dog."</p></details>
+			<details class="panel"><summary>Where do fetched items go if my inventory is full?</summary><p>They're dropped at your feet, and your dog won't keep fetching them.</p></details>
+			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes. Install it on the server and on every player's game.</p></details>
+			<details class="panel"><summary>What happens if I remove the mod?</summary><p>Your dogs go back to being normal dogs. Nothing breaks.</p></details>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/better-dogs">Better Dogs source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+<script src="../../js/lightbox.js"></script>
+</body>
+</html>
