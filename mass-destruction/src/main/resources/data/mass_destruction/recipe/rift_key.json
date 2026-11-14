@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": "minecraft:ender_eye",
+    "A": "minecraft:amethyst_shard",
+    "C": "minecraft:crying_obsidian",
+    "G": "minecraft:gold_ingot"
+  },
+  "pattern": [
+    " A ",
+    "AEA",
+    "GCG"
+  ],
+  "result": {
+    "id": "mass_destruction:rift_key"
+  }
+}

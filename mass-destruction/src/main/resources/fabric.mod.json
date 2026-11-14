@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"id": "mass_destruction",
+	"version": "${version}",
+	"name": "Mass Destruction",
+	"description": "An orbital annihilation beam, a nova that leaves a mushroom cloud, black holes, steerable tornadoes, and the Rift: a third realm of floating islands.",
+	"authors": ["XanderCraft"],
+	"license": "All-Rights-Reserved",
+	"icon": "assets/mass_destruction/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.massdestruction.MassDestruction"],
+		"client": ["com.massdestruction.client.MassDestructionClient"]
+	},
+	"mixins": [{ "config": "mass_destruction.client.mixins.json", "environment": "client" }],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,66 @@
+{
+  "attributes": {
+    "minecraft:visual/fog_color": "#40141e",
+    "minecraft:visual/sky_color": "#53203f",
+    "minecraft:visual/ambient_particles": {
+      "argument": [
+        {
+          "particle": {
+            "type": "minecraft:ash"
+          },
+          "probability": 0.02
+        }
+      ],
+      "modifier": "append"
+    },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "minecraft:magma_cube",
+              "count": 2,
+              "weight": 6
+            },
+            {
+              "type": "minecraft:enderman",
+              "count": 2,
+              "weight": 4
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 18000,
+        "min_delay": 6000,
+        "sound": "minecraft:music.nether.soul_sand_valley"
+      }
+    }
+  },
+  "carvers": [],
+  "downfall": 0.4,
+  "effects": {
+    "water_color": "#a05cff"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:patch_soul_fire"
+    ],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 0.5
+}

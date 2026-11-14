@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mass Destruction · XanderCraft</title>
+<meta name="description" content="Mass Destruction: an orbital annihilation beam, a nova with a mushroom cloud, black holes that eat the ground, steerable tornadoes, and the Rift, a third realm of floating islands.">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css?v=7">
+<style>
+	.cmds { width: 100%; border-collapse: collapse; font-size: 15px; }
+	.cmds td { padding: 7px 12px; border-top: 2px solid rgba(0,0,0,.35); vertical-align: top; }
+	.cmds td:first-child { width: 26%; color: var(--gold); font-weight: 700; }
+	.feature { display: grid; grid-template-columns: 1.15fr 1fr; gap: 22px; align-items: center; margin-top: 26px; }
+	.feature:nth-of-type(even) .shotbox { order: 2; }
+	.feature .shotbox img { width: 100%; display: block; border: 3px solid #000; }
+	.feature h3 { margin: 0 0 8px; font-size: 24px; }
+	.feature p { margin: 0 0 10px; }
+	.feature .how { color: var(--muted); font-size: 14px; }
+	@media (max-width: 760px) { .feature { grid-template-columns: 1fr; } .feature:nth-of-type(even) .shotbox { order: 0; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#weapons">Weapons</a>
+			<a href="#rift">The Rift</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero photo" style="background-image: url('img/hero.jpg'); background-position: 50% 40%">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">Weapons</span>
+			<span class="tag">Dimension</span>
+		</div>
+		<h1>Mass <b>Destruction</b></h1>
+		<p class="tagline">Call down a beam from orbit, set off a mushroom cloud, open black holes and steer tornadoes. Then escape to the Rift, a third realm of floating islands.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/mass-destruction-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#weapons">See the weapons</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="weapons">
+		<div class="section-head">
+			<h2>Four weapons</h2>
+			<p>Right-click a spot up to 200 blocks away and watch. Your own weapons never hurt you. Block damage follows the <code>tnt_explodes</code> game rule, like TNT.</p>
+		</div>
+
+		<div class="feature">
+			<a class="shotbox" href="img/beam.jpg"><img src="img/beam.jpg" alt="The Annihilator's beam hitting a village"></a>
+			<div>
+				<h3>Annihilator</h3>
+				<p>Rune circles are written into the sky above your target, one above another, while a target ring tightens on the ground. Four seconds later a beam about 20 blocks wide, counting its glow, comes down through them. It digs an 18-block-deep crater, turns sand to glass, burns the grass and throws everything nearby into the air.</p>
+				<p class="how">Right-click a spot up to 200 blocks away. 6 second cooldown.</p>
+			</div>
+		</div>
+
+		<div class="feature">
+			<a class="shotbox" href="img/nova.jpg"><img src="img/nova.jpg" alt="A nova's mushroom cloud"></a>
+			<div>
+				<h3>Nova Rod</h3>
+				<p>Runes gather in the sky and the day turns red. A spark falls through the circles, everything goes white, and a ball of fire climbs into a mushroom cloud. It cools from white to orange to smoke. A ring runs out along the ground, stripping trees and knocking over walls, and the middle is left a burning crater.</p>
+				<p class="how">Right-click a spot up to 160 blocks away. 7 second cooldown.</p>
+			</div>
+		</div>
+
+		<div class="feature">
+			<a class="shotbox" href="img/singularity.jpg"><img src="img/singularity.jpg" alt="A black hole tearing blocks out of the ground"></a>
+			<div>
+				<h3>Singularity Core</h3>
+				<p>A black hole opens over the spot, a hole full of stars ringed by a disc of light. Mobs and items get pulled in. The ground is torn up block by block, and the blocks spin round the disc. After 13 seconds it collapses and flings everything back out in a ring.</p>
+				<p class="how">Right-click to open one. Sneak + right-click to make yours burst early.</p>
+			</div>
+		</div>
+
+		<div class="feature">
+			<a class="shotbox" href="img/tornado.jpg"><img src="img/tornado.jpg" alt="A tornado tearing through a village"></a>
+			<div>
+				<h3>Storm Caller</h3>
+				<p>A dark cloud winds up overhead, lightning strikes, and a funnel comes down. While you hold the Storm Caller the tornado goes wherever you point. It throws mobs into the air and carries torn-up blocks round and round. Over lava it becomes a fire tornado; over water it becomes a waterspout.</p>
+				<p class="how">Right-click to call one. Hold the staff to steer it. Sneak + right-click sends it away.</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="rift">
+		<div class="section-head">
+			<h2>The Rift</h2>
+			<p>A third realm alongside the Nether and the End: floating islands in a violet, starry sky that never gets light.</p>
+		</div>
+		<div class="gallery">
+			<a href="img/rift.jpg"><img src="img/rift.jpg" alt="Floating islands of the Rift"></a>
+			<a href="img/rift2.jpg"><img src="img/rift2.jpg" alt="More islands of the Rift"></a>
+			<a href="img/portal.jpg"><img src="img/portal.jpg" alt="A Rift portal in a crying obsidian frame"></a>
+		</div>
+		<div class="steps" style="margin-top:22px">
+			<div class="step panel"><h3>1. Build a frame</h3><p>Stand up a frame of <b>crying obsidian</b>, like a Nether portal. The inside can be anything from 2×3 up to 21×21.</p></div>
+			<div class="step panel"><h3>2. Tear it open</h3><p>Right-click inside the frame with a <b>Rift Key</b>, or open a black hole next to it. Either one rips the portal open.</p></div>
+			<div class="step panel"><h3>3. Step through</h3><p>Stand in it for two seconds. If nothing's waiting on the other side, a new portal is built for you, on its own island if there's only sky.</p></div>
+		</div>
+		<div class="panel files-wrap" style="margin-top:22px">
+			<table class="cmds">
+				<tr><td>Crystal Wastes</td><td>Calcite and amethyst islands, with geodes inside.</td></tr>
+				<tr><td>Blossom Reach</td><td>Moss and cherry trees, with spore blossoms hanging underneath and petals in the air.</td></tr>
+				<tr><td>Ember Isles</td><td>Soul soil, magma and soul fire, with ash drifting past.</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="recipes">
+		<div class="section-head"><h2>Recipes</h2><p>Everything is in the <b>Mass Destruction</b> creative tab. In survival, each weapon costs a nether star.</p></div>
+		<div class="panel files-wrap">
+			<table class="cmds">
+				<tr><td>Annihilator</td><td>Nether star, beacon, 4 diamond blocks, 3 end rods</td></tr>
+				<tr><td>Nova Rod</td><td>Nether star, 2 blaze rods, 2 TNT, 2 fire charges</td></tr>
+				<tr><td>Singularity Core</td><td>Nether star, heavy core, 3 ender eyes, 4 crying obsidian</td></tr>
+				<tr><td>Storm Caller</td><td>Nether star, breeze rod, lightning rod, 4 wind charges</td></tr>
+				<tr><td>Rift Key</td><td>Ender eye, 3 amethyst shards, 2 gold ingots, crying obsidian</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>Mass Destruction v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>. For multiplayer, install it on the server and on every player's game. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/mass-destruction-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+	<section id="faq">
+		<div class="section-head"><h2>FAQ</h2></div>
+		<div class="faq">
+			<details class="panel"><summary>Will it lag my game?</summary><p>Each weapon breaks a limited number of blocks per tick, so the big craters are dug over a few seconds instead of all at once. Flying debris is drawn by your game, not spawned as thousands of entities.</p></details>
+			<details class="panel"><summary>Can I use it without wrecking my base?</summary><p>Turn off the <code>tnt_explodes</code> game rule and the weapons still hit mobs, but don't break blocks. Spawn protection and adventure mode are respected too.</p></details>
+			<details class="panel"><summary>What survives?</summary><p>Obsidian, crying obsidian, bedrock and anything else as blast-proof. That's why the Rift portal frame is made of crying obsidian: a black hole can open it without destroying it.</p></details>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/mass-destruction">Mass Destruction source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+<script src="../../js/lightbox.js"></script>
+</body>
+</html>

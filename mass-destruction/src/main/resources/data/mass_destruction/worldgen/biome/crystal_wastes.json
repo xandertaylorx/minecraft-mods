@@ -1,0 +1,63 @@
+{
+  "attributes": {
+    "minecraft:visual/fog_color": "#3a1f5c",
+    "minecraft:visual/sky_color": "#4b1d7a",
+    "minecraft:visual/ambient_particles": {
+      "argument": [
+        {
+          "particle": {
+            "type": "minecraft:end_rod"
+          },
+          "probability": 0.004
+        }
+      ],
+      "modifier": "append"
+    },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "minecraft:enderman",
+              "count": 3,
+              "weight": 10
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 18000,
+        "min_delay": 6000,
+        "sound": "minecraft:music.end"
+      }
+    }
+  },
+  "carvers": [],
+  "downfall": 0.4,
+  "effects": {
+    "water_color": "#a05cff"
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:amethyst_geode"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:spore_blossom"
+    ],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 0.5
+}

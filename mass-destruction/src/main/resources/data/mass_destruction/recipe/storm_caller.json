@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "W": "minecraft:wind_charge",
+    "B": "minecraft:breeze_rod",
+    "L": "minecraft:lightning_rod",
+    "N": "minecraft:nether_star"
+  },
+  "pattern": [
+    "WLW",
+    "WNW",
+    " B "
+  ],
+  "result": {
+    "id": "mass_destruction:storm_caller"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": "minecraft:nether_star",
+    "B": "minecraft:beacon",
+    "D": "minecraft:diamond_block",
+    "R": "minecraft:end_rod"
+  },
+  "pattern": [
+    "DND",
+    "RBR",
+    "DRD"
+  ],
+  "result": {
+    "id": "mass_destruction:annihilator"
+  }
+}

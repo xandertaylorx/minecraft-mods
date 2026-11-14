@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"id": "mass_destruction_test",
+	"version": "1.0.0",
+	"name": "Mass Destruction Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["com.massdestruction.test.MassDestructionClientTest"]
+	},
+	"depends": { "mass_destruction": "*" }
+}

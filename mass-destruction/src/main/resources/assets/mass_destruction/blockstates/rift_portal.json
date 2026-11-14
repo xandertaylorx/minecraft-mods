@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mass_destruction:block/rift_portal_ns"
+    },
+    "axis=z": {
+      "model": "mass_destruction:block/rift_portal_ew"
+    }
+  }
+}

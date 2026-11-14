@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "T": "minecraft:tnt",
+    "B": "minecraft:blaze_rod",
+    "N": "minecraft:nether_star",
+    "F": "minecraft:fire_charge"
+  },
+  "pattern": [
+    "FNF",
+    "TBT",
+    " B "
+  ],
+  "result": {
+    "id": "mass_destruction:nova_rod"
+  }
+}

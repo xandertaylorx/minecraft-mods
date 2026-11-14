@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": "minecraft:nether_star",
+    "E": "minecraft:ender_eye",
+    "O": "minecraft:crying_obsidian",
+    "H": "minecraft:heavy_core"
+  },
+  "pattern": [
+    "OEO",
+    "ENE",
+    "OHO"
+  ],
+  "result": {
+    "id": "mass_destruction:singularity_core"
+  }
+}
