@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real City · XanderCraft</title>
+<meta name="description" content="Real City: type /setcity Manchester and your Minecraft world follows the real city. Real time of day, sunrise and sunset, moon phase and weather, live.">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/site.css?v=7">
+<style>
+	.cmds { width: 100%; border-collapse: collapse; font-size: 15px; }
+	.cmds td { padding: 7px 12px; border-top: 2px solid rgba(0,0,0,.35); vertical-align: top; }
+	.cmds td:first-child { width: 30%; color: var(--gold); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="wrap">
+		<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+		<nav class="nav">
+			<a href="../../#mods">Mods</a>
+			<a href="#how">How it works</a>
+			<a href="#commands">Commands</a>
+			<a href="#download">Download</a>
+		</nav>
+	</div>
+</header>
+
+<div class="hero photo" style="background-image: url('img/tokyo.jpg'); background-position: 50% 40%">
+	<div class="wrap">
+		<div class="tags">
+			<span class="tag status-live">v1.0.0</span>
+			<span class="tag loader">Fabric</span>
+			<span class="tag">MC 26.3</span>
+			<span class="tag">World</span>
+		</div>
+		<h1>Real <b>City</b></h1>
+		<p class="tagline">Type <code>/setcity Manchester, UK</code> and your world follows that city: the real time, sunrise and sunset, moon phase and weather, live.</p>
+		<div class="btns">
+			<a class="btn go" href="../../downloads/real-city-1.0.0.jar" download>Download v1.0.0</a>
+			<a class="btn" href="#how">See how it works</a>
+		</div>
+	</div>
+</div>
+
+<main class="wrap">
+
+	<section id="how">
+		<div class="section-head">
+			<h2>Your world, somewhere real</h2>
+			<p>Pick any city on Earth. The screenshots here are the real thing: drizzle in Tokyo at 4am, sunshine in Los Angeles at 11am, dawn in Sydney.</p>
+		</div>
+		<div class="gallery">
+			<a href="img/tokyo.jpg"><img src="img/tokyo.jpg" alt="Tokyo at 04:21, 11 degrees with real drizzle falling in the dark"></a>
+			<a href="img/los-angeles.jpg"><img src="img/los-angeles.jpg" alt="Los Angeles at 11:21 on a clear sunny morning"></a>
+			<a href="img/sydney.jpg"><img src="img/sydney.jpg" alt="Sydney at 06:21 as the sun comes up under an overcast sky"></a>
+		</div>
+		<div class="steps" style="margin-top:24px">
+			<div class="step panel"><h3>Real time</h3><p>Minecraft's sunrise is the city's sunrise and Minecraft's sunset is its sunset, so long summer days and short winter days show up in the sky.</p></div>
+			<div class="step panel"><h3>Real weather</h3><p>Clear, rain or thunderstorm, straight from the city's current conditions. Snow and drizzle count as rain.</p></div>
+			<div class="step panel"><h3>Real moon</h3><p>The 8 Minecraft moon phases match the real moon. Full moon outside means a full moon in real life.</p></div>
+		</div>
+		<p style="margin-top:14px; color: var(--muted)">Weather comes from <a href="https://open-meteo.com/">Open-Meteo</a>, free and with no account or key. It refreshes every 10 minutes.</p>
+	</section>
+
+	<section id="commands">
+		<div class="section-head">
+			<h2>Commands</h2>
+			<p>In singleplayer anyone can use them. On a server, <code>/setcity</code> and <code>/realcity</code> need op.</p>
+		</div>
+		<div class="panel files-wrap">
+			<table class="cmds">
+				<tr><td>/setcity &lt;city&gt;</td><td>Picks the city. If several cities share a name, add the country or state: <code>/setcity Manchester, UK</code>, <code>/setcity Paris, Texas</code>, or just <code>/setcity Los Angeles</code>.</td></tr>
+				<tr><td>/city</td><td>Shows the city, its local time, weather, temperature, wind, sunrise and sunset, and the moon phase. Anyone can use it.</td></tr>
+				<tr><td>/city hud</td><td>Turns your own action bar on or off: city, time, temperature and weather above your hotbar.</td></tr>
+				<tr><td>/realcity on | off</td><td>Turns syncing on or off. Off gives you normal Minecraft time and weather back.</td></tr>
+				<tr><td>/realcity time | weather</td><td>Sync only the sky, or only the rain and thunder: <code>/realcity weather off</code>.</td></tr>
+				<tr><td>/realcity announce</td><td>Tell chat when the real weather changes, like "It's started raining in Manchester".</td></tr>
+				<tr><td>/realcity refresh</td><td>Fetch the weather again right now.</td></tr>
+			</table>
+		</div>
+	</section>
+
+	<section id="download">
+		<div class="section-head"><h2>Download</h2></div>
+		<div class="dl panel">
+			<div>
+				<h3>Real City v1.0.0</h3>
+				<p>For Minecraft <b>26.3</b> with Fabric. Needs <a href="https://modrinth.com/mod/fabric-api">Fabric API</a> and an internet connection. <a href="../../downloads/">All downloads</a></p>
+			</div>
+			<a class="btn go" href="../../downloads/real-city-1.0.0.jar" download>Download .jar</a>
+		</div>
+	</section>
+
+	<section id="faq">
+		<div class="section-head"><h2>FAQ</h2></div>
+		<div class="faq">
+			<details class="panel"><summary>Does the day still last 20 minutes?</summary><p>No. The sky follows the real clock, so a Minecraft day lasts a real day. The sun creeps across the sky and the world is dark when it's really dark. If you'd rather have normal days, use <code>/realcity time off</code> and keep just the weather.</p></details>
+			<details class="panel"><summary>Can I sleep through the night?</summary><p>You can try, but the sky snaps back to the real time within 5 seconds. Torches and beds are still useful for spawn points.</p></details>
+			<details class="panel"><summary>Does it work in multiplayer?</summary><p>Yes. Install it on the server only. Everyone sees the same city.</p></details>
+			<details class="panel"><summary>What if my internet drops?</summary><p>The last weather keeps going for 15 minutes, the clock keeps running, and the mod retries every minute.</p></details>
+			<details class="panel"><summary>What happens if I remove the mod?</summary><p>If syncing was on, your world's clock is left paused. Run <code>/realcity off</code> before you remove it and time flows normally again.</p></details>
+		</div>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div>
+			<a class="brand" href="../../"><span class="cube"></span><span>Xander<b>Craft</b></span></a>
+			<p>Made with blocks and too much coffee.</p>
+		</div>
+		<div>
+			<p><a href="https://github.com/xandertaylorx/minecraft-mods/tree/main/real-city">Real City source on GitHub</a></p>
+			<p>Fan-made. Not an official Minecraft product.<br>Not approved by or associated with Mojang or Microsoft.</p>
+		</div>
+	</div>
+</footer>
+
+<script src="../../js/lightbox.js"></script>
+</body>
+</html>

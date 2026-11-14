@@ -1,0 +1,8 @@
+{
+	"schemaVersion": 1,
+	"id": "real_city_test",
+	"version": "1.0.0",
+	"environment": "*",
+	"entrypoints": { "fabric-client-gametest": ["com.realcity.test.RealCityClientTest"] },
+	"depends": { "real_city": "*" }
+}

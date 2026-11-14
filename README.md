@@ -10,6 +10,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 | [**Agent Bridge**](agent-bridge/) | Lets Claude Code and Codex see and build in your world. Talk to them in chat with `@claude` or `@codex` | Fabric | 26.3 |
 | [**Mass Destruction**](mass-destruction/) | An orbital annihilation beam, a nova with a mushroom cloud, black holes, steerable tornadoes, and the Rift: a third realm of floating islands | Fabric | 26.3 |
 | [**Better Dogs**](better-dogs/) | Sneak + right-click your dog for its settings: invincible, auto-collect dropped items (food / good stuff / everything), guard mode, regen, glow and more | Fabric | 26.3 |
+| [**Real City**](real-city/) | `/setcity Manchester` and your world follows the real city: its time of day, sunrise and sunset, moon phase and live weather | Fabric | 26.3 |
 | [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
 
 ---

@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "real_city",
+	"version": "${version}",
+	"name": "Real City",
+	"description": "Type /setcity Manchester and your world follows the real one: the time of day, the weather, sunrise and sunset, even the moon phase, all pulled live from a real city.",
+	"authors": ["XanderCraft"],
+	"license": "MIT",
+	"icon": "assets/real_city/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.realcity.RealCity"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
