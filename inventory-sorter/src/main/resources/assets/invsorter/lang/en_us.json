@@ -2,9 +2,9 @@
   "key.invsorter.sort": "Sort Inventory / Container",
   "invsorter.sort_inventory": "Sort inventory",
   "invsorter.sort_container": "Sort container",
-  "invsorter.quick_stack": "Quick stack to nearby chests",
-  "invsorter.no_chests": "No chests nearby",
-  "invsorter.nothing_stacked": "No nearby chest has matching items",
-  "invsorter.stacked": "Stacked %s stacks into %s chests",
-  "invsorter.none_remembered": "No chest nearby holds your items"
+  "invsorter.quick_stack": "Quick stack to nearby chests, furnaces and more",
+  "invsorter.no_chests": "No chests or furnaces nearby",
+  "invsorter.nothing_stacked": "Nothing nearby has matching items",
+  "invsorter.stacked": "Stacked %s stacks into %s containers",
+  "invsorter.none_remembered": "Nothing nearby holds your items"
 }

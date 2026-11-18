@@ -4,7 +4,6 @@ import com.invsorter.InventorySorterClient;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.world.inventory.ChestMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +16,7 @@ public abstract class ScreenMixin {
     private void invsorter$hide(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
         if (InventorySorterClient.hideChestScreens()
                 && (Object) this instanceof AbstractContainerScreen<?> screen
-                && screen.getMenu() instanceof ChestMenu) {
+                && InventorySorterClient.isStackMenu(screen.getMenu())) {
             ci.cancel();
         }
     }

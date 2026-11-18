@@ -61,8 +61,8 @@ public class InventorySorterClient implements ClientModInitializer {
                 addButtons(client, containerScreen);
                 ScreenEvents.remove(screen).register(s -> {
                     queue.clear(); // screen closed: stop sorting
-                    if (containerScreen.getMenu() instanceof ChestMenu cm) {
-                        rememberChest(client, cm);   // contents as they are when you walk away
+                    if (isStackMenu(containerScreen.getMenu())) {
+                        rememberChest(client, containerScreen.getMenu());   // contents as they are when you walk away
                         if (phase == Phase.IDLE) openedChest = null;
                     }
                 });
@@ -196,7 +196,36 @@ public class InventorySorterClient implements ClientModInitializer {
     /** The chest/barrel the player most recently interacted with (null if it was anything else). */
     private static net.minecraft.core.BlockPos openedChest;
 
-    /** For a chest or barrel returns the position used as its key (the non-RIGHT half of a double chest), else null. */
+    /** Menus quick stack can deposit into: chests, barrels, shulker boxes, furnaces (all kinds), brewing stands, hoppers, dispensers, droppers. */
+    public static boolean isStackMenu(AbstractContainerMenu menu) {
+        return menu instanceof ChestMenu || menu instanceof ShulkerBoxMenu
+                || menu instanceof net.minecraft.world.inventory.AbstractFurnaceMenu
+                || menu instanceof net.minecraft.world.inventory.BrewingStandMenu
+                || menu instanceof net.minecraft.world.inventory.HopperMenu
+                || menu instanceof net.minecraft.world.inventory.DispenserMenu;
+    }
+
+    /** Blocks quick stack can use. A double chest counts once (see {@link #normalizeChest}). */
+    private static boolean isStackBlock(net.minecraft.world.level.block.state.BlockState state) {
+        var b = state.getBlock();
+        return b instanceof net.minecraft.world.level.block.ChestBlock
+                || b instanceof net.minecraft.world.level.block.BarrelBlock
+                || b instanceof net.minecraft.world.level.block.ShulkerBoxBlock
+                || b instanceof net.minecraft.world.level.block.AbstractFurnaceBlock
+                || b instanceof net.minecraft.world.level.block.BrewingStandBlock
+                || b instanceof net.minecraft.world.level.block.HopperBlock
+                || b instanceof net.minecraft.world.level.block.DispenserBlock;
+    }
+
+    /** Machines whose contents change on their own, so what we saw last time can't be trusted. Always opened. */
+    private static boolean isMachine(net.minecraft.world.level.block.state.BlockState state) {
+        var b = state.getBlock();
+        return b instanceof net.minecraft.world.level.block.AbstractFurnaceBlock
+                || b instanceof net.minecraft.world.level.block.BrewingStandBlock
+                || b instanceof net.minecraft.world.level.block.HopperBlock;
+    }
+
+    /** For a usable block returns the position used as its key (the non-RIGHT half of a double chest), else null. */
     private static net.minecraft.core.BlockPos normalizeChest(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos) {
         var state = level.getBlockState(pos);
         if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock) {
@@ -206,7 +235,7 @@ public class InventorySorterClient implements ClientModInitializer {
             }
             return pos.immutable();
         }
-        if (state.getBlock() instanceof net.minecraft.world.level.block.BarrelBlock) return pos.immutable();
+        if (isStackBlock(state)) return pos.immutable();
         return null;
     }
 
@@ -214,14 +243,14 @@ public class InventorySorterClient implements ClientModInitializer {
         return level.dimension() + "@" + pos.asLong();
     }
 
-    private static void rememberChest(Minecraft client, ChestMenu menu) {
+    private static void rememberChest(Minecraft client, AbstractContainerMenu menu) {
         var pos = openedChest;
-        if (pos == null || client.level == null) return;
-        if (pos == null || client.level == null) return;
+        if (pos == null || client.level == null || client.player == null) return;
+        if (isMachine(client.level.getBlockState(pos))) return;   // furnaces etc. change by themselves
         java.util.Set<net.minecraft.world.item.Item> items = new java.util.HashSet<>();
-        int n = menu.getRowCount() * 9;
-        for (int i = 0; i < n && i < menu.slots.size(); i++) {
-            ItemStack st = menu.slots.get(i).getItem();
+        for (Slot slot : menu.slots) {
+            if (slot.container == client.player.getInventory()) continue;
+            ItemStack st = slot.getItem();
             if (!st.isEmpty()) items.add(st.getItem());
         }
         chestMemory.put(memoryKey(client.level, pos), items);
@@ -263,13 +292,11 @@ public class InventorySorterClient implements ClientModInitializer {
         List<net.minecraft.core.BlockPos> found = new ArrayList<>();
         for (var pos : net.minecraft.core.BlockPos.betweenClosed(origin.offset(-r - 1, -r - 1, -r - 1), origin.offset(r + 1, r + 1, r + 1))) {
             var state = level.getBlockState(pos);
-            boolean ok = false;
-            if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock) {
+            boolean ok = isStackBlock(state);
+            if (ok && state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock) {
                 // double chest: only use one half
                 ok = state.getValue(net.minecraft.world.level.block.ChestBlock.TYPE)
                         != net.minecraft.world.level.block.state.properties.ChestType.RIGHT;
-            } else if (state.getBlock() instanceof net.minecraft.world.level.block.BarrelBlock) {
-                ok = true;
             }
             if (!ok) continue;
             boolean inRange = direct
@@ -324,14 +351,21 @@ public class InventorySorterClient implements ClientModInitializer {
 
     private static boolean containsItem(net.minecraft.world.Container box, ItemStack stack) {
         for (int i = 0; i < box.getContainerSize(); i++) {
-            if (ItemStack.isSameItem(box.getItem(i), stack)) return true;
+            // canPlaceItem excludes furnace output slots, so smelted ingots never count as "already in there"
+            if (ItemStack.isSameItem(box.getItem(i), stack) && box.canPlaceItem(i, stack)) return true;
         }
         return false;
     }
 
+    /** Furnaces and brewing stands: only top up stacks already there, never drop things into other slots. */
+    private static boolean mergeOnly(net.minecraft.world.Container box) {
+        return box instanceof net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity
+                || box instanceof net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+    }
+
     /** Puts as much of {@code stack} as fits into {@code box}: merge into partial stacks first, then empty slots. */
     private static void insert(net.minecraft.world.Container box, ItemStack stack) {
-        for (int pass = 0; pass < 2 && !stack.isEmpty(); pass++) {
+        for (int pass = 0; pass < (mergeOnly(box) ? 1 : 2) && !stack.isEmpty(); pass++) {
             for (int i = 0; i < box.getContainerSize() && !stack.isEmpty(); i++) {
                 ItemStack there = box.getItem(i);
                 if (!box.canPlaceItem(i, stack)) continue;
@@ -444,10 +478,10 @@ public class InventorySorterClient implements ClientModInitializer {
                 }
             }
             case WAIT_OPEN -> {
-                if (player.containerMenu instanceof ChestMenu menu) {
-                    if (phaseTicks < 2) return; // give the server a moment to send the chest's contents
+                if (isStackMenu(player.containerMenu)) {
+                    var menu = player.containerMenu;
+                    if (phaseTicks < 2) return; // give the server a moment to send the contents
                     Inventory inv = player.getInventory();
-                    int chestSlots = menu.getRowCount() * 9;
                     rememberChest(client, menu);   // record what's really inside (also for never-opened chests)
                     int moved = 0;
                     for (int i = 0; i < menu.slots.size(); i++) {
@@ -456,8 +490,13 @@ public class InventorySorterClient implements ClientModInitializer {
                         ItemStack mine = slot.getItem();
                         if (mine.isEmpty()) continue;
                         boolean chestHasIt = false;
-                        for (int c = 0; c < chestSlots && !chestHasIt; c++) {
-                            chestHasIt = ItemStack.isSameItem(menu.slots.get(c).getItem(), mine);
+                        for (Slot there : menu.slots) {
+                            if (there.container == inv) continue;
+                            // mayPlace skips output slots (a furnace's finished ingots are not "already in there")
+                            if (ItemStack.isSameItem(there.getItem(), mine) && there.mayPlace(mine)) {
+                                chestHasIt = true;
+                                break;
+                            }
                         }
                         if (chestHasIt) {
                             queue.add(new Click(i, true));
