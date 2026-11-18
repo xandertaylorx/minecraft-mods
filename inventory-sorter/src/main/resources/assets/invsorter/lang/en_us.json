@@ -2,9 +2,9 @@
   "key.invsorter.sort": "Sort Inventory / Container",
   "invsorter.sort_inventory": "Sort inventory",
   "invsorter.sort_container": "Sort container",
-  "invsorter.quick_stack": "Quick stack to nearby chests (%s blocks)",
-  "invsorter.no_chests": "No chests or barrels nearby",
-  "invsorter.nothing_stacked": "Nothing to stack: no nearby chest has matching items",
-  "invsorter.stacked": "Stacked %s item stacks into %s chests",
-  "invsorter.none_remembered": "No nearby chest is known to hold your items (open a chest once so it's remembered)"
+  "invsorter.quick_stack": "Quick stack to nearby chests",
+  "invsorter.no_chests": "No chests nearby",
+  "invsorter.nothing_stacked": "No nearby chest has matching items",
+  "invsorter.stacked": "Stacked %s stacks into %s chests",
+  "invsorter.none_remembered": "No remembered chest matches (open them once)"
 }

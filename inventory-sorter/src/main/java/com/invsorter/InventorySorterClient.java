@@ -134,7 +134,7 @@ public class InventorySorterClient implements ClientModInitializer {
         SortIconButton stackButton = null;
         if (screen instanceof InventoryScreen) {
             stackButton = new SortIconButton(SortIconButton.Icon.QUICK_STACK,
-                    Component.translatable("invsorter.quick_stack", (int) STACK_RADIUS), () -> startQuickStack(client));
+                    Component.translatable("invsorter.quick_stack"), () -> startQuickStack(client));
             Screens.getWidgets(screen).add(stackButton);
         }
         final SortIconButton stackBtn = stackButton;
