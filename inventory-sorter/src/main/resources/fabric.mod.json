@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "invsorter",
+  "version": "${version}",
+  "name": "Inventory Sorter",
+  "description": "Client-side inventory, chest and barrel sorting. Works on any server.",
+  "authors": ["finlayharris888"],
+  "license": "MIT",
+  "icon": "assets/invsorter/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.invsorter.InventorySorterClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
