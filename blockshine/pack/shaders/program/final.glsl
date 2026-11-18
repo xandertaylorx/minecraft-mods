@@ -34,8 +34,11 @@ void main() {
 	exposure = EXPOSURE * 1.6;
 #else
 	// Brighter in caves (eyes adjusting), and a little brighter at night so nights look moody, not black
+	// Eyes adjust in the dark, but a torch-lit room needs far less boost than a black cave (that boost was making rooms look hazy)
 	float sky = float(eyeBrightnessSmooth.y) / 240.0;
-	exposure = EXPOSURE * mix(2.4, 1.0, sky) * mix(1.0, 0.9, nightFactor(sunDir.y) * sky);
+	float blockLight = float(eyeBrightnessSmooth.x) / 240.0;
+	float adapt = 1.0 + 0.9 * (1.0 - smoothstep(0.0, 0.8, sky)) * (1.0 - 0.75 * smoothstep(0.1, 0.8, blockLight));
+	exposure = EXPOSURE * adapt * mix(1.0, 0.9, nightFactor(sunDir.y) * sky);
 #endif
 
 	// Golden color grade around sunrise/sunset, cool silver at night
@@ -43,7 +46,7 @@ void main() {
 	grade = vec3(1.0);
 	satBoost = 0.0;
 #else
-	float golden = sunsetFactor(sunDir.y) * smoothstep(-0.08, 0.04, sunDir.y) * (1.0 - rainStrength);
+	float golden = sunsetFactor(sunDir.y) * smoothstep(-0.14, 0.08, sunDir.y) * (1.0 - rainStrength);
 	grade = mix(vec3(1.0), vec3(1.16, 0.96, 0.72), golden);
 	satBoost = golden * 0.25;
 	grade = mix(grade, vec3(0.80, 0.96, 1.08), nightFactor(sunDir.y));                  // moody teal night
@@ -56,7 +59,7 @@ void main() {
 	if (sp.w > 0.0 && isEyeInWater == 0) {
 		sunScreen = sp.xy / sp.w * 0.5 + 0.5;
 		float onScreen = smoothstep(-0.15, 0.1, min(sunScreen.x, sunScreen.y)) * smoothstep(-0.15, 0.1, 1.0 - max(sunScreen.x, sunScreen.y));
-		flareCol = sunLightColor(sunDir.y) * onScreen * smoothstep(-0.02, 0.06, sunDir.y) * (1.0 - rainStrength) * LENS_FLARE_STRENGTH;
+		flareCol = celestialColor(sunDir.y) * onScreen * smoothstep(-0.02, 0.06, sunDir.y) * (1.0 - rainStrength) * LENS_FLARE_STRENGTH;
 	}
 #endif
 }

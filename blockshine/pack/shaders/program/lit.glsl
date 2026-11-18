@@ -78,7 +78,7 @@ void main() {
 	isFoliage = foliage ? 1.0 : 0.0;
 	faceAmb = (noNormal || foliage) ? 0.9 : faceShade(wn);
 	// How much the light shines through toward the camera (strongest looking into the sun through leaves)
-	sssAmount = pow(max(dot(normalize(playerPos), lightDir), 0.0), 4.0);
+	sssAmount = pow(max(dot(normalize(playerPos), lightDir), 0.0), 3.0);
 
 	sunCol = sunLightColor(sunDir.y);
 	ambCol = ambientColor(sunDir.y);
@@ -204,7 +204,7 @@ void main() {
 
 #ifdef FOLIAGE_GLOW
 	// Leaves and grass glow when the sun shines through them toward you (subsurface scattering)
-	if (isFoliage > 0.5) light += sunCol * sssAmount * sh * smoothstep(0.05, 0.6, skyL) * 0.6;
+	if (isFoliage > 0.5) light += sunCol * sssAmount * sh * smoothstep(0.05, 0.6, skyL) * 0.85;
 #endif
 
 	vec3 lit = col * light;

@@ -17,7 +17,7 @@ void main() {
 	gl_Position = taaJitter(gl_ProjectionMatrix * viewPos);
 
 	vec3 sunDir = worldSunDir();
-	sunCol = sunLightColor(sunDir.y);
+	sunCol = celestialColor(sunDir.y);
 	ambCol = ambientColor(sunDir.y);
 	vec3 playerPos = mat3(gbufferModelViewInverse) * viewPos.xyz;
 	float dist = length(viewPos.xyz);
@@ -63,7 +63,7 @@ void main() {
 	col *= ambCol * 1.4 + sunCol * 0.55;
 #elif defined SKYTEXTURED
 	// Bright sun/moon so bloom picks them up; the moon gets a cool silver tint
-	float isMoon = step(sunCol.r, sunCol.b);   // moonlight is bluer than sunlight
+	float isMoon = step(worldSunDir().y, 0.0);   // sun below the horizon means the moon is the one up
 	col *= mix(vec3(3.0), vec3(2.2, 2.5, 3.2), isMoon) * (1.0 - rainStrength);
 	vec4 ndc = vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, 1.0, 1.0);
 	vec4 vp = gbufferProjectionInverse * ndc;

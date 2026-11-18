@@ -10,7 +10,7 @@ flat out vec3 ambCol;
 void main() {
 	tint = gl_Color;
 	sunDirW = worldSunDir();
-	sunCol = sunLightColor(sunDirW.y);
+	sunCol = celestialColor(sunDirW.y);
 	ambCol = ambientColor(sunDirW.y);
 	gl_Position = taaJitter(ftransform());
 }

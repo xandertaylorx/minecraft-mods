@@ -28,12 +28,13 @@ void main() {
 	vec4 sp = gbufferProjection * vec4(sunPosition, 1.0);
 	sunScreen = sp.xy / sp.w * 0.5 + 0.5;
 	float visible = (sp.w > 0.0) ? 1.0 : 0.0;
-	shaftCol = sunLightColor(h) * visible * smoothstep(-0.02, 0.08, h) * (1.0 + sunsetFactor(h)) * (1.0 - rainStrength);
+	shaftCol = celestialColor(h) * visible * smoothstep(-0.02, 0.10, h) * (1.0 + sunsetFactor(h)) * (1.0 - rainStrength);
 
 	lightDirW = normalize(mat3(gbufferModelViewInverse) * shadowLightPosition);
-	// Rays are strongest in morning mist and at sunset; moonbeams at night are faint and blue.
+	// Rays follow the shadow light, so they fade out as it hands over from sun to moon (no pop at sunset).
+	// Strongest in morning mist and at sunset; moonbeams at night are faint and blue.
 	vlCol = sunLightColor(h) * (1.0 - rainStrength * 0.7);
-	vlDensity = 0.0022 * airDensity(sunDir);
+	vlDensity = 0.0042 * airDensity(sunDir);
 }
 #endif
 
@@ -68,20 +69,22 @@ void main() {
 	// Shadow-space start (camera) and end; shadow transforms are affine so we can step linearly.
 	vec3 s0 = (shadowProjection * (shadowModelView * vec4(0.0, 0.0, 0.0, 1.0))).xyz;
 	vec3 s1 = (shadowProjection * (shadowModelView * vec4(dir * dist, 1.0))).xyz;
-	float jitter = ign2(gl_FragCoord.xy);
+	float jitter = fract(ign2(gl_FragCoord.xy) + frameNoiseShift());   // new offset every frame; TAA averages the noise away
 	float lit = 0.0;
 	for (int i = 0; i < VL_SAMPLES; i++) {
 		float t = (float(i) + jitter) / float(VL_SAMPLES);
-		t *= t;                                   // more samples close to the camera, where detail matters
+		t *= 0.35 + 0.65 * t;                     // a few more samples close up, but still reach the far leaves
 		lit += shadowTap(mix(s0, s1, t));
 	}
 	lit /= float(VL_SAMPLES);
 
 	// Forward scattering: rays glow most when looking toward the light
 	float cosA = dot(dir, lightDirW);
-	float phase = 0.04 + 0.75 * pow(max(cosA, 0.0), 8.0) + 0.18 * pow(max(cosA, 0.0), 2.0);
+	// A little glow from every angle so shafts show from the side too, a lot more toward the sun
+	float phase = 0.16 + 0.80 * pow(max(cosA, 0.0), 6.0) + 0.22 * pow(max(cosA, 0.0), 2.0);
 	float amount = 1.0 - exp(-dist * vlDensity);
-	col += vlCol * lit * phase * amount * 0.55 * VL_STRENGTH;
+	// Slightly thinner indoors, where the only light is what streams in through gaps
+	col += vlCol * lit * phase * amount * 0.80 * VL_STRENGTH * mix(1.0, 0.7, indoorFactor());
 #else
 	if (dot(shaftCol, shaftCol) > 1e-5) {
 		vec2 aspect = vec2(viewWidth / viewHeight, 1.0);
@@ -89,7 +92,7 @@ void main() {
 		float falloff = exp(-dot(d, d) * 4.0);
 		if (falloff > 0.01) {
 			vec2 stepUV = (sunScreen - texcoord) / float(LIGHT_SHAFT_SAMPLES) * 0.8;
-			vec2 uv = texcoord + stepUV * ign2(gl_FragCoord.xy);
+			vec2 uv = texcoord + stepUV * fract(ign2(gl_FragCoord.xy) + frameNoiseShift());
 			float sky = 0.0;
 			for (int i = 0; i < LIGHT_SHAFT_SAMPLES; i++) {
 				vec2 cuv = clamp(uv, 0.001, 0.999);

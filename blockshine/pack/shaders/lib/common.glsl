@@ -79,24 +79,40 @@ vec3 worldSunDir() { return normalize(mat3(gbufferModelViewInverse) * sunPositio
 // ---------------- Time-of-day colors ----------------
 // h = sun height (-1..1). These run per vertex, not per pixel.
 
-float dayFactor(float h)    { return smoothstep(-0.06, 0.18, h); }
-float sunsetFactor(float h) { return clamp(1.0 - abs(h - 0.10) * 2.1, 0.0, 1.0); }
-float nightFactor(float h)  { return 1.0 - smoothstep(-0.14, 0.02, h); }
+// Every ramp below is wide and smooth, so nothing pops when the sun crosses the horizon.
+float dayFactor(float h)    { return smoothstep(-0.10, 0.30, h); }
+float sunsetFactor(float h) { return 1.0 - smoothstep(0.0, 0.5, abs(h - 0.07)); }
+float nightFactor(float h)  { return 1.0 - smoothstep(-0.22, 0.04, h); }
 // Dawn: sun low and in the east (+X). Used for morning mist.
 float morningFactor(vec3 sunDir) {
 	return sunsetFactor(sunDir.y) * smoothstep(-0.1, 0.25, sunDir.x);
 }
 
+const vec3 SUN_DAY_COL    = vec3(1.00, 0.96, 0.92) * 1.30;
+const vec3 SUN_SUNSET_COL = vec3(1.00, 0.50, 0.18) * 1.75;
+const vec3 MOON_COL       = vec3(0.42, 0.60, 0.95) * 0.09;   // cool blue moonlight
+
+// Color of the sun (or moon) as the sky, clouds, sun disc and rays see it. Blends continuously through the horizon.
+vec3 celestialColor(float h) {
+#if defined NETHER || defined END
+	return vec3(0.0);
+#else
+	vec3 sun = mix(SUN_SUNSET_COL, SUN_DAY_COL, smoothstep(0.08, 0.50, h));
+	return mix(MOON_COL, sun, smoothstep(-0.10, 0.06, h)) * (1.0 - rainStrength * 0.8) * SUN_BRIGHTNESS;
+#endif
+}
+
+// Direct light that shadows are cast from. Iris swaps the shadow light from sun to moon exactly when the sun touches
+// the horizon, so BOTH lights have to be zero right there. Fading them out is what keeps sunset and sunrise from
+// snapping every shadow to a new direction.
 vec3 sunLightColor(float h) {
 #if defined NETHER || defined END
 	return vec3(0.0);
 #else
-	vec3 day    = vec3(1.00, 0.96, 0.92) * 1.30;
-	vec3 sunset = vec3(1.00, 0.50, 0.18) * 1.75;
-	vec3 night  = vec3(0.42, 0.60, 0.95) * 0.09;          // cool blue moonlight
-	vec3 c = mix(sunset, day, smoothstep(0.08, 0.45, h));
-	c = mix(night, c, smoothstep(-0.08, 0.03, h));
-	return c * (1.0 - rainStrength * 0.8) * SUN_BRIGHTNESS;
+	vec3 sun = mix(SUN_SUNSET_COL, SUN_DAY_COL, smoothstep(0.08, 0.50, h));
+	float sunFade  = smoothstep(0.0, 0.16, h);
+	float moonFade = 1.0 - smoothstep(-0.22, 0.0, h);
+	return (sun * sunFade + MOON_COL * moonFade) * (1.0 - rainStrength * 0.8) * SUN_BRIGHTNESS;
 #endif
 }
 
@@ -106,14 +122,22 @@ vec3 ambientColor(float h) {
 #elif defined END
 	return vec3(0.10, 0.08, 0.16);
 #else
-	vec3 day    = vec3(0.30, 0.46, 0.86) * 0.92;   // clear blue skylight fills the shade
-	vec3 sunset = vec3(0.50, 0.36, 0.34) * 0.55;
-	vec3 night  = vec3(0.018, 0.036, 0.062);       // deep teal-blue moonlit shade
-	vec3 c = mix(sunset, day, smoothstep(0.05, 0.35, h));
-	c = mix(night, c, smoothstep(-0.12, 0.05, h));
+	vec3 day      = vec3(0.30, 0.46, 0.86) * 0.92;   // clear blue skylight fills the shade
+	vec3 sunset   = vec3(0.50, 0.36, 0.34) * 0.55;
+	vec3 twilight = vec3(0.095, 0.115, 0.235);        // blue hour after sunset / before sunrise, bridges day and night
+	vec3 night    = vec3(0.018, 0.036, 0.062);        // deep teal-blue moonlit shade
+	vec3 c = mix(sunset, day, smoothstep(0.05, 0.40, h));
+	c = mix(twilight, c, smoothstep(-0.10, 0.06, h));
+	c = mix(night, c, smoothstep(-0.34, -0.06, h));
 	c = mix(c, vec3(luma(c)) * 0.75, rainStrength * 0.7);
 	return c * AMBIENT_BRIGHTNESS;
 #endif
+}
+
+// 0 outdoors, 1 deep indoors or in a cave. Reads the sky light at the camera (already smoothed over a few seconds),
+// so walking through a door fades fog and exposure instead of popping.
+float indoorFactor() {
+	return 1.0 - smoothstep(0.05, 0.75, float(eyeBrightnessSmooth.y) / 240.0);
 }
 
 // ---------------- Sky ----------------
@@ -148,7 +172,7 @@ vec3 skyColor(vec3 dir, vec3 sunDir) {
 
 	// Glow around the sun
 	float sd = max(dot(dir, sunDir), 0.0);
-	col += sunLightColor(h) * (pow(sd, 6.0) * 0.10 + pow(sd, 40.0) * 0.20) * smoothstep(-0.1, 0.05, h) * (1.0 - sunset * 0.5);
+	col += celestialColor(h) * (pow(sd, 6.0) * 0.10 + pow(sd, 40.0) * 0.20) * smoothstep(-0.1, 0.05, h) * (1.0 - sunset * 0.5);
 
 	// Night: soft halo around the moon and a faint glow along the horizon
 	float md = max(dot(dir, -sunDir), 0.0);
@@ -167,7 +191,7 @@ vec3 skyColor(vec3 dir, vec3 sunDir) {
 // How thick the air is right now: misty dawns, clear noons, hazy golden dusk, light night mist.
 float airDensity(vec3 sunDir) {
 	float h = sunDir.y;
-	return (1.0 + morningFactor(sunDir) * 3.0 + sunsetFactor(h) * 0.5 + nightFactor(h) * 2.2 + rainStrength * 5.0) * FOG_DENSITY;
+	return (1.0 + morningFactor(sunDir) * 1.4 + sunsetFactor(h) * 0.4 + nightFactor(h) * 0.9 + rainStrength * 3.5) * FOG_DENSITY;
 }
 
 // How much fog covers something at view-space distance `dist`.
@@ -179,7 +203,8 @@ float fogAmount(float dist, vec3 sunDir) {
 #elif defined END
 	float haze = 1.0 - exp(-dist * 0.006 * FOG_DENSITY);
 #else
-	float haze = 1.0 - exp(-dist * 0.0032 * airDensity(sunDir));
+	// Indoors and in caves there is hardly any haze, so rooms stay crisp
+	float haze = 1.0 - exp(-dist * 0.0026 * airDensity(sunDir) * mix(1.0, 0.12, indoorFactor()));
 #endif
 	// Border fog hides the edge of the render distance
 	float border = smoothstep(far * 0.72, far, dist);
@@ -193,7 +218,9 @@ vec3 fogColorFor(vec3 dir, vec3 sunDir) {
 #if !defined NETHER && !defined END
 	// Sunlight scattering in the haze: fog glows warm toward the sun
 	float sd = max(dot(dir, sunDir), 0.0);
-	c += sunLightColor(sunDir.y) * pow(sd, 5.0) * 0.30 * dayFactor(sunDir.y + 0.1);
+	c += celestialColor(sunDir.y) * pow(sd, 5.0) * 0.30 * dayFactor(sunDir.y + 0.1);
+	// Fog in a room or cave is dark, not sky-colored, so it never washes the view out
+	c *= mix(1.0, 0.10, indoorFactor());
 #endif
 	return c;
 }
