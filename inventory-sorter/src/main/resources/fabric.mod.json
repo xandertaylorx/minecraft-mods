@@ -8,6 +8,7 @@
   "license": "MIT",
   "icon": "assets/invsorter/icon.png",
   "environment": "client",
+  "mixins": ["invsorter.mixins.json"],
   "entrypoints": {
     "client": ["com.invsorter.InventorySorterClient"]
   },

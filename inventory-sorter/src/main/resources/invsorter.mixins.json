@@ -1,0 +1,7 @@
+{
+	"required": true,
+	"package": "com.invsorter.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": ["ScreenMixin"],
+	"injectors": { "defaultRequire": 1 }
+}

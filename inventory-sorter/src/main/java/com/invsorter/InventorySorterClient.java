@@ -59,7 +59,10 @@ public class InventorySorterClient implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register((client, screen, w, h) -> {
             if (screen instanceof AbstractContainerScreen<?> containerScreen) {
                 addButtons(client, containerScreen);
-                ScreenEvents.remove(screen).register(s -> queue.clear()); // screen closed: stop sorting
+                ScreenEvents.remove(screen).register(s -> {
+                    queue.clear(); // screen closed: stop sorting
+                    if (containerScreen.getMenu() instanceof ChestMenu cm) rememberChest(client, cm);
+                });
                 ScreenKeyboardEvents.afterKeyPress(screen).register((s, keyEvent) -> {
                     if (sortKey.matches(keyEvent)) {
                         LOGGER.info("Sort key pressed in {}", containerScreen.getMenu().getClass().getSimpleName());
@@ -69,6 +72,14 @@ public class InventorySorterClient implements ClientModInitializer {
                 });
             }
         });
+
+        // Remember which chest/barrel the player opens so quick stack knows what's inside.
+        net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, world, hand, hit) -> {
+            if (world.isClientSide()) openedChest = normalizeChest(world, hit.getBlockPos());
+            return net.minecraft.world.InteractionResult.PASS;
+        });
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.JOIN.register(
+                (handler, sender, client) -> chestMemory.clear());
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         ClientTickEvents.END_CLIENT_TICK.register(InventorySorterClient::stackTick);
@@ -143,6 +154,49 @@ public class InventorySorterClient implements ClientModInitializer {
         ScreenEvents.afterTick(screen).register(s -> place.run());
     }
 
+
+
+    // ---- chest memory ------------------------------------------------------------
+
+    private static final java.util.Map<String, java.util.Set<net.minecraft.world.item.Item>> chestMemory = new java.util.HashMap<>();
+    /** The chest/barrel the player most recently interacted with (null if it was anything else). */
+    private static net.minecraft.core.BlockPos openedChest;
+
+    /** For a chest or barrel returns the position used as its key (the non-RIGHT half of a double chest), else null. */
+    private static net.minecraft.core.BlockPos normalizeChest(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos) {
+        var state = level.getBlockState(pos);
+        if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock) {
+            var type = state.getValue(net.minecraft.world.level.block.ChestBlock.TYPE);
+            if (type == net.minecraft.world.level.block.state.properties.ChestType.RIGHT) {
+                return pos.relative(net.minecraft.world.level.block.ChestBlock.getConnectedDirection(state)).immutable();
+            }
+            return pos.immutable();
+        }
+        if (state.getBlock() instanceof net.minecraft.world.level.block.BarrelBlock) return pos.immutable();
+        return null;
+    }
+
+    private static String memoryKey(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos) {
+        return level.dimension() + "@" + pos.asLong();
+    }
+
+    private static void rememberChest(Minecraft client, ChestMenu menu) {
+        var pos = openedChest;
+        openedChest = null;
+        if (pos == null || client.level == null) return;
+        java.util.Set<net.minecraft.world.item.Item> items = new java.util.HashSet<>();
+        int n = menu.getRowCount() * 9;
+        for (int i = 0; i < n && i < menu.slots.size(); i++) {
+            ItemStack st = menu.slots.get(i).getItem();
+            if (!st.isEmpty()) items.add(st.getItem());
+        }
+        chestMemory.put(memoryKey(client.level, pos), items);
+    }
+
+    /** True while quick stack is running its chest-opening fallback: the chest screens are not drawn. */
+    public static boolean hideChestScreens() {
+        return phase != Phase.IDLE;
+    }
 
     // ---- quick stack to nearby chests (like Terraria) ----------------------------
 
@@ -271,9 +325,21 @@ public class InventorySorterClient implements ClientModInitializer {
 
         var eye = player.getEyePosition();
         List<net.minecraft.core.BlockPos> found = findContainers(level, player);
+        java.util.Set<net.minecraft.world.item.Item> mine = new java.util.HashSet<>();
+        for (int i = 9; i <= 35; i++) {
+            ItemStack st = player.getInventory().getItem(i);
+            if (!st.isEmpty()) mine.add(st.getItem());
+        }
+        int inRange = found.size();
+        // Only open chests we remember holding something we're carrying.
+        found.removeIf(p -> {
+            var known = chestMemory.get(memoryKey(level, p));
+            return known == null || java.util.Collections.disjoint(known, mine);
+        });
         LOGGER.info("Quick stack: {} chests in range", found.size());
         if (found.isEmpty()) {
-            player.sendOverlayMessage(Component.translatable("invsorter.no_chests"));
+            player.sendOverlayMessage(Component.translatable(
+                    inRange == 0 ? "invsorter.no_chests" : "invsorter.none_remembered"));
             return;
         }
         stackTargets.clear();
@@ -318,6 +384,7 @@ public class InventorySorterClient implements ClientModInitializer {
                 var dir = net.minecraft.core.Direction.getApproximateNearest(player.getEyePosition().subtract(center));
                 var hit = new net.minecraft.world.phys.BlockHitResult(
                         center.add(dir.getStepX() * 0.5, dir.getStepY() * 0.5, dir.getStepZ() * 0.5), dir, pos, false);
+                openedChest = pos;
                 var result = client.gameMode.useItemOn(player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
                 if (result.consumesAction()) {
                     phase = Phase.WAIT_OPEN;

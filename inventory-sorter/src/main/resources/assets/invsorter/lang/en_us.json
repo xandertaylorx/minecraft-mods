@@ -5,5 +5,6 @@
   "invsorter.quick_stack": "Quick stack to nearby chests (%s blocks)",
   "invsorter.no_chests": "No chests or barrels nearby",
   "invsorter.nothing_stacked": "Nothing to stack: no nearby chest has matching items",
-  "invsorter.stacked": "Stacked %s item stacks into %s chests"
+  "invsorter.stacked": "Stacked %s item stacks into %s chests",
+  "invsorter.none_remembered": "No nearby chest is known to hold your items (open a chest once so it's remembered)"
 }
