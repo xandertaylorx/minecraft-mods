@@ -157,17 +157,10 @@ public class InventorySorterClient implements ClientModInitializer {
     private static int movedStacks;
     private static int chestsUsed;
 
-    private static void startQuickStack(Minecraft client) {
-        var player = client.player;
-        var level = client.level;
-        if (player == null || level == null || client.gameMode == null) return;
-        if (phase != Phase.IDLE || !queue.isEmpty()) return;
-        if (!player.containerMenu.getCarried().isEmpty()) return;
 
-        boolean hasItems = false;
-        for (int i = 9; i <= 35; i++) if (!player.getInventory().getItem(i).isEmpty()) hasItems = true;
-        if (!hasItems) return;
-
+    /** Chests and barrels within {@link #STACK_RADIUS} of the player's eyes, nearest first. */
+    private static List<net.minecraft.core.BlockPos> findContainers(net.minecraft.world.level.Level level,
+                                                                    net.minecraft.world.entity.player.Player player) {
         var eye = player.getEyePosition();
         int r = (int) Math.ceil(STACK_RADIUS);
         var origin = player.blockPosition();
@@ -185,6 +178,99 @@ public class InventorySorterClient implements ClientModInitializer {
             if (ok && pos.distToCenterSqr(eye) <= STACK_RADIUS * STACK_RADIUS) found.add(pos.immutable());
         }
         found.sort(Comparator.comparingDouble(p -> p.distToCenterSqr(eye)));
+        return found;
+    }
+
+    /**
+     * Singleplayer / LAN host: we own the server, so move the items directly. Instant, no chests
+     * opening. Runs on the server thread.
+     */
+    private static void quickStackDirect(net.minecraft.server.MinecraftServer server, java.util.UUID id) {
+        var sp = server.getPlayerList().getPlayer(id);
+        if (sp == null) return;
+        var level = sp.level();
+        Inventory inv = sp.getInventory();
+        int stacks = 0, chests = 0;
+        for (var pos : findContainers(level, sp)) {
+            var state = level.getBlockState(pos);
+            net.minecraft.world.Container box;
+            if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock cb) {
+                box = net.minecraft.world.level.block.ChestBlock.getContainer(cb, state, level, pos, true);
+            } else {
+                box = level.getBlockEntity(pos) instanceof net.minecraft.world.Container c ? c : null;
+            }
+            if (box == null) continue;
+            boolean used = false;
+            for (int i = 9; i <= 35; i++) {
+                ItemStack mine = inv.getItem(i);
+                if (mine.isEmpty() || !containsItem(box, mine)) continue;
+                int before = mine.getCount();
+                insert(box, mine);
+                if (mine.getCount() != before) {
+                    stacks++;
+                    used = true;
+                }
+            }
+            if (used) {
+                box.setChanged();
+                chests++;
+            }
+        }
+        sp.inventoryMenu.broadcastChanges();
+        sp.sendOverlayMessage(stacks == 0
+                ? Component.translatable("invsorter.nothing_stacked")
+                : Component.translatable("invsorter.stacked", stacks, chests));
+    }
+
+    private static boolean containsItem(net.minecraft.world.Container box, ItemStack stack) {
+        for (int i = 0; i < box.getContainerSize(); i++) {
+            if (ItemStack.isSameItem(box.getItem(i), stack)) return true;
+        }
+        return false;
+    }
+
+    /** Puts as much of {@code stack} as fits into {@code box}: merge into partial stacks first, then empty slots. */
+    private static void insert(net.minecraft.world.Container box, ItemStack stack) {
+        for (int pass = 0; pass < 2 && !stack.isEmpty(); pass++) {
+            for (int i = 0; i < box.getContainerSize() && !stack.isEmpty(); i++) {
+                ItemStack there = box.getItem(i);
+                if (!box.canPlaceItem(i, stack)) continue;
+                if (pass == 0) {
+                    if (there.isEmpty() || !ItemStack.isSameItemSameComponents(there, stack)) continue;
+                    int room = box.getMaxStackSize(there) - there.getCount();
+                    int move = Math.min(room, stack.getCount());
+                    if (move <= 0) continue;
+                    there.grow(move);
+                    stack.shrink(move);
+                } else if (there.isEmpty()) {
+                    int move = Math.min(box.getMaxStackSize(stack), stack.getCount());
+                    box.setItem(i, stack.split(move));
+                }
+            }
+        }
+    }
+
+    private static void startQuickStack(Minecraft client) {
+        var player = client.player;
+        var level = client.level;
+        if (player == null || level == null || client.gameMode == null) return;
+        if (phase != Phase.IDLE || !queue.isEmpty()) return;
+        if (!player.containerMenu.getCarried().isEmpty()) return;
+
+        // Singleplayer / LAN host: do it directly on the integrated server (instant, nothing opens).
+        var server = client.getSingleplayerServer();
+        if (server != null) {
+            var id = player.getUUID();
+            server.execute(() -> quickStackDirect(server, id));
+            return;
+        }
+
+        boolean hasItems = false;
+        for (int i = 9; i <= 35; i++) if (!player.getInventory().getItem(i).isEmpty()) hasItems = true;
+        if (!hasItems) return;
+
+        var eye = player.getEyePosition();
+        List<net.minecraft.core.BlockPos> found = findContainers(level, player);
         LOGGER.info("Quick stack: {} chests in range", found.size());
         if (found.isEmpty()) {
             player.sendOverlayMessage(Component.translatable("invsorter.no_chests"));
