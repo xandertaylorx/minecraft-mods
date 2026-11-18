@@ -61,7 +61,10 @@ public class InventorySorterClient implements ClientModInitializer {
                 addButtons(client, containerScreen);
                 ScreenEvents.remove(screen).register(s -> {
                     queue.clear(); // screen closed: stop sorting
-                    if (containerScreen.getMenu() instanceof ChestMenu cm) rememberChest(client, cm);
+                    if (containerScreen.getMenu() instanceof ChestMenu cm) {
+                        rememberChest(client, cm);   // contents as they are when you walk away
+                        if (phase == Phase.IDLE) openedChest = null;
+                    }
                 });
                 ScreenKeyboardEvents.afterKeyPress(screen).register((s, keyEvent) -> {
                     if (sortKey.matches(keyEvent)) {
@@ -182,7 +185,7 @@ public class InventorySorterClient implements ClientModInitializer {
 
     private static void rememberChest(Minecraft client, ChestMenu menu) {
         var pos = openedChest;
-        openedChest = null;
+        if (pos == null || client.level == null) return;
         if (pos == null || client.level == null) return;
         java.util.Set<net.minecraft.world.item.Item> items = new java.util.HashSet<>();
         int n = menu.getRowCount() * 9;
@@ -200,8 +203,11 @@ public class InventorySorterClient implements ClientModInitializer {
 
     // ---- quick stack to nearby chests (like Terraria) ----------------------------
 
-    /** How far (in blocks) from your eyes a chest can be. Vanilla reach is 4.5, so this always works. */
-    private static final double STACK_RADIUS = 4.0;
+    /** Singleplayer / LAN: items are moved directly, so there is no reach limit. This is how far we look. */
+    private static final double DIRECT_RADIUS = 10.0;
+    /** On a server we must open each chest, so it has to be within the server's reach (4.5 + a safety margin). */
+    private static final double SERVER_REACH_BUFFER = 0.4;
+    private static final double SERVER_SCAN_RADIUS = 7.0;
 
     private enum Phase { IDLE, NEXT, WAIT_OPEN, TRANSFER, WAIT_CLOSE }
 
@@ -212,11 +218,16 @@ public class InventorySorterClient implements ClientModInitializer {
     private static int chestsUsed;
 
 
-    /** Chests and barrels within {@link #STACK_RADIUS} of the player's eyes, nearest first. */
+    /**
+     * Chests and barrels the player can use, nearest first. {@code direct} = items are moved without opening
+     * anything (singleplayer), so a big radius is fine; otherwise the chest must be within the player's reach.
+     */
     private static List<net.minecraft.core.BlockPos> findContainers(net.minecraft.world.level.Level level,
-                                                                    net.minecraft.world.entity.player.Player player) {
+                                                                    net.minecraft.world.entity.player.Player player,
+                                                                    boolean direct) {
         var eye = player.getEyePosition();
-        int r = (int) Math.ceil(STACK_RADIUS);
+        double radius = direct ? DIRECT_RADIUS : SERVER_SCAN_RADIUS;
+        int r = (int) Math.ceil(radius);
         var origin = player.blockPosition();
         List<net.minecraft.core.BlockPos> found = new ArrayList<>();
         for (var pos : net.minecraft.core.BlockPos.betweenClosed(origin.offset(-r - 1, -r - 1, -r - 1), origin.offset(r + 1, r + 1, r + 1))) {
@@ -229,7 +240,11 @@ public class InventorySorterClient implements ClientModInitializer {
             } else if (state.getBlock() instanceof net.minecraft.world.level.block.BarrelBlock) {
                 ok = true;
             }
-            if (ok && pos.distToCenterSqr(eye) <= STACK_RADIUS * STACK_RADIUS) found.add(pos.immutable());
+            if (!ok) continue;
+            boolean inRange = direct
+                    ? pos.distToCenterSqr(eye) <= radius * radius
+                    : player.isWithinBlockInteractionRange(pos, SERVER_REACH_BUFFER);
+            if (inRange) found.add(pos.immutable());
         }
         found.sort(Comparator.comparingDouble(p -> p.distToCenterSqr(eye)));
         return found;
@@ -245,7 +260,7 @@ public class InventorySorterClient implements ClientModInitializer {
         var level = sp.level();
         Inventory inv = sp.getInventory();
         int stacks = 0, chests = 0;
-        for (var pos : findContainers(level, sp)) {
+        for (var pos : findContainers(level, sp, true)) {
             var state = level.getBlockState(pos);
             net.minecraft.world.Container box;
             if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock cb) {
@@ -324,17 +339,17 @@ public class InventorySorterClient implements ClientModInitializer {
         if (!hasItems) return;
 
         var eye = player.getEyePosition();
-        List<net.minecraft.core.BlockPos> found = findContainers(level, player);
+        List<net.minecraft.core.BlockPos> found = findContainers(level, player, false);
         java.util.Set<net.minecraft.world.item.Item> mine = new java.util.HashSet<>();
         for (int i = 9; i <= 35; i++) {
             ItemStack st = player.getInventory().getItem(i);
             if (!st.isEmpty()) mine.add(st.getItem());
         }
         int inRange = found.size();
-        // Only open chests we remember holding something we're carrying.
+        // Skip chests we KNOW hold nothing we're carrying. Chests we've never opened are checked by opening them.
         found.removeIf(p -> {
             var known = chestMemory.get(memoryKey(level, p));
-            return known == null || java.util.Collections.disjoint(known, mine);
+            return known != null && java.util.Collections.disjoint(known, mine);
         });
         LOGGER.info("Quick stack: {} chests in range", found.size());
         if (found.isEmpty()) {
@@ -393,8 +408,10 @@ public class InventorySorterClient implements ClientModInitializer {
             }
             case WAIT_OPEN -> {
                 if (player.containerMenu instanceof ChestMenu menu) {
+                    if (phaseTicks < 2) return; // give the server a moment to send the chest's contents
                     Inventory inv = player.getInventory();
                     int chestSlots = menu.getRowCount() * 9;
+                    rememberChest(client, menu);   // record what's really inside (also for never-opened chests)
                     int moved = 0;
                     for (int i = 0; i < menu.slots.size(); i++) {
                         Slot slot = menu.slots.get(i);

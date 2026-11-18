@@ -6,5 +6,5 @@
   "invsorter.no_chests": "No chests nearby",
   "invsorter.nothing_stacked": "No nearby chest has matching items",
   "invsorter.stacked": "Stacked %s stacks into %s chests",
-  "invsorter.none_remembered": "No remembered chest matches (open them once)"
+  "invsorter.none_remembered": "No chest nearby holds your items"
 }
