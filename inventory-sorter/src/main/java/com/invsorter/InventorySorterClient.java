@@ -119,6 +119,10 @@ public class InventorySorterClient implements ClientModInitializer {
 
     /** Adds "Sort" buttons: one for the chest (if any) and one for your inventory. */
     private void addButtons(Minecraft client, AbstractContainerScreen<?> screen) {
+        if (screen instanceof net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen creative) {
+            addCreativeButtons(client, creative);
+            return;
+        }
         AbstractContainerMenu menu = screen.getMenu();
         boolean hasContainer = menu instanceof ChestMenu || menu instanceof ShulkerBoxMenu;
         if (!hasContainer && !(menu instanceof InventoryMenu)) return;
@@ -158,6 +162,33 @@ public class InventorySorterClient implements ClientModInitializer {
     }
 
 
+
+    /** Creative inventory: the sort and quick stack icons show on the "Survival Inventory" tab (the one with your slots). */
+    private void addCreativeButtons(Minecraft client,
+                                    net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen screen) {
+        if (LEFT == null || TOP == null || IMG_W == null) return;
+        SortIconButton sortBtn = new SortIconButton(SortIconButton.Icon.SORT,
+                Component.translatable("invsorter.sort_inventory"), () -> {
+                    if (client.player != null) startSort(client, client.player.inventoryMenu, true);
+                });
+        SortIconButton stackBtn = new SortIconButton(SortIconButton.Icon.QUICK_STACK,
+                Component.translatable("invsorter.quick_stack"), () -> startQuickStack(client));
+        Screens.getWidgets(screen).add(sortBtn);
+        Screens.getWidgets(screen).add(stackBtn);
+        Runnable place = () -> {
+            boolean show = screen.isInventoryOpen();
+            sortBtn.visible = show;
+            sortBtn.active = show;
+            stackBtn.visible = show;
+            stackBtn.active = show;
+            int x = get(LEFT, screen) + get(IMG_W, screen) - BTN_W - 6;
+            int y = get(TOP, screen) + 6;
+            sortBtn.setPosition(x, y);
+            stackBtn.setPosition(x - BTN_W - 2, y);
+        };
+        place.run();
+        ScreenEvents.afterTick(screen).register(s -> place.run());
+    }
 
     // ---- chest memory ------------------------------------------------------------
 
@@ -361,9 +392,14 @@ public class InventorySorterClient implements ClientModInitializer {
         stackTargets.addAll(found);
         movedStacks = 0;
         chestsUsed = 0;
+        var current = client.gui.screen();
+        returnScreen = current instanceof net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen ? current : null;
         phase = Phase.NEXT;
         phaseTicks = 0;
     }
+
+    /** The creative inventory screen to bring back when quick stack finishes (null = the normal inventory). */
+    private static net.minecraft.client.gui.screens.Screen returnScreen;
 
     private static void finishQuickStack(Minecraft client) {
         phase = Phase.IDLE;
@@ -372,7 +408,8 @@ public class InventorySorterClient implements ClientModInitializer {
             client.player.sendOverlayMessage(movedStacks == 0
                     ? Component.translatable("invsorter.nothing_stacked")
                     : Component.translatable("invsorter.stacked", movedStacks, chestsUsed));
-            client.gui.setScreen(new InventoryScreen(client.player));
+            client.gui.setScreen(returnScreen != null ? returnScreen : new InventoryScreen(client.player));
+            returnScreen = null;
         }
     }
 
