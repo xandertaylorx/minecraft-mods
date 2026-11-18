@@ -12,7 +12,7 @@ A collection of Minecraft mods and shader packs. Each top-level folder is a sepa
 | [**Better Dogs**](better-dogs/) | Sneak + right-click your dog for its settings: invincible, auto-collect dropped items (food / good stuff / everything), guard mode, regen, glow and more | Fabric | 26.3 |
 | [**Real City**](real-city/) | `/setcity Manchester` and your world follows the real city: its time of day, sunrise and sunset, moon phase and live weather | Fabric | 26.3 |
 | [**Pet Dragons**](pet-dragons/) | Craft a dragon egg and keep it warm to hatch a hatchling, then raise it into a rideable, fire-breathing, flying dragon. Five kinds: Ember, Frost, Verdant, Void and Sun | Fabric | 26.3 |
-| [**Inventory Sorter**](inventory-sorter/) | A sort icon on every chest, barrel and inventory screen (or press R). Merges stacks and orders items like the creative menu. Client-side, works on any server | Fabric | 26.3 |
+| [**Inventory Sorter**](inventory-sorter/) | A sort icon on every chest, barrel and inventory screen (or press R), plus Terraria-style quick stack to nearby chests. Merges stacks and orders items like the creative menu. Client-side, works on any server | Fabric | 26.3 |
 | [**Mac FPS Boost**](mac-fps-boost/) | Stops macOS rendering at Retina resolution (4× fewer pixels) | Fabric | 26.3 |
 
 ---

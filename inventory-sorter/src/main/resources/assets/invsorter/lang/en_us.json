@@ -1,5 +1,9 @@
 {
   "key.invsorter.sort": "Sort Inventory / Container",
   "invsorter.sort_inventory": "Sort inventory",
-  "invsorter.sort_container": "Sort container"
+  "invsorter.sort_container": "Sort container",
+  "invsorter.quick_stack": "Quick stack to nearby chests (%s blocks)",
+  "invsorter.no_chests": "No chests or barrels nearby",
+  "invsorter.nothing_stacked": "Nothing to stack: no nearby chest has matching items",
+  "invsorter.stacked": "Stacked %s item stacks into %s chests"
 }
